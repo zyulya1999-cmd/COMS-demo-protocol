@@ -629,10 +629,19 @@ function App() {
     </style></head><body>
     <div class="btn-bar">
       <button class="cp-btn" onclick="copyText()">📋 Скопировать текст</button>
-      <button class="dl-btn" onclick="downloadPDF()">⬇️ Скачать PDF</button>
+      <button class="dl-btn" onclick="downloadPDF()">⬇️ Скачать файл</button>
     </div>
     <script>
-    function downloadPDF(){window.print();}
+    function downloadPDF(){
+      const html=document.documentElement.outerHTML;
+      const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='protocol.html';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
     function copyText(){
       const lines=[];
       const title=document.querySelector('.demo-title');
@@ -649,7 +658,7 @@ function App() {
       navigator.clipboard.writeText(lines.join('\n')).then(()=>{
         const btn=document.querySelector('.cp-btn');
         btn.textContent='✓ Скопировано';
-        setTimeout(()=>btn.innerHTML='📋 Скопировать текст',2000);
+        setTimeout(()=>{btn.textContent='📋 Скопировать текст';},2000);
       });
     }
     <\/script>
