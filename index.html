@@ -1,204 +1,239 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Протокол демо</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg:#f5f4f0; --bg-card:#ffffff; --bg-hover:#efefea; --bg-input:#fafaf8;
-    --border:rgba(0,0,0,0.08); --border-md:rgba(0,0,0,0.14);
-    --border-focus:rgba(99,102,241,0.5);
-    --text:#1a1a1e; --text-2:#5a5a68; --text-3:#9898a6;
-    --accent:#6366f1; --accent-bg:rgba(99,102,241,0.08); --accent-hover:#4f52d4;
-    --green:#16a34a; --green-bg:rgba(22,163,74,0.08);
-    --amber:#d97706; --amber-bg:rgba(217,119,6,0.08);
-    --red:#dc2626; --red-bg:rgba(220,38,38,0.08);
-    --orange:#ea580c; --orange-bg:rgba(234,88,12,0.08);
-    --purple:#7c3aed; --purple-bg:rgba(124,58,237,0.08);
-    --sky:#0284c7; --sky-bg:rgba(2,132,199,0.08);
-    --radius:8px; --radius-lg:12px;
-    --font:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
-    --transition:150ms ease;
-    --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
-  }
-  html,body,#root{height:100%}
-  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-  ::-webkit-scrollbar{width:6px;height:6px}
-  ::-webkit-scrollbar-track{background:transparent}
-  ::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
-  input,textarea,select{font-family:var(--font);font-size:13px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:0 10px;height:34px;outline:none;transition:border-color var(--transition);width:100%}
-  input::placeholder,textarea::placeholder{color:var(--text-3)}
-  input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.06)}
-  select option{background:#fff}
-  textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5}
-  button{font-family:var(--font);cursor:pointer;border:none;outline:none;transition:all var(--transition)}
-  button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
-  .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
-  .topbar{border-bottom:1px solid var(--border);background:rgba(245,244,240,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;box-shadow:var(--shadow)}
-  .topbar-left{display:flex;align-items:center;gap:16px;min-width:0}
-  .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;white-space:nowrap}
-  .logo span{color:var(--accent)}
-  .demo-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .meta-input{background:transparent;border:none;font-size:13px;color:var(--text-2);padding:0;height:auto;width:auto}
-  .meta-input:focus{color:var(--text);box-shadow:none;border:none}
-  .meta-sep{color:var(--text-3);font-size:12px}
-  .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-  .btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
-  .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
-  .btn-ghost:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-md)}
-  .btn-accent{background:var(--accent);color:#fff;border:1px solid transparent;box-shadow:var(--shadow)}
-  .btn-accent:hover{background:var(--accent-hover)}
-  .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid transparent}
-  .btn-danger:hover{background:rgba(220,38,38,0.14)}
-  .btn-sm{height:26px;padding:0 10px;font-size:12px}
-  .btn-icon{width:30px;padding:0;justify-content:center}
-  .body{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px)}
-  @media(max-width:768px){.body{grid-template-columns:1fr}.sidebar{display:none}}
-  .sidebar{border-right:1px solid var(--border);background:var(--bg);padding:20px 16px;display:flex;flex-direction:column;gap:4px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
-  .sidebar-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:12px 10px 6px}
-  .nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:all var(--transition)}
-  .nav-item:hover{background:var(--bg-hover);color:var(--text)}
-  .nav-item.active{background:var(--accent-bg);color:var(--accent)}
-  .nav-item-left{display:flex;align-items:center;gap:8px}
-  .nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-  .count-badge{font-size:11px;background:var(--bg-hover);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:500}
-  .nav-item.active .count-badge{background:rgba(99,102,241,0.12);color:var(--accent)}
-  .main{padding:24px;min-width:0}
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px}
-  .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;box-shadow:var(--shadow)}
-  .stat-val{font-size:26px;font-weight:600;letter-spacing:-0.5px;line-height:1;margin-bottom:4px}
-  .stat-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
-  .add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow)}
-  .form-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-  .form-title{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px}
-  .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .form-row-3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
-  @media(max-width:600px){.form-row-2,.form-row-3{grid-template-columns:1fr}}
-  .field{display:flex;flex-direction:column;gap:4px}
-  .field label{font-size:11px;color:var(--text-3);letter-spacing:0.03em}
-  .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;align-items:center}
-  .items-list{display:flex;flex-direction:column;gap:8px}
-  .filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-  .filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
-  .item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;transition:border-color var(--transition),box-shadow var(--transition);position:relative;overflow:hidden;box-shadow:var(--shadow)}
-  .item-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
-  .item-card.status-pending::before{background:var(--amber)}
-  .item-card.status-created::before{background:var(--sky)}
-  .item-card.status-inprogress::before{background:var(--accent)}
-  .item-card.status-done::before{background:var(--green)}
-  .item-card.status-declined::before{background:var(--red)}
-  .item-card:hover{border-color:var(--border-md);box-shadow:var(--shadow-md)}
-  .item-top{display:flex;align-items:flex-start;gap:12px}
-  .item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:32px;padding-top:2px}
-  .item-body{flex:1;min-width:0}
-  .item-desc{font-size:14px;color:var(--text);line-height:1.45;margin-bottom:8px}
-  .item-pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
-  .pill-amber{background:var(--amber-bg);color:var(--amber)}
-  .pill-sky{background:var(--sky-bg);color:var(--sky)}
-  .pill-accent{background:var(--accent-bg);color:var(--accent)}
-  .pill-green{background:var(--green-bg);color:var(--green)}
-  .pill-red{background:var(--red-bg);color:var(--red)}
-  .pill-orange{background:var(--orange-bg);color:var(--orange)}
-  .pill-purple{background:var(--purple-bg);color:var(--purple)}
-  .pill-gray{background:rgba(0,0,0,0.05);color:var(--text-3)}
-  .item-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
-  .meta-chip{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-3)}
-  .item-link{font-size:11px;color:var(--accent);text-decoration:none}
-  .item-link:hover{color:var(--accent-hover);text-decoration:underline}
-  .item-actions{display:flex;gap:4px;flex-shrink:0;opacity:0;transition:opacity var(--transition)}
-  .item-card:hover .item-actions{opacity:1}
-  .item-edit{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end}
-  @media(max-width:600px){.item-edit{grid-template-columns:1fr 1fr}}
-  .item-edit select,.item-edit input{height:30px;font-size:12px}
-  .empty{text-align:center;padding:48px 24px;color:var(--text-3)}
-  .empty-icon{font-size:32px;margin-bottom:12px;opacity:0.4}
-  .empty-title{font-size:14px;color:var(--text-2);margin-bottom:6px}
-  .empty-sub{font-size:13px}
-  .export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
-  .export-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg)}
-  .export-toolbar-title{font-size:12px;color:var(--text-3);font-family:var(--mono)}
-  .export-content{padding:16px;font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;line-height:1.7;max-height:480px;overflow-y:auto}
-  .toast{position:fixed;bottom:24px;right:24px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:10px 16px;font-size:13px;color:var(--text);box-shadow:var(--shadow-md);z-index:999;animation:slideUp 0.2s ease;display:flex;align-items:center;gap:8px}
-  @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  .setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:100%;max-width:520px;box-shadow:var(--shadow-md)}
-  .setup-logo{font-size:18px;font-weight:600;margin-bottom:8px}
-  .setup-logo span{color:var(--accent)}
-  .setup-sub{font-size:13px;color:var(--text-3);margin-bottom:28px;line-height:1.7}
-  .setup-field{margin-bottom:14px}
-  .setup-field label{display:block;font-size:12px;color:var(--text-3);margin-bottom:5px}
-  .setup-hint{font-size:12px;color:var(--text-3);margin-top:20px;line-height:1.8;padding:14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border)}
-  .setup-hint a{color:var(--accent);text-decoration:none}
-  .setup-hint a:hover{text-decoration:underline}
-  .setup-hint code{font-family:var(--mono);font-size:11px;background:var(--accent-bg);color:var(--accent);padding:1px 5px;border-radius:4px}
-  .setup-error{background:var(--red-bg);border:1px solid rgba(220,38,38,0.2);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:14px}
-  .setup-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
-  .setup-step{display:flex;gap:10px;margin-bottom:8px;font-size:12px;color:var(--text-2)}
-  .setup-step-num{width:18px;height:18px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-  .divider{height:1px;background:var(--border);margin:20px 0}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .loading{display:flex;align-items:center;justify-content:center;height:200px;gap:10px;color:var(--text-3);font-size:13px}
-  .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
-  .section-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;margin-bottom:10px}
-  .kbd{font-family:var(--mono);font-size:10px;background:var(--bg-hover);color:var(--text-3);padding:2px 5px;border-radius:4px;border:1px solid var(--border-md)}
-  /* modal */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(2px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
-  .modal{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;width:100%;max-width:520px;box-shadow:var(--shadow-md);position:relative}
-  .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:18px;line-height:1;padding:4px}
-  .modal-close:hover{color:var(--text)}
-  .modal h2{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text)}
-  .help-section{margin-bottom:16px}
-  .help-section h3{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:8px}
-  .help-row{display:flex;gap:10px;margin-bottom:6px;font-size:13px;color:var(--text-2);line-height:1.5}
-  .help-icon{flex-shrink:0;margin-top:1px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;--bg-card:#fff;--bg-hover:#efefea;--bg-input:#fafaf8;
+  --border:rgba(0,0,0,0.08);--border-md:rgba(0,0,0,0.14);--border-focus:rgba(99,102,241,0.5);
+  --text:#1a1a1e;--text-2:#5a5a68;--text-3:#9898a6;
+  --accent:#6366f1;--accent-bg:rgba(99,102,241,0.08);--accent-hover:#4f52d4;
+  --green:#16a34a;--green-bg:rgba(22,163,74,0.08);
+  --amber:#d97706;--amber-bg:rgba(217,119,6,0.08);
+  --red:#dc2626;--red-bg:rgba(220,38,38,0.08);
+  --orange:#ea580c;--orange-bg:rgba(234,88,12,0.08);
+  --purple:#7c3aed;--purple-bg:rgba(124,58,237,0.08);
+  --sky:#0284c7;--sky-bg:rgba(2,132,199,0.08);
+  --radius:8px;--radius-lg:12px;
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+  --tr:150ms ease;
+  --sh:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --sh-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+}
+.dark{
+  --bg:#0f0f11;--bg-card:#17171a;--bg-hover:#1e1e22;--bg-input:#1a1a1e;
+  --border:rgba(255,255,255,0.07);--border-md:rgba(255,255,255,0.12);--border-focus:rgba(99,102,241,0.6);
+  --text:#f0f0f2;--text-2:#9898a6;--text-3:#5c5c6e;
+  --accent:#6366f1;--accent-bg:rgba(99,102,241,0.12);--accent-hover:#818cf8;
+  --green:#22c55e;--green-bg:rgba(34,197,94,0.1);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,0.1);
+  --red:#ef4444;--red-bg:rgba(239,68,68,0.1);
+  --orange:#fb923c;--orange-bg:rgba(251,146,60,0.1);
+  --purple:#a855f7;--purple-bg:rgba(168,85,247,0.1);
+  --sky:#38bdf8;--sky-bg:rgba(56,189,248,0.1);
+  --sh:0 1px 3px rgba(0,0,0,0.3);--sh-md:0 4px 24px rgba(0,0,0,0.4);
+}
+html,body,#root{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background var(--tr),color var(--tr)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
+input,textarea,select{font-family:var(--font);font-size:13px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:0 10px;height:34px;outline:none;transition:border-color var(--tr);width:100%}
+input::placeholder,textarea::placeholder{color:var(--text-3)}
+input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.06)}
+select option{background:var(--bg-card)}
+textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5;min-height:68px}
+button{font-family:var(--font);cursor:pointer;border:none;outline:none;transition:all var(--tr)}
+button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+.app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+.topbar{border-bottom:1px solid var(--border);background:var(--bg);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;box-shadow:var(--sh)}
+.topbar-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;white-space:nowrap;flex-shrink:0}
+.logo span{color:var(--accent)}
+.demo-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;flex:1}
+.meta-input{background:transparent;border:none;font-size:13px;color:var(--text-2);padding:0;height:auto;width:auto;min-width:80px}
+.meta-input:focus{color:var(--text);box-shadow:none;border:none}
+.meta-sep{color:var(--text-3);font-size:12px;flex-shrink:0}
+.topbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-md)}
+.btn-accent{background:var(--accent);color:#fff;border:1px solid transparent;box-shadow:var(--sh)}
+.btn-accent:hover{background:var(--accent-hover)}
+.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid transparent}
+.btn-danger:hover{background:rgba(220,38,38,0.16)}
+.btn-sm{height:26px;padding:0 10px;font-size:12px}
+.btn-icon{width:30px;padding:0;justify-content:center}
+.body{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 56px)}
+@media(max-width:768px){.body{grid-template-columns:1fr}.sidebar{display:none}}
+.sidebar{border-right:1px solid var(--border);background:var(--bg);padding:16px 12px;display:flex;flex-direction:column;gap:3px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.sidebar-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:10px 10px 5px}
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:all var(--tr)}
+.nav-item:hover{background:var(--bg-hover);color:var(--text)}
+.nav-item.active{background:var(--accent-bg);color:var(--accent)}
+.nav-item-left{display:flex;align-items:center;gap:7px;min-width:0}
+.nav-item-left span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cnt{font-size:11px;background:var(--bg-hover);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:500;flex-shrink:0}
+.nav-item.active .cnt{background:rgba(99,102,241,0.15);color:var(--accent)}
+.main{padding:24px;min-width:0}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 14px;box-shadow:var(--sh)}
+.stat-val{font-size:24px;font-weight:600;letter-spacing:-0.5px;line-height:1;margin-bottom:3px}
+.stat-lbl{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
+.add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:18px;box-shadow:var(--sh)}
+.form-title{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:7px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:11px;color:var(--text-3);letter-spacing:0.03em}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;align-items:center}
+.items-list{display:flex;flex-direction:column;gap:8px}
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
+/* feature group header */
+.feat-group{margin-bottom:20px}
+.feat-group-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:6px 0}
+.feat-group-title{font-size:12px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:0.04em}
+.feat-group-cnt{font-size:11px;color:var(--text-3);background:var(--bg-hover);padding:1px 7px;border-radius:10px}
+/* item card */
+.item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px;transition:border-color var(--tr),box-shadow var(--tr);position:relative;overflow:hidden;box-shadow:var(--sh)}
+.item-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
+.item-card.s-pending::before{background:var(--amber)}
+.item-card.s-created::before{background:var(--sky)}
+.item-card.s-inprogress::before{background:var(--accent)}
+.item-card.s-done::before{background:var(--green)}
+.item-card.s-declined::before{background:var(--red)}
+.item-card:hover{border-color:var(--border-md);box-shadow:var(--sh-md)}
+.item-top{display:flex;align-items:flex-start;gap:10px}
+.item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:28px;padding-top:2px;flex-shrink:0}
+.item-body{flex:1;min-width:0}
+.item-desc{font-size:14px;color:var(--text);line-height:1.45;margin-bottom:7px;white-space:pre-wrap;word-break:break-word}
+.item-comment{font-size:12px;color:var(--text-2);background:var(--bg-hover);border-radius:var(--radius);padding:7px 10px;margin-bottom:7px;line-height:1.5;white-space:pre-wrap;word-break:break-word;border-left:2px solid var(--border-md)}
+.pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.p-amber{background:var(--amber-bg);color:var(--amber)}
+.p-sky{background:var(--sky-bg);color:var(--sky)}
+.p-accent{background:var(--accent-bg);color:var(--accent)}
+.p-green{background:var(--green-bg);color:var(--green)}
+.p-red{background:var(--red-bg);color:var(--red)}
+.p-orange{background:var(--orange-bg);color:var(--orange)}
+.p-purple{background:var(--purple-bg);color:var(--purple)}
+.p-gray{background:rgba(0,0,0,0.05);color:var(--text-3)}
+.dark .p-gray{background:rgba(255,255,255,0.07)}
+.item-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.mchip{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-3)}
+.ilink{font-size:11px;color:var(--accent);text-decoration:none}
+.ilink:hover{color:var(--accent-hover);text-decoration:underline}
+.item-actions{display:flex;gap:3px;flex-shrink:0;opacity:0;transition:opacity var(--tr)}
+.item-card:hover .item-actions{opacity:1}
+/* edit panel */
+.edit-panel{margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
+.edit-row{display:grid;gap:8px;margin-bottom:8px}
+.edit-row-3{grid-template-columns:1fr 1fr 1fr}
+.edit-row-2{grid-template-columns:1fr auto}
+@media(max-width:600px){.edit-row-3{grid-template-columns:1fr}}
+.edit-row select,.edit-row input,.edit-row textarea{height:30px;font-size:12px}
+.edit-row textarea{height:60px}
+/* confirm dialog */
+.confirm-box{background:var(--red-bg);border:1px solid rgba(220,38,38,0.25);border-radius:var(--radius);padding:10px 12px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.confirm-box span{font-size:12px;color:var(--red)}
+.confirm-btns{display:flex;gap:6px;flex-shrink:0}
+/* empty */
+.empty{text-align:center;padding:40px 24px;color:var(--text-3)}
+.empty-icon{font-size:28px;margin-bottom:10px;opacity:.4}
+.empty-title{font-size:14px;color:var(--text-2);margin-bottom:5px}
+/* export */
+.export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh)}
+.export-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg)}
+.export-bar-title{font-size:12px;color:var(--text-3);font-family:var(--mono)}
+.export-pre{padding:14px;font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;line-height:1.7;max-height:480px;overflow-y:auto}
+/* toast */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:9px 14px;font-size:13px;color:var(--text);box-shadow:var(--sh-md);z-index:999;animation:slideUp .18s ease;display:flex;align-items:center;gap:7px}
+@keyframes slideUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* modal */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(2px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:26px 30px;width:100%;max-width:500px;box-shadow:var(--sh-md);position:relative}
+.modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:17px;line-height:1;padding:4px}
+.modal-close:hover{color:var(--text)}
+.modal h2{font-size:15px;font-weight:600;margin-bottom:14px}
+.help-sec{margin-bottom:14px}
+.help-sec h3{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px}
+.help-row{display:flex;gap:8px;margin-bottom:5px;font-size:13px;color:var(--text-2);line-height:1.5}
+/* setup */
+.setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:32px 36px;width:100%;max-width:480px;box-shadow:var(--sh-md)}
+.setup-logo{font-size:17px;font-weight:600;margin-bottom:7px}
+.setup-logo span{color:var(--accent)}
+.setup-sub{font-size:13px;color:var(--text-3);margin-bottom:24px;line-height:1.7}
+.setup-field{margin-bottom:12px}
+.setup-field label{display:block;font-size:12px;color:var(--text-3);margin-bottom:4px}
+.setup-hint{font-size:12px;color:var(--text-3);margin-top:18px;line-height:1.8;padding:12px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border)}
+.setup-hint a{color:var(--accent);text-decoration:none}
+.setup-hint code{font-family:var(--mono);font-size:11px;background:var(--accent-bg);color:var(--accent);padding:1px 4px;border-radius:3px}
+.setup-err{background:var(--red-bg);border:1px solid rgba(220,38,38,0.2);border-radius:var(--radius);padding:9px 11px;font-size:12px;color:var(--red);margin-bottom:12px}
+.setup-step{display:flex;gap:9px;margin-bottom:7px;font-size:12px;color:var(--text-2)}
+.setup-step-n{width:17px;height:17px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.divider{height:1px;background:var(--border);margin:18px 0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:17px;height:17px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+.spin-sm{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+.sec-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);font-weight:600;margin-bottom:9px}
+.kbd{font-family:var(--mono);font-size:10px;background:var(--bg-hover);color:var(--text-3);padding:2px 5px;border-radius:4px;border:1px solid var(--border-md)}
+/* theme toggle */
+.theme-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-2);font-size:14px}
+.theme-btn:hover{background:var(--bg-hover);color:var(--text)}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useCallback } = React;
-const { createClient } = supabase;
+const {useState,useEffect,useCallback,useRef} = React;
+const {createClient} = supabase;
 
-// ─────────────────────────────────────────────────────────
-// ВСТАВЬТЕ ВАШИ КЛЮЧИ SUPABASE
-// ─────────────────────────────────────────────────────────
+// ── КЛЮЧИ SUPABASE ─────────────────────────────────────
 const SUPABASE_URL = 'https://xvbqphbrmjlavlvivpnp.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzA3MDYsImV4cCI6MjA5ODkwNjcwNn0.5nlq_JEdrdNrr6O2xzcFmz0ugNVnN6WkLlL3akRhoyY';
-// ─────────────────────────────────────────────────────────
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOj';
+// ──────────────────────────────────────────────────────
 
-const STORAGE_KEY = 'demo_proto_sb';
+const SK = 'demo_proto_sb';
+const TK = 'demo_proto_theme';
 
-const STATUS_META = {
-  pending:    { label:'Ожидает',        pill:'pill-amber',  dot:'#d97706' },
-  created:    { label:'Задача создана', pill:'pill-sky',    dot:'#0284c7' },
-  inprogress: { label:'В работе',       pill:'pill-accent', dot:'#6366f1' },
-  done:       { label:'Готово',         pill:'pill-green',  dot:'#16a34a' },
-  declined:   { label:'Отклонено',      pill:'pill-red',    dot:'#dc2626' },
+const SM = {
+  pending:    {label:'Ожидает',        p:'p-amber', dot:'#d97706'},
+  created:    {label:'Задача создана', p:'p-sky',   dot:'#0284c7'},
+  inprogress: {label:'В работе',       p:'p-accent',dot:'#6366f1'},
+  done:       {label:'Готово',         p:'p-green', dot:'#16a34a'},
+  declined:   {label:'Отклонено',      p:'p-red',   dot:'#dc2626'},
+};
+const PM = {
+  blocking: {label:'Блокирующий',p:'p-red'},
+  critical: {label:'Критический',p:'p-orange'},
+  medium:   {label:'Средний',    p:'p-amber'},
+  low:      {label:'Низкий',     p:'p-gray'},
 };
 
-const PRIORITY_META = {
-  blocking:  { label:'Блокирующий', pill:'pill-red' },
-  critical:  { label:'Критический', pill:'pill-orange' },
-  medium:    { label:'Средний',     pill:'pill-amber' },
-  low:       { label:'Низкий',      pill:'pill-gray' },
-};
+// Автостатус: если ссылка заполнена и статус был pending → created
+function autoStatus(currentStatus, link) {
+  if (link && link.trim() && currentStatus === 'pending') return 'created';
+  return currentStatus;
+}
 
-const I = ({ d, s=14 }) => (
+const Ico = ({d,s=14}) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d={d}/>
-  </svg>
+    strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d}/></svg>
 );
 const ic = {
   plus:    "M12 5v14M5 12h14",
@@ -213,106 +248,93 @@ const ic = {
   branch:  "M6 3v12M18 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM18 9a9 9 0 01-9 9",
   cog:     "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z",
   help:    "M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01",
-  x:       "M18 6L6 18M6 6l12 12",
+  sun:     "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 5a7 7 0 100 14A7 7 0 0012 5z",
+  moon:    "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z",
+  comment: "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z",
 };
 
-function Toast({ msg, onDone }) {
-  useEffect(() => { const t = setTimeout(onDone, 2400); return () => clearTimeout(t); }, []);
-  return <div className="toast"><I d={ic.check} s={14}/>{msg}</div>;
+function Toast({msg,onDone}) {
+  useEffect(()=>{const t=setTimeout(onDone,2500);return()=>clearTimeout(t);},[]);
+  return <div className="toast"><Ico d={ic.check} s={13}/>{msg}</div>;
 }
 
-function HelpModal({ onClose }) {
+function HelpModal({onClose}) {
   return (
-    <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
+    <div className="modal-ov" onClick={e=>e.target===e.currentTarget&&onClose()}>
       <div className="modal">
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2>Как пользоваться</h2>
-
-        <div className="help-section">
+        <div className="help-sec">
           <h3>Во время демо</h3>
-          <div className="help-row"><span className="help-icon">📋</span><span>PM заполняет поле «Описание пожелания» — кратко фиксирует суть каждого запроса участника</span></div>
-          <div className="help-row"><span className="help-icon">👤</span><span>Указывает автора — кто высказал пожелание</span></div>
-          <div className="help-row"><span className="help-icon">🔴</span><span>Выбирает приоритет: Блокирующий / Критический / Средний / Низкий</span></div>
-          <div className="help-row"><span className="help-icon">✅</span><span>Нажимает «Зафиксировать» — данные сохраняются мгновенно для всей команды</span></div>
+          <div className="help-row"><span>📋</span><span>Заполните название фичи и имя ведущего в шапке — они подставятся ко всем карточкам сессии</span></div>
+          <div className="help-row"><span>✍️</span><span>Пишите описание пожелания и нажимайте «Зафиксировать» (или Ctrl+Enter)</span></div>
+          <div className="help-row"><span>💬</span><span>Поле «Комментарий» — для доп. заметок, вопросов, замечаний стейкхолдеров</span></div>
         </div>
-
-        <div className="help-section">
+        <div className="help-sec">
           <h3>После демо (разработка)</h3>
-          <div className="help-row"><span className="help-icon">✏️</span><span>Нажмите иконку карандаша на карточке — откроется редактирование</span></div>
-          <div className="help-row"><span className="help-icon">🔗</span><span>Вставьте ссылку на задачу в Jira/Linear и укажите номер релиза</span></div>
-          <div className="help-row"><span className="help-icon">🔄</span><span>Обновите статус: Ожидает → Задача создана → В работе → Готово</span></div>
+          <div className="help-row"><span>✏️</span><span>Наведите на карточку → нажмите карандаш → откроется панель редактирования</span></div>
+          <div className="help-row"><span>🔗</span><span>Вставьте ссылку на задачу — статус автоматически сменится на «Задача создана»</span></div>
+          <div className="help-row"><span>🏷️</span><span>Поле «Фича» в редактировании — выберите из списка или введите новую</span></div>
         </div>
-
-        <div className="help-section">
-          <h3>Для всех участников</h3>
-          <div className="help-row"><span className="help-icon">🔁</span><span>Нажмите «Обновить» чтобы увидеть свежие данные от коллег</span></div>
-          <div className="help-row"><span className="help-icon">🔍</span><span>Раздел «Все задачи» — фильтрация по статусу, релизу и поиск</span></div>
-          <div className="help-row"><span className="help-icon">📤</span><span>Раздел «Экспорт» — скопировать протокол для отправки в Slack или письме</span></div>
+        <div className="help-sec">
+          <h3>Навигация</h3>
+          <div className="help-row"><span>🔁</span><span>Кнопка «Обновить» — загружает свежие данные от коллег</span></div>
+          <div className="help-row"><span>📊</span><span>«Все задачи» — сгруппированы по фиче, есть фильтры и поиск</span></div>
+          <div className="help-row"><span>📤</span><span>«Экспорт» — скопировать протокол для Slack или письма</span></div>
         </div>
-
-        <div className="help-section">
-          <h3>Статусы задач</h3>
-          <div className="help-row"><span>🟡 Ожидает</span><span style={{marginLeft:8}}>— зафиксировано, задача ещё не создана</span></div>
-          <div className="help-row"><span>🔵 Задача создана</span><span style={{marginLeft:8}}>— есть в трекере, ждёт разработки</span></div>
-          <div className="help-row"><span>🟣 В работе</span><span style={{marginLeft:8}}>— разработка идёт</span></div>
-          <div className="help-row"><span>🟢 Готово</span><span style={{marginLeft:8}}>— доработка выполнена</span></div>
-          <div className="help-row"><span>🔴 Отклонено</span><span style={{marginLeft:8}}>— решили не делать</span></div>
+        <div className="help-sec">
+          <h3>Статусы</h3>
+          <div className="help-row"><span>🟡 Ожидает</span><span style={{marginLeft:6}}>— зафиксировано, задача не создана</span></div>
+          <div className="help-row"><span>🔵 Задача создана</span><span style={{marginLeft:6}}>— автоматически при добавлении ссылки</span></div>
+          <div className="help-row"><span>🟣 В работе</span><span style={{marginLeft:6}}>— разработка идёт</span></div>
+          <div className="help-row"><span>🟢 Готово</span><span style={{marginLeft:6}}>— выполнено</span></div>
+          <div className="help-row"><span>🔴 Отклонено</span><span style={{marginLeft:6}}>— решили не делать</span></div>
         </div>
       </div>
     </div>
   );
 }
 
-function SetupScreen({ onConnect }) {
-  const [url, setUrl]   = useState('');
-  const [key, setKey]   = useState('');
-  const [err, setErr]   = useState('');
-  const [busy, setBusy] = useState(false);
-
+function SetupScreen({onConnect}) {
+  const [url,setUrl]=useState('');
+  const [key,setKey]=useState('');
+  const [err,setErr]=useState('');
+  const [busy,setBusy]=useState(false);
   async function connect() {
-    if (!url.trim() || !key.trim()) { setErr('Заполните оба поля'); return; }
-    setBusy(true); setErr('');
+    if(!url.trim()||!key.trim()){setErr('Заполните оба поля');return;}
+    setBusy(true);setErr('');
     try {
-      const c = createClient(url.trim(), key.trim());
-      const { error } = await c.from('demo_items').select('id').limit(1);
-      if (error && error.code !== 'PGRST116') throw error;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ url: url.trim(), key: key.trim() }));
+      const c=createClient(url.trim(),key.trim());
+      const {error}=await c.from('demo_items').select('id').limit(1);
+      if(error&&error.code!=='PGRST116') throw error;
+      localStorage.setItem(SK,JSON.stringify({url:url.trim(),key:key.trim()}));
       onConnect(c);
-    } catch(e) {
-      setErr('Ошибка подключения: ' + (e.message || 'проверьте URL и ключ'));
-      setBusy(false);
-    }
+    } catch(e){setErr('Ошибка: '+(e.message||'проверьте URL и ключ'));setBusy(false);}
   }
-
   return (
     <div className="setup">
       <div className="setup-card">
         <div className="setup-logo">Демо<span>протокол</span></div>
-        <div className="setup-sub">Подключите Supabase — бесплатную облачную базу данных. Нужно сделать один раз.</div>
-        {err && <div className="setup-error">{err}</div>}
-        <div className="setup-field">
-          <label>Project URL</label>
-          <input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxxxxxxxxxx.supabase.co"/>
+        <div className="setup-sub">Подключите Supabase — бесплатную облачную базу данных.</div>
+        {err&&<div className="setup-err">{err}</div>}
+        <div className="setup-field"><label>Project URL</label>
+          <input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxx.supabase.co"/>
         </div>
-        <div className="setup-field">
-          <label>Anon Public Key</label>
-          <input value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." type="password"/>
+        <div className="setup-field"><label>Anon Public Key</label>
+          <input value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJhbGc..." type="password"/>
         </div>
-        <button className="btn btn-accent" style={{width:'100%',height:40,marginTop:6,fontSize:14}} onClick={connect} disabled={busy}>
-          {busy ? <><span className="setup-spinner"/> Подключение...</> : 'Подключить'}
+        <button className="btn btn-accent" style={{width:'100%',height:38,marginTop:4,fontSize:14}} onClick={connect} disabled={busy}>
+          {busy?<><span className="spin-sm"/> Подключение...</>:'Подключить'}
         </button>
         <div className="divider"/>
         <div className="setup-hint">
-          {[
-            ['1','Зарегистрируйтесь на ', <a href="https://supabase.com" target="_blank">supabase.com</a>],
-            ['2','Создайте новый проект'],
-            ['3','Зайдите в ', <code>Settings → API Keys → Legacy</code>],
-            ['4','Скопируйте ', <code>Project URL</code>, ' и ', <code>anon public</code>],
-            ['5','В ', <code>SQL Editor</code>, ' выполните запрос из инструкции'],
-          ].map(([n,...rest])=>(
-            <div key={n} className="setup-step">
-              <span className="setup-step-num">{n}</span><span>{rest}</span>
-            </div>
+          {[['1','Зарегистрируйтесь на ',<a href="https://supabase.com" target="_blank">supabase.com</a>],
+            ['2','Создайте проект'],
+            ['3','Settings → API Keys → Legacy'],
+            ['4','Скопируйте ',<code>Project URL</code>,' и ',<code>anon public</code>],
+            ['5','В ',<code>SQL Editor</code>,' выполните запрос из инструкции'],
+          ].map(([n,...r])=>(
+            <div key={n} className="setup-step"><span className="setup-step-n">{n}</span><span>{r}</span></div>
           ))}
         </div>
       </div>
@@ -321,105 +343,140 @@ function SetupScreen({ onConnect }) {
 }
 
 function App() {
-  const [sb, setSb]           = useState(null);
-  const [items, setItems]     = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [view, setView]       = useState('live');
-  const [toast, setToast]     = useState('');
-  const [showHelp, setShowHelp] = useState(false);
-  const [expandedId, setExpandedId] = useState(null);
+  const [sb,setSb]=useState(null);
+  const [items,setItems]=useState([]);
+  const [loading,setLoading]=useState(true);
+  const [view,setView]=useState('live');
+  const [toast,setToast]=useState('');
+  const [showHelp,setShowHelp]=useState(false);
+  const [dark,setDark]=useState(()=>localStorage.getItem(TK)==='dark');
+  const [expandedId,setExpandedId]=useState(null);
+  const [confirmId,setConfirmId]=useState(null);
 
-  const [filterStatus,  setFilterStatus]  = useState('');
-  const [filterRelease, setFilterRelease] = useState('');
-  const [filterSearch,  setFilterSearch]  = useState('');
+  const [fStatus,setFStatus]=useState('');
+  const [fRelease,setFRelease]=useState('');
+  const [fSearch,setFSearch]=useState('');
+  const [fFeature,setFFeature]=useState('');
 
-  const [demoName,   setDemoName]   = useState('');
-  const [demoDate,   setDemoDate]   = useState(new Date().toISOString().slice(0,10));
-  const [demoAuthor, setDemoAuthor] = useState('');
+  const [demoName,setDemoName]=useState('');
+  const [demoDate,setDemoDate]=useState(new Date().toISOString().slice(0,10));
+  const [demoAuthor,setDemoAuthor]=useState('');
 
-  const [fDesc,     setFDesc]     = useState('');
-  const [fAuthor,   setFAuthor]   = useState('');
-  const [fPriority, setFPriority] = useState('medium');
-  const [fLink,     setFLink]     = useState('');
-  const [fRelease,  setFRelease]  = useState('');
+  const [fDesc,setFDesc]=useState('');
+  const [fAuthor,setFAuthor]=useState('');
+  const [fPriority,setFPriority]=useState('medium');
+  const [fLink,setFLink]=useState('');
+  const [fRel,setFRel]=useState('');
+  const [fComment,setFComment]=useState('');
 
-  useEffect(() => {
-    if (SUPABASE_URL && SUPABASE_KEY) { setSb(createClient(SUPABASE_URL, SUPABASE_KEY)); return; }
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) { const {url,key} = JSON.parse(saved); setSb(createClient(url,key)); return; }
-    } catch {}
+  // тема
+  useEffect(()=>{
+    document.documentElement.classList.toggle('dark',dark);
+    localStorage.setItem(TK,dark?'dark':'light');
+  },[dark]);
+
+  // инициализация
+  useEffect(()=>{
+    if(SUPABASE_URL&&SUPABASE_URL!=='ВСТАВЬТЕ_URL_СЮДА'){setSb(createClient(SUPABASE_URL,SUPABASE_KEY));return;}
+    try{const s=localStorage.getItem(SK);if(s){const{url,key}=JSON.parse(s);setSb(createClient(url,key));return;}}catch{}
     setLoading(false);
-  }, []);
+  },[]);
 
-  const loadItems = useCallback(async (client) => {
-    const {data,error} = await (client||sb).from('demo_items').select('*').order('id',{ascending:true});
-    if (!error && data) setItems(data);
+  const loadItems=useCallback(async(client)=>{
+    const{data,error}=await(client||sb).from('demo_items').select('*').order('id',{ascending:true});
+    if(!error&&data)setItems(data);
     setLoading(false);
-  }, [sb]);
+  },[sb]);
 
-  useEffect(() => { if (sb) loadItems(sb); }, [sb]);
+  useEffect(()=>{if(sb)loadItems(sb);},[sb]);
 
-  async function addItem() {
-    if (!fDesc.trim()) return;
-    const row = {
-      demo_name:demoName, demo_date:demoDate, demo_author:demoAuthor,
-      description:fDesc.trim(), author:fAuthor.trim()||'Не указан',
-      priority:fPriority, status:'pending',
-      link:fLink.trim(), release:fRelease.trim(),
+  async function addItem(){
+    if(!fDesc.trim())return;
+    const link=fLink.trim();
+    const status=link?'created':'pending';
+    const row={
+      demo_name:demoName,demo_date:demoDate,demo_author:demoAuthor,
+      description:fDesc.trim(),author:fAuthor.trim()||'Не указан',
+      priority:fPriority,status,
+      link,release:fRel.trim(),
+      comment:fComment.trim(),
     };
-    const {data,error} = await sb.from('demo_items').insert([row]).select();
-    if (!error && data) {
+    const{data,error}=await sb.from('demo_items').insert([row]).select();
+    if(!error&&data){
       setItems(prev=>[...prev,data[0]]);
-      setFDesc(''); setFLink(''); setFRelease('');
+      setFDesc('');setFLink('');setFRel('');setFComment('');
       setToast('Пожелание зафиксировано');
     }
   }
 
-  async function updateItem(id, patch) {
+  async function updateItem(id,patch){
+    // автостатус при изменении ссылки
+    if('link' in patch){
+      const item=items.find(i=>i.id===id);
+      if(item){
+        const newStatus=autoStatus(item.status,patch.link);
+        if(newStatus!==item.status) patch.status=newStatus;
+      }
+    }
     await sb.from('demo_items').update(patch).eq('id',id);
     setItems(prev=>prev.map(i=>i.id===id?{...i,...patch}:i));
   }
 
-  async function deleteItem(id) {
+  async function deleteItem(id){
     await sb.from('demo_items').delete().eq('id',id);
     setItems(prev=>prev.filter(i=>i.id!==id));
-    setExpandedId(null); setToast('Удалено');
+    setExpandedId(null);setConfirmId(null);
+    setToast('Доработка удалена');
   }
 
-  async function refresh() { setLoading(true); await loadItems(sb); setToast('Данные обновлены'); }
-  function disconnect() { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }
+  async function refresh(){setLoading(true);await loadItems(sb);setToast('Данные обновлены');}
+  function disconnect(){localStorage.removeItem(SK);window.location.reload();}
 
-  if (!sb && !loading) return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
+  if(!sb&&!loading)return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
 
-  const counts = {all:items.length,pending:0,created:0,inprogress:0,done:0,declined:0};
-  items.forEach(i=>{ if(counts[i.status]!==undefined) counts[i.status]++; });
-  const releases = [...new Set(items.map(i=>i.release).filter(Boolean))];
+  const counts={all:items.length,pending:0,created:0,inprogress:0,done:0,declined:0};
+  items.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
+  const releases=[...new Set(items.map(i=>i.release).filter(Boolean))];
+  const features=[...new Set(items.map(i=>i.demo_name).filter(Boolean))];
 
-  const visible = items.filter(i=>{
-    if (filterStatus  && i.status!==filterStatus)  return false;
-    if (filterRelease && i.release!==filterRelease) return false;
-    if (filterSearch  && !i.description.toLowerCase().includes(filterSearch.toLowerCase())
-        && !i.author.toLowerCase().includes(filterSearch.toLowerCase())) return false;
+  const visible=items.filter(i=>{
+    if(fFeature&&i.demo_name!==fFeature)return false;
+    if(fStatus&&i.status!==fStatus)return false;
+    if(fRelease&&i.release!==fRelease)return false;
+    if(fSearch&&!i.description.toLowerCase().includes(fSearch.toLowerCase())
+      &&!(i.comment||'').toLowerCase().includes(fSearch.toLowerCase())
+      &&!i.author.toLowerCase().includes(fSearch.toLowerCase()))return false;
     return true;
   });
 
-  function buildExport() {
-    const line = '─'.repeat(44);
-    let t = `ПРОТОКОЛ ДЕМО\n${line}\n`;
-    t += `Фича:    ${demoName||'—'}\nДата:    ${demoDate||'—'}\nВедущий: ${demoAuthor||'—'}\n${line}\n\n`;
+  // группировка по фиче для board
+  const grouped=()=>{
+    const map={};
+    visible.forEach(i=>{
+      const k=i.demo_name||'Без фичи';
+      if(!map[k])map[k]=[];
+      map[k].push(i);
+    });
+    return Object.entries(map);
+  };
+
+  function buildExport(){
+    const line='─'.repeat(44);
+    let t=`ПРОТОКОЛ ДЕМО\n${line}\n`;
+    t+=`Фича:    ${demoName||'—'}\nДата:    ${demoDate||'—'}\nВедущий: ${demoAuthor||'—'}\n${line}\n\n`;
     const groups={};
-    Object.keys(STATUS_META).forEach(k=>groups[k]=[]);
+    Object.keys(SM).forEach(k=>groups[k]=[]);
     items.forEach(i=>groups[i.status]?.push(i));
     ['inprogress','created','pending','done','declined'].forEach(s=>{
-      if(!groups[s].length) return;
-      t+=`${STATUS_META[s].label.toUpperCase()} (${groups[s].length})\n`;
+      if(!groups[s].length)return;
+      t+=`${SM[s].label.toUpperCase()} (${groups[s].length})\n`;
       groups[s].forEach(i=>{
-        t+=`  #${i.id} [${PRIORITY_META[i.priority]?.label||i.priority}] ${i.description}\n`;
-        t+=`       Автор: ${i.author}`;
-        if(i.release) t+=`  |  Релиз: ${i.release}`;
-        if(i.link)    t+=`  |  Задача: ${i.link}`;
+        t+=`  #${i.id} [${PM[i.priority]?.label||i.priority}] ${i.description}\n`;
+        t+=`       Фича: ${i.demo_name||'—'}  |  Автор: ${i.author}`;
+        if(i.release)t+=`  |  Релиз: ${i.release}`;
+        if(i.link)t+=`  |  Задача: ${i.link}`;
         t+='\n';
+        if(i.comment)t+=`       Комментарий: ${i.comment}\n`;
       });
       t+='\n';
     });
@@ -427,54 +484,88 @@ function App() {
     return t;
   }
 
-  async function copyExport() {
-    await navigator.clipboard.writeText(buildExport());
-    setToast('Протокол скопирован');
-  }
+  async function copyExport(){await navigator.clipboard.writeText(buildExport());setToast('Протокол скопирован');}
 
-  function ItemCard({ item }) {
-    const exp = expandedId===item.id;
-    const sm  = STATUS_META[item.status]||STATUS_META.pending;
-    const pm  = PRIORITY_META[item.priority]||PRIORITY_META.medium;
-    return (
-      <div className={`item-card status-${item.status}`}>
+  function ItemCard({item}){
+    const exp=expandedId===item.id;
+    const conf=confirmId===item.id;
+    const sm=SM[item.status]||SM.pending;
+    const pm=PM[item.priority]||PM.medium;
+    const allFeat=[...new Set(items.map(i=>i.demo_name).filter(Boolean))];
+    return(
+      <div className={`item-card s-${item.status}`}>
         <div className="item-top">
           <span className="item-num">#{item.id}</span>
           <div className="item-body">
             <div className="item-desc">{item.description}</div>
-            <div className="item-pills">
-              <span className={`pill ${sm.pill}`}>{sm.label}</span>
-              <span className={`pill ${pm.pill}`} style={{opacity:.85}}>{pm.label}</span>
-              {item.release&&<span className="pill pill-purple" style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.branch} s={10}/>{item.release}</span>}
+            {item.comment&&<div className="item-comment"><Ico d={ic.comment} s={11} style={{marginRight:5,opacity:.5}}/>{item.comment}</div>}
+            <div className="pills">
+              <span className={`pill ${sm.p}`}>{sm.label}</span>
+              <span className={`pill ${pm.p}`} style={{opacity:.85}}>{pm.label}</span>
+              {item.demo_name&&<span className="pill p-sky">{item.demo_name}</span>}
+              {item.release&&<span className="pill p-purple" style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.branch} s={10}/>{item.release}</span>}
             </div>
             <div className="item-meta">
-              <span className="meta-chip"><I d={ic.user} s={12}/>{item.author}</span>
-              {item.created_at&&<span className="meta-chip"><I d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
-              {item.link&&<a className="item-link" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer">
-                <span style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,36)}</span>
+              <span className="mchip"><Ico d={ic.user} s={12}/>{item.author}</span>
+              {item.created_at&&<span className="mchip"><Ico d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
+              {item.link&&<a className="ilink" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer">
+                <span style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,34)}</span>
               </a>}
             </div>
             {exp&&(
-              <div className="item-edit">
-                <div className="field"><label>Статус</label>
-                  <select value={item.status} onChange={e=>updateItem(item.id,{status:e.target.value})}>
-                    {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
-                  </select>
+              <div className="edit-panel">
+                <div className="edit-row edit-row-3" style={{marginBottom:8}}>
+                  <div className="fg"><label>Статус</label>
+                    <select value={item.status} onChange={e=>updateItem(item.id,{status:e.target.value})}>
+                      {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+                    </select>
+                  </div>
+                  <div className="fg"><label>Релиз</label>
+                    <input defaultValue={item.release} placeholder="2.4.1" onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
+                  </div>
+                  <div className="fg"><label>Ссылка на задачу (→ авто-статус)</label>
+                    <input defaultValue={item.link} placeholder="PROJ-123 или https://..."
+                      onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
+                  </div>
                 </div>
-                <div className="field"><label>Релиз</label>
-                  <input defaultValue={item.release} placeholder="2.4.1" onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
+                <div style={{marginBottom:8}}>
+                  <div className="fg"><label>Комментарий</label>
+                    <textarea defaultValue={item.comment||''} placeholder="Доп. заметки, вопросы, обсуждение..."
+                      style={{minHeight:56}}
+                      onBlur={e=>updateItem(item.id,{comment:e.target.value})}/>
+                  </div>
                 </div>
-                <div className="field"><label>Ссылка на задачу</label>
-                  <input defaultValue={item.link} placeholder="PROJ-123" onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
+                <div className="edit-row edit-row-2">
+                  <div className="fg">
+                    <label>Фича / демо</label>
+                    <input list={`feat-${item.id}`} defaultValue={item.demo_name}
+                      placeholder="Выберите или введите новую"
+                      onBlur={e=>updateItem(item.id,{demo_name:e.target.value})}/>
+                    <datalist id={`feat-${item.id}`}>
+                      {allFeat.map(f=><option key={f} value={f}/>)}
+                    </datalist>
+                  </div>
+                  <button className="btn btn-danger btn-sm" style={{height:34,alignSelf:'flex-end'}}
+                    onClick={()=>setConfirmId(conf?null:item.id)}>
+                    <Ico d={ic.trash} s={13}/>Удалить
+                  </button>
                 </div>
-                <button className="btn btn-danger btn-sm btn-icon" style={{alignSelf:'flex-end'}}
-                  onClick={()=>deleteItem(item.id)} title="Удалить"><I d={ic.trash} s={13}/></button>
+                {conf&&(
+                  <div className="confirm-box">
+                    <span>Удалить доработку #{item.id}? Это действие нельзя отменить.</span>
+                    <div className="confirm-btns">
+                      <button className="btn btn-ghost btn-sm" onClick={()=>setConfirmId(null)}>Отмена</button>
+                      <button className="btn btn-danger btn-sm" onClick={()=>deleteItem(item.id)}>Да, удалить</button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
           <div className="item-actions">
-            <button className="btn btn-ghost btn-sm btn-icon" onClick={()=>setExpandedId(exp?null:item.id)} title="Редактировать">
-              <I d={ic.edit} s={13}/>
+            <button className="btn btn-ghost btn-sm btn-icon"
+              onClick={()=>{setExpandedId(exp?null:item.id);setConfirmId(null);}} title="Редактировать">
+              <Ico d={ic.edit} s={13}/>
             </button>
           </div>
         </div>
@@ -482,33 +573,37 @@ function App() {
     );
   }
 
-  const navItems = [
-    {id:'live',  label:'Режим демо', dot:'#6366f1', count:counts.all},
-    {id:'board', label:'Все задачи', dot:'#5a5a68', count:counts.all},
-    {id:'export',label:'Экспорт',    dot:'#16a34a', count:null},
+  const navItems=[
+    {id:'live', label:'Режим демо', dot:'#6366f1',count:counts.all},
+    {id:'board',label:'Все задачи',dot:'#5a5a68',count:counts.all},
+    {id:'export',label:'Экспорт',  dot:'#16a34a',count:null},
   ];
 
-  return (
+  return(
     <div className="app">
-      {showHelp && <HelpModal onClose={()=>setShowHelp(false)}/>}
+      {showHelp&&<HelpModal onClose={()=>setShowHelp(false)}/>}
       <header className="topbar">
         <div className="topbar-left">
           <span className="logo">Демо<span>протокол</span></span>
-          <span style={{color:'var(--text-3)',fontSize:12}}>|</span>
+          <span className="meta-sep">|</span>
           <div className="demo-meta">
-            <input className="meta-input" value={demoName} onChange={e=>setDemoName(e.target.value)} placeholder="Название фичи" style={{minWidth:140}}/>
+            <input className="meta-input" value={demoName} onChange={e=>setDemoName(e.target.value)} placeholder="Название фичи" style={{minWidth:130}}/>
             <span className="meta-sep">·</span>
-            <input className="meta-input" type="date" value={demoDate} onChange={e=>setDemoDate(e.target.value)} style={{width:130}}/>
+            <input className="meta-input" type="date" value={demoDate} onChange={e=>setDemoDate(e.target.value)} style={{width:126}}/>
             <span className="meta-sep">·</span>
-            <input className="meta-input" value={demoAuthor} onChange={e=>setDemoAuthor(e.target.value)} placeholder="PM / ведущий" style={{minWidth:100}}/>
+            <input className="meta-input" value={demoAuthor} onChange={e=>setDemoAuthor(e.target.value)} placeholder="PM / ведущий" style={{minWidth:90}}/>
           </div>
         </div>
         <div className="topbar-right">
-          <button className="btn btn-ghost btn-sm" onClick={()=>setShowHelp(true)} title="Как пользоваться">
-            <I d={ic.help} s={13}/>Как пользоваться
+          <button className="theme-btn" onClick={()=>setDark(d=>!d)} title={dark?'Светлая тема':'Тёмная тема'}>
+            {dark?'☀️':'🌙'}
           </button>
-          <button className="btn btn-ghost btn-sm" onClick={refresh}><I d={ic.refresh} s={13}/>Обновить</button>
-          {!SUPABASE_URL&&<button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect} title="Сменить подключение"><I d={ic.cog} s={13}/></button>}
+          <button className="btn btn-ghost btn-sm" onClick={()=>setShowHelp(true)}>
+            <Ico d={ic.help} s={13}/>Как пользоваться
+          </button>
+          <button className="btn btn-ghost btn-sm" onClick={refresh}><Ico d={ic.refresh} s={13}/>Обновить</button>
+          {!(SUPABASE_URL&&SUPABASE_URL!=='ВСТАВЬТЕ_URL_СЮДА')&&
+            <button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect} title="Сменить подключение"><Ico d={ic.cog} s={13}/></button>}
         </div>
       </header>
 
@@ -517,25 +612,35 @@ function App() {
           <div className="sidebar-section">Разделы</div>
           {navItems.map(n=>(
             <button key={n.id} className={`nav-item ${view===n.id?'active':''}`} onClick={()=>setView(n.id)}>
-              <span className="nav-item-left"><span className="nav-dot" style={{background:n.dot}}/>{n.label}</span>
-              {n.count!==null&&<span className="count-badge">{n.count}</span>}
+              <span className="nav-item-left"><span className="nav-dot" style={{background:n.dot}}/><span>{n.label}</span></span>
+              {n.count!==null&&<span className="cnt">{n.count}</span>}
             </button>
           ))}
-          <div className="sidebar-section" style={{marginTop:8}}>По статусу</div>
-          {Object.entries(STATUS_META).map(([k,v])=>(
-            <button key={k} className={`nav-item ${filterStatus===k&&view==='board'?'active':''}`}
-              onClick={()=>{setFilterStatus(k);setView('board');}}>
-              <span className="nav-item-left"><span className="nav-dot" style={{background:v.dot}}/>{v.label}</span>
-              <span className="count-badge">{counts[k]}</span>
+          <div className="sidebar-section" style={{marginTop:6}}>По статусу</div>
+          {Object.entries(SM).map(([k,v])=>(
+            <button key={k} className={`nav-item ${fStatus===k&&view==='board'?'active':''}`}
+              onClick={()=>{setFStatus(k);setView('board');}}>
+              <span className="nav-item-left"><span className="nav-dot" style={{background:v.dot}}/><span>{v.label}</span></span>
+              <span className="cnt">{counts[k]}</span>
             </button>
           ))}
+          {features.length>0&&<>
+            <div className="sidebar-section" style={{marginTop:6}}>По фиче</div>
+            {features.map(f=>(
+              <button key={f} className={`nav-item ${fFeature===f&&view==='board'?'active':''}`}
+                onClick={()=>{setFFeature(f);setView('board');}}>
+                <span className="nav-item-left"><span className="nav-dot" style={{background:'var(--sky)'}}/><span>{f}</span></span>
+                <span className="cnt">{items.filter(i=>i.demo_name===f).length}</span>
+              </button>
+            ))}
+          </>}
           {releases.length>0&&<>
-            <div className="sidebar-section" style={{marginTop:8}}>По релизу</div>
+            <div className="sidebar-section" style={{marginTop:6}}>По релизу</div>
             {releases.map(r=>(
-              <button key={r} className={`nav-item ${filterRelease===r&&view==='board'?'active':''}`}
-                onClick={()=>{setFilterRelease(r);setView('board');}}>
-                <span className="nav-item-left"><span className="nav-dot" style={{background:'var(--purple)'}}/>{r}</span>
-                <span className="count-badge">{items.filter(i=>i.release===r).length}</span>
+              <button key={r} className={`nav-item ${fRelease===r&&view==='board'?'active':''}`}
+                onClick={()=>{setFRelease(r);setView('board');}}>
+                <span className="nav-item-left"><span className="nav-dot" style={{background:'var(--purple)'}}/><span>{r}</span></span>
+                <span className="cnt">{items.filter(i=>i.release===r).length}</span>
               </button>
             ))}
           </>}
@@ -543,33 +648,33 @@ function App() {
 
         <main className="main">
           {loading?(
-            <div className="loading"><div className="spinner"/>Загрузка...</div>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:200,gap:10,color:'var(--text-3)',fontSize:13}}>
+              <div className="spinner"/>Загрузка...
+            </div>
           ):(
             <>
               {view==='live'&&(
                 <>
                   <div className="stats-grid">
-                    <div className="stat-card"><div className="stat-val">{counts.all}</div><div className="stat-label">Всего</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--amber)'}}>{counts.pending}</div><div className="stat-label">Ожидают</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--accent)'}}>{counts.created+counts.inprogress}</div><div className="stat-label">В работе</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{counts.done}</div><div className="stat-label">Готово</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{counts.declined}</div><div className="stat-label">Отклонено</div></div>
+                    <div className="stat-card"><div className="stat-val">{counts.all}</div><div className="stat-lbl">Всего</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--amber)'}}>{counts.pending}</div><div className="stat-lbl">Ожидают</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--accent)'}}>{counts.created+counts.inprogress}</div><div className="stat-lbl">В работе</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{counts.done}</div><div className="stat-lbl">Готово</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{counts.declined}</div><div className="stat-lbl">Отклонено</div></div>
                   </div>
+
                   <div className="add-form">
-                    <div className="form-header">
-                      <span className="form-title"><I d={ic.plus} s={14}/>Зафиксировать пожелание</span>
-                    </div>
-                    <div className="form-row-3">
-                      <div className="field"><label>Описание пожелания</label>
+                    <div className="form-title"><Ico d={ic.plus} s={14}/>Зафиксировать пожелание</div>
+                    <div className="g3" style={{marginBottom:10}}>
+                      <div className="fg"><label>Описание пожелания</label>
                         <textarea value={fDesc} onChange={e=>setFDesc(e.target.value)}
-                          placeholder="Что хочет участник..."
-                          onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))addItem();}}
-                          style={{height:68}}/>
+                          placeholder="Что хочет участник... (Shift+Enter для переноса строки)"
+                          onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))addItem();}}/>
                       </div>
-                      <div className="field"><label>Автор</label>
+                      <div className="fg"><label>Автор</label>
                         <input value={fAuthor} onChange={e=>setFAuthor(e.target.value)} placeholder="Имя участника"/>
                       </div>
-                      <div className="field"><label>Приоритет</label>
+                      <div className="fg"><label>Приоритет</label>
                         <select value={fPriority} onChange={e=>setFPriority(e.target.value)}>
                           <option value="blocking">Блокирующий</option>
                           <option value="critical">Критический</option>
@@ -578,23 +683,30 @@ function App() {
                         </select>
                       </div>
                     </div>
-                    <div className="form-row-2" style={{marginTop:10}}>
-                      <div className="field"><label>Ссылка на задачу (необязательно)</label>
+                    <div className="fg" style={{marginBottom:10}}>
+                      <label>Комментарий (необязательно)</label>
+                      <textarea value={fComment} onChange={e=>setFComment(e.target.value)}
+                        placeholder="Доп. заметки, вопросы стейкхолдеров... (Shift+Enter для переноса строки)"
+                        style={{minHeight:52}}/>
+                    </div>
+                    <div className="g2" style={{marginBottom:10}}>
+                      <div className="fg"><label>Ссылка на задачу (→ авто-статус «Задача создана»)</label>
                         <input value={fLink} onChange={e=>setFLink(e.target.value)} placeholder="PROJ-123 или https://jira..."/>
                       </div>
-                      <div className="field"><label>Релиз (необязательно)</label>
-                        <input value={fRelease} onChange={e=>setFRelease(e.target.value)} placeholder="2.4.1"/>
+                      <div className="fg"><label>Релиз (необязательно)</label>
+                        <input value={fRel} onChange={e=>setFRel(e.target.value)} placeholder="2.4.1"/>
                       </div>
                     </div>
                     <div className="form-actions">
-                      <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd> для быстрого сохранения</span>
-                      <button className="btn btn-accent" onClick={addItem}><I d={ic.plus} s={13}/>Зафиксировать</button>
+                      <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd></span>
+                      <button className="btn btn-accent" onClick={addItem}><Ico d={ic.plus} s={13}/>Зафиксировать</button>
                     </div>
                   </div>
-                  <div className="section-label">Зафиксировано на демо</div>
+
+                  <div className="sec-label">Зафиксировано на демо</div>
                   <div className="items-list">
                     {items.length===0
-                      ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div><div className="empty-sub">Добавьте первое пожелание выше</div></div>
+                      ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div><div style={{fontSize:13,color:'var(--text-3)'}}>Добавьте первое выше</div></div>
                       :[...items].reverse().map(i=><ItemCard key={i.id} item={i}/>)
                     }
                   </div>
@@ -604,38 +716,50 @@ function App() {
               {view==='board'&&(
                 <>
                   <div className="filter-bar">
-                    <input value={filterSearch} onChange={e=>setFilterSearch(e.target.value)} placeholder="Поиск по тексту..." style={{width:200}}/>
-                    <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)}>
+                    <input value={fSearch} onChange={e=>setFSearch(e.target.value)} placeholder="Поиск..." style={{width:180}}/>
+                    <select value={fStatus} onChange={e=>setFStatus(e.target.value)}>
                       <option value="">Все статусы</option>
-                      {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+                      {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
                     </select>
-                    <select value={filterRelease} onChange={e=>setFilterRelease(e.target.value)}>
+                    <select value={fFeature} onChange={e=>setFFeature(e.target.value)}>
+                      <option value="">Все фичи</option>
+                      {features.map(f=><option key={f} value={f}>{f}</option>)}
+                    </select>
+                    <select value={fRelease} onChange={e=>setFRelease(e.target.value)}>
                       <option value="">Все релизы</option>
                       {releases.map(r=><option key={r} value={r}>{r}</option>)}
                     </select>
-                    {(filterStatus||filterRelease||filterSearch)&&
-                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFilterStatus('');setFilterRelease('');setFilterSearch('');}}>Сбросить</button>}
+                    {(fStatus||fRelease||fSearch||fFeature)&&
+                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFStatus('');setFRelease('');setFSearch('');setFFeature('');}}>Сбросить</button>}
                   </div>
-                  <div className="items-list">
-                    {visible.length===0
-                      ?<div className="empty"><div className="empty-icon">🔍</div><div className="empty-title">Ничего не найдено</div><div className="empty-sub">Попробуйте изменить фильтры</div></div>
-                      :visible.map(i=><ItemCard key={i.id} item={i}/>)
-                    }
-                  </div>
+                  {visible.length===0
+                    ?<div className="empty"><div className="empty-icon">🔍</div><div className="empty-title">Ничего не найдено</div></div>
+                    :grouped().map(([feat,fitems])=>(
+                      <div key={feat} className="feat-group">
+                        <div className="feat-group-hdr">
+                          <span className="feat-group-title">{feat}</span>
+                          <span className="feat-group-cnt">{fitems.length}</span>
+                        </div>
+                        <div className="items-list">
+                          {fitems.map(i=><ItemCard key={i.id} item={i}/>)}
+                        </div>
+                      </div>
+                    ))
+                  }
                 </>
               )}
 
               {view==='export'&&(
                 <>
-                  <div style={{display:'flex',gap:8,justifyContent:'flex-end',marginBottom:16}}>
-                    <button className="btn btn-accent" onClick={copyExport}><I d={ic.copy} s={13}/>Скопировать протокол</button>
+                  <div style={{display:'flex',gap:8,justifyContent:'flex-end',marginBottom:14}}>
+                    <button className="btn btn-accent" onClick={copyExport}><Ico d={ic.copy} s={13}/>Скопировать протокол</button>
                   </div>
                   <div className="export-box">
-                    <div className="export-toolbar">
-                      <span className="export-toolbar-title">protocol.txt</span>
+                    <div className="export-bar">
+                      <span className="export-bar-title">protocol.txt</span>
                       <span style={{fontSize:11,color:'var(--text-3)'}}>{items.length} задач</span>
                     </div>
-                    <pre className="export-content">{buildExport()}</pre>
+                    <pre className="export-pre">{buildExport()}</pre>
                   </div>
                 </>
               )}
