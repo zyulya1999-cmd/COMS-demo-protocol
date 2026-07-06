@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Протокол демо</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#0f0f11; --bg-card:#17171a; --bg-hover:#1e1e22; --bg-input:#1a1a1e;
+    --border:rgba(255,255,255,0.07); --border-md:rgba(255,255,255,0.12);
+    --border-focus:rgba(99,102,241,0.6);
+    --text:#f0f0f2; --text-2:#9898a6; --text-3:#5c5c6e;
+    --accent:#6366f1; --accent-bg:rgba(99,102,241,0.12); --accent-hover:#818cf8;
+    --green:#22c55e; --green-bg:rgba(34,197,94,0.1);
+    --amber:#f59e0b; --amber-bg:rgba(245,158,11,0.1);
+    --red:#ef4444; --red-bg:rgba(239,68,68,0.1);
+    --purple:#a855f7; --purple-bg:rgba(168,85,247,0.1);
+    --sky:#38bdf8; --sky-bg:rgba(56,189,248,0.1);
+    --radius:8px; --radius-lg:12px;
+    --font:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+    --transition:150ms ease;
+  }
+  html,body,#root{height:100%}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
+  input,textarea,select{font-family:var(--font);font-size:13px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:0 10px;height:34px;outline:none;transition:border-color var(--transition);width:100%}
+  input::placeholder,textarea::placeholder{color:var(--text-3)}
+  input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.08)}
+  select option{background:#1e1e2e}
+  textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5}
+  button{font-family:var(--font);cursor:pointer;border:none;outline:none;transition:all var(--transition)}
+  button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+  .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+  .topbar{border-bottom:1px solid var(--border);background:rgba(15,15,17,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+  .topbar-left{display:flex;align-items:center;gap:16px;min-width:0}
+  .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;white-space:nowrap}
+  .logo span{color:var(--accent)}
+  .demo-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .meta-input{background:transparent;border:none;font-size:13px;color:var(--text-2);padding:0;height:auto;width:auto}
+  .meta-input:focus{color:var(--text);box-shadow:none;border:none}
+  .meta-sep{color:var(--text-3);font-size:12px}
+  .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
+  .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+  .btn-ghost:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-md)}
+  .btn-accent{background:var(--accent);color:#fff;border:1px solid transparent}
+  .btn-accent:hover{background:var(--accent-hover)}
+  .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid transparent}
+  .btn-danger:hover{background:rgba(239,68,68,0.18)}
+  .btn-sm{height:26px;padding:0 10px;font-size:12px}
+  .btn-icon{width:30px;padding:0;justify-content:center}
+  .body{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px)}
+  @media(max-width:768px){.body{grid-template-columns:1fr}.sidebar{display:none}}
+  .sidebar{border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:4px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:12px 10px 6px}
+  .nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:all var(--transition)}
+  .nav-item:hover{background:var(--bg-hover);color:var(--text)}
+  .nav-item.active{background:var(--accent-bg);color:var(--accent)}
+  .nav-item-left{display:flex;align-items:center;gap:8px}
+  .nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .count-badge{font-size:11px;background:var(--bg-hover);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:500}
+  .nav-item.active .count-badge{background:rgba(99,102,241,0.2);color:var(--accent)}
+  .main{padding:24px;min-width:0}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px}
+  .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
+  .stat-val{font-size:26px;font-weight:600;letter-spacing:-0.5px;line-height:1;margin-bottom:4px}
+  .stat-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
+  .add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px}
+  .form-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .form-title{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px}
+  .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .form-row-3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+  @media(max-width:600px){.form-row-2,.form-row-3{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:11px;color:var(--text-3);letter-spacing:0.03em}
+  .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;align-items:center}
+  .items-list{display:flex;flex-direction:column;gap:8px}
+  .filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
+  .item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;transition:border-color var(--transition);position:relative;overflow:hidden}
+  .item-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
+  .item-card.status-pending::before{background:var(--amber)}
+  .item-card.status-created::before{background:var(--sky)}
+  .item-card.status-inprogress::before{background:var(--accent)}
+  .item-card.status-done::before{background:var(--green)}
+  .item-card.status-declined::before{background:var(--red)}
+  .item-card:hover{border-color:var(--border-md)}
+  .item-top{display:flex;align-items:flex-start;gap:12px}
+  .item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:32px;padding-top:2px}
+  .item-body{flex:1;min-width:0}
+  .item-desc{font-size:14px;color:var(--text);line-height:1.45;margin-bottom:8px}
+  .item-pills{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .pill-amber{background:var(--amber-bg);color:var(--amber)}
+  .pill-sky{background:var(--sky-bg);color:var(--sky)}
+  .pill-accent{background:var(--accent-bg);color:var(--accent-hover)}
+  .pill-green{background:var(--green-bg);color:var(--green)}
+  .pill-red{background:var(--red-bg);color:var(--red)}
+  .pill-purple{background:var(--purple-bg);color:var(--purple)}
+  .pill-gray{background:rgba(255,255,255,0.06);color:var(--text-3)}
+  .item-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .meta-chip{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-3)}
+  .item-link{font-size:11px;color:var(--accent);text-decoration:none}
+  .item-link:hover{color:var(--accent-hover);text-decoration:underline}
+  .item-actions{display:flex;gap:4px;flex-shrink:0;opacity:0;transition:opacity var(--transition)}
+  .item-card:hover .item-actions{opacity:1}
+  .item-edit{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end}
+  @media(max-width:600px){.item-edit{grid-template-columns:1fr 1fr}}
+  .item-edit select,.item-edit input{height:30px;font-size:12px}
+  .empty{text-align:center;padding:48px 24px;color:var(--text-3)}
+  .empty-icon{font-size:32px;margin-bottom:12px;opacity:0.4}
+  .empty-title{font-size:14px;color:var(--text-2);margin-bottom:6px}
+  .empty-sub{font-size:13px}
+  .export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .export-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+  .export-toolbar-title{font-size:12px;color:var(--text-3);font-family:var(--mono)}
+  .export-content{padding:16px;font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;line-height:1.7;max-height:480px;overflow-y:auto}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:10px 16px;font-size:13px;color:var(--text);box-shadow:0 4px 24px rgba(0,0,0,0.4);z-index:999;animation:slideUp 0.2s ease;display:flex;align-items:center;gap:8px}
+  @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:100%;max-width:520px}
+  .setup-logo{font-size:18px;font-weight:600;margin-bottom:8px}
+  .setup-logo span{color:var(--accent)}
+  .setup-sub{font-size:13px;color:var(--text-3);margin-bottom:28px;line-height:1.7}
+  .setup-field{margin-bottom:14px}
+  .setup-field label{display:block;font-size:12px;color:var(--text-3);margin-bottom:5px}
+  .setup-hint{font-size:12px;color:var(--text-3);margin-top:20px;line-height:1.8;padding:14px;background:rgba(255,255,255,0.03);border-radius:var(--radius);border:1px solid var(--border)}
+  .setup-hint a{color:var(--accent);text-decoration:none}
+  .setup-hint a:hover{text-decoration:underline}
+  .setup-hint code{font-family:var(--mono);font-size:11px;background:rgba(99,102,241,0.15);color:var(--accent-hover);padding:1px 5px;border-radius:4px}
+  .setup-error{background:var(--red-bg);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:14px}
+  .setup-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+  .setup-step{display:flex;gap:10px;margin-bottom:8px;font-size:12px;color:var(--text-2)}
+  .setup-step-num{width:18px;height:18px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .divider{height:1px;background:var(--border);margin:20px 0}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading{display:flex;align-items:center;justify-content:center;height:200px;gap:10px;color:var(--text-3);font-size:13px}
+  .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+  .section-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;margin-bottom:10px}
+  .kbd{font-family:var(--mono);font-size:10px;background:var(--bg-hover);color:var(--text-3);padding:2px 5px;border-radius:4px;border:1px solid var(--border-md)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+const { createClient } = supabase;
+
+// ─────────────────────────────────────────────────────────
+// ЗДЕСЬ ВСТАВЬТЕ ВАШИ КЛЮЧИ SUPABASE (шаг 3 инструкции)
+// ─────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://xvbqphbrmjlavlvivpnp.supabase.co';   // вставьте URL сюда, например: 'https://abcdef.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzA3MDYsImV4cCI6MjA5ODkwNjcwNn0.5nlq_JEdrdNrr6O2xzcFmz0ugNVnN6WkLlL3akRhoyY';   // вставьте anon key сюда
+// ─────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'demo_proto_sb';
+
+const STATUS_META = {
+  pending:    { label:'Ожидает',        pill:'pill-amber',  dot:'#f59e0b' },
+  created:    { label:'Задача создана', pill:'pill-sky',    dot:'#38bdf8' },
+  inprogress: { label:'В работе',       pill:'pill-accent', dot:'#6366f1' },
+  done:       { label:'Готово',         pill:'pill-green',  dot:'#22c55e' },
+  declined:   { label:'Отклонено',      pill:'pill-red',    dot:'#ef4444' },
+};
+const PRIORITY_META = {
+  high:{ label:'Высокий', pill:'pill-red' },
+  med: { label:'Средний', pill:'pill-amber' },
+  low: { label:'Низкий',  pill:'pill-gray' },
+};
+
+/* ── иконки ── */
+const I = ({ d, s=14 }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d}/>
+  </svg>
+);
+const ic = {
+  plus:    "M12 5v14M5 12h14",
+  trash:   "M3 6h18M19 6l-1 14H6L5 6M10 11v5M14 11v5M9 6V4h6v2",
+  edit:    "M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z",
+  refresh: "M4 4v6h6M20 20v-6h-6M4 10a8 8 0 0115.5-2M20 14a8 8 0 01-15.5 2",
+  copy:    "M8 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2M8 4a2 2 0 012-2h4a2 2 0 012 2M8 4h8",
+  check:   "M20 6L9 17l-5-5",
+  user:    "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 3a4 4 0 110 8 4 4 0 010-8z",
+  clock:   "M12 2a10 10 0 110 20A10 10 0 0112 2zM12 6v6l4 2",
+  link2:   "M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71",
+  branch:  "M6 3v12M18 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM18 9a9 9 0 01-9 9",
+  cog:     "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z",
+};
+
+/* ── Toast ── */
+function Toast({ msg, onDone }) {
+  useEffect(() => { const t = setTimeout(onDone, 2400); return () => clearTimeout(t); }, []);
+  return <div className="toast"><I d={ic.check} s={14}/>{msg}</div>;
+}
+
+/* ── экран настройки (если ключи не вшиты) ── */
+function SetupScreen({ onConnect }) {
+  const [url, setUrl]   = useState('');
+  const [key, setKey]   = useState('');
+  const [err, setErr]   = useState('');
+  const [busy, setBusy] = useState(false);
+
+  async function connect() {
+    if (!url.trim() || !key.trim()) { setErr('Заполните оба поля'); return; }
+    setBusy(true); setErr('');
+    try {
+      const c = createClient(url.trim(), key.trim());
+      const { error } = await c.from('demo_items').select('id').limit(1);
+      if (error && error.code !== 'PGRST116') throw error;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ url: url.trim(), key: key.trim() }));
+      onConnect(c);
+    } catch(e) {
+      setErr('Ошибка подключения: ' + (e.message || 'проверьте URL и ключ'));
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="setup">
+      <div className="setup-card">
+        <div className="setup-logo">Демо<span>протокол</span></div>
+        <div className="setup-sub">
+          Приложение использует Supabase как базу данных — бесплатный облачный сервис.
+          Нужно подключить один раз. После этого все участники просто открывают ссылку.
+        </div>
+
+        {err && <div className="setup-error">{err}</div>}
+
+        <div className="setup-field">
+          <label>Project URL</label>
+          <input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxxxxxxxxxx.supabase.co" />
+        </div>
+        <div className="setup-field">
+          <label>Anon Public Key</label>
+          <input value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." type="password" />
+        </div>
+        <button className="btn btn-accent" style={{width:'100%',height:40,marginTop:6,fontSize:14}} onClick={connect} disabled={busy}>
+          {busy ? <><span className="setup-spinner"/> Подключение...</> : 'Подключить'}
+        </button>
+
+        <div className="divider"/>
+        <div className="setup-hint">
+          <div style={{fontWeight:500,color:'rgba(255,255,255,0.4)',marginBottom:8,fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em'}}>Где взять ключи</div>
+          {[
+            ['1','Откройте ', <a href="https://supabase.com" target="_blank">supabase.com</a>, ' и зарегистрируйтесь через Google'],
+            ['2','Нажмите ', <code>New project</code>, ', придумайте название и пароль'],
+            ['3','Зайдите в ', <code>Settings → API</code>, ' — там будут URL и ключ'],
+            ['4','Скопируйте ', <code>Project URL</code>, ' и ', <code>anon public</code>, ' сюда'],
+            ['5','В разделе ', <code>SQL Editor</code>, ' выполните запрос из README.md'],
+          ].map(([n,...rest])=>(
+            <div key={n} className="setup-step">
+              <span className="setup-step-num">{n}</span>
+              <span>{rest}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── главное приложение ── */
+function App() {
+  const [sb, setSb]           = useState(null);
+  const [items, setItems]     = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [view, setView]       = useState('live');
+  const [toast, setToast]     = useState('');
+  const [expandedId, setExpandedId] = useState(null);
+
+  const [filterStatus,  setFilterStatus]  = useState('');
+  const [filterRelease, setFilterRelease] = useState('');
+  const [filterSearch,  setFilterSearch]  = useState('');
+
+  const [demoName,   setDemoName]   = useState('');
+  const [demoDate,   setDemoDate]   = useState(new Date().toISOString().slice(0,10));
+  const [demoAuthor, setDemoAuthor] = useState('');
+
+  const [fDesc,     setFDesc]     = useState('');
+  const [fAuthor,   setFAuthor]   = useState('');
+  const [fPriority, setFPriority] = useState('med');
+  const [fLink,     setFLink]     = useState('');
+  const [fRelease,  setFRelease]  = useState('');
+
+  /* инициализация клиента */
+  useEffect(() => {
+    // если ключи вшиты прямо в файл — используем их
+    if (SUPABASE_URL && SUPABASE_KEY) {
+      setSb(createClient(SUPABASE_URL, SUPABASE_KEY));
+      return;
+    }
+    // иначе берём из localStorage
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const { url, key } = JSON.parse(saved);
+        setSb(createClient(url, key));
+        return;
+      }
+    } catch {}
+    setLoading(false);
+  }, []);
+
+  const loadItems = useCallback(async (client) => {
+    const { data, error } = await (client||sb).from('demo_items').select('*').order('id',{ascending:true});
+    if (!error && data) setItems(data);
+    setLoading(false);
+  }, [sb]);
+
+  useEffect(() => { if (sb) loadItems(sb); }, [sb]);
+
+  async function addItem() {
+    if (!fDesc.trim()) return;
+    const row = {
+      demo_name:demoName, demo_date:demoDate, demo_author:demoAuthor,
+      description:fDesc.trim(),
+      author:fAuthor.trim()||'Не указан',
+      priority:fPriority, status:'pending',
+      link:fLink.trim(), release:fRelease.trim(),
+    };
+    const { data, error } = await sb.from('demo_items').insert([row]).select();
+    if (!error && data) {
+      setItems(prev=>[...prev,data[0]]);
+      setFDesc(''); setFLink(''); setFRelease('');
+      setToast('Пожелание зафиксировано');
+    }
+  }
+
+  async function updateItem(id, patch) {
+    await sb.from('demo_items').update(patch).eq('id',id);
+    setItems(prev=>prev.map(i=>i.id===id?{...i,...patch}:i));
+  }
+
+  async function deleteItem(id) {
+    await sb.from('demo_items').delete().eq('id',id);
+    setItems(prev=>prev.filter(i=>i.id!==id));
+    setExpandedId(null);
+    setToast('Удалено');
+  }
+
+  async function refresh() {
+    setLoading(true);
+    await loadItems(sb);
+    setToast('Данные обновлены');
+  }
+
+  function disconnect() {
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.reload();
+  }
+
+  if (!sb && !loading) return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
+
+  const counts = {all:items.length,pending:0,created:0,inprogress:0,done:0,declined:0};
+  items.forEach(i=>{ if(counts[i.status]!==undefined) counts[i.status]++; });
+  const releases = [...new Set(items.map(i=>i.release).filter(Boolean))];
+
+  const visible = items.filter(i=>{
+    if (filterStatus  && i.status!==filterStatus)  return false;
+    if (filterRelease && i.release!==filterRelease) return false;
+    if (filterSearch  && !i.description.toLowerCase().includes(filterSearch.toLowerCase())
+        && !i.author.toLowerCase().includes(filterSearch.toLowerCase())) return false;
+    return true;
+  });
+
+  function buildExport() {
+    const line = '─'.repeat(44);
+    let t = `ПРОТОКОЛ ДЕМО\n${line}\n`;
+    t += `Фича:    ${demoName||'—'}\nДата:    ${demoDate||'—'}\nВедущий: ${demoAuthor||'—'}\n${line}\n\n`;
+    const groups={};
+    Object.keys(STATUS_META).forEach(k=>groups[k]=[]);
+    items.forEach(i=>groups[i.status]?.push(i));
+    ['inprogress','created','pending','done','declined'].forEach(s=>{
+      if(!groups[s].length) return;
+      t+=`${STATUS_META[s].label.toUpperCase()} (${groups[s].length})\n`;
+      groups[s].forEach(i=>{
+        t+=`  #${i.id} [${PRIORITY_META[i.priority]?.label}] ${i.description}\n`;
+        t+=`       Автор: ${i.author}`;
+        if(i.release) t+=`  |  Релиз: ${i.release}`;
+        if(i.link)    t+=`  |  Задача: ${i.link}`;
+        t+='\n';
+      });
+      t+='\n';
+    });
+    t+=`${line}\nСформировано: ${new Date().toLocaleString('ru-RU')}\n\n`;
+    t+=`Если задача отсутствует в протоколе — укажите в комментарии.\n`;
+    t+=`Если не согласны с номером релиза — подсветите.\n`;
+    t+=`Окно для возражений: 48 часов после отправки.`;
+    return t;
+  }
+
+  async function copyExport() {
+    await navigator.clipboard.writeText(buildExport());
+    setToast('Протокол скопирован');
+  }
+
+  /* карточка задачи */
+  function ItemCard({ item }) {
+    const exp = expandedId===item.id;
+    const sm  = STATUS_META[item.status]||STATUS_META.pending;
+    const pm  = PRIORITY_META[item.priority]||PRIORITY_META.med;
+    const pColor = {high:'pill-red',med:'pill-amber',low:'pill-gray'};
+    return (
+      <div className={`item-card status-${item.status}`}>
+        <div className="item-top">
+          <span className="item-num">#{item.id}</span>
+          <div className="item-body">
+            <div className="item-desc">{item.description}</div>
+            <div className="item-pills">
+              <span className={`pill ${sm.pill}`}>{sm.label}</span>
+              <span className={`pill ${pColor[item.priority]||'pill-gray'}`} style={{opacity:.75}}>{pm.label}</span>
+              {item.release&&<span className="pill pill-purple" style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.branch} s={10}/>{item.release}</span>}
+            </div>
+            <div className="item-meta">
+              <span className="meta-chip"><I d={ic.user} s={12}/>{item.author}</span>
+              {item.created_at&&<span className="meta-chip"><I d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
+              {item.link&&<a className="item-link" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer"><span style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,36)}</span></a>}
+            </div>
+            {exp&&(
+              <div className="item-edit">
+                <div className="field">
+                  <label>Статус</label>
+                  <select value={item.status} onChange={e=>updateItem(item.id,{status:e.target.value})}>
+                    {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Релиз</label>
+                  <input defaultValue={item.release} placeholder="2.4.1"
+                    onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
+                </div>
+                <div className="field">
+                  <label>Ссылка на задачу</label>
+                  <input defaultValue={item.link} placeholder="PROJ-123"
+                    onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
+                </div>
+                <button className="btn btn-danger btn-sm btn-icon" style={{alignSelf:'flex-end'}}
+                  onClick={()=>deleteItem(item.id)} title="Удалить"><I d={ic.trash} s={13}/></button>
+              </div>
+            )}
+          </div>
+          <div className="item-actions">
+            <button className="btn btn-ghost btn-sm btn-icon"
+              onClick={()=>setExpandedId(exp?null:item.id)} title="Редактировать">
+              <I d={ic.edit} s={13}/>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const navItems = [
+    {id:'live',  label:'Режим демо', dot:'#6366f1', count:counts.all},
+    {id:'board', label:'Все задачи', dot:'#9898a6', count:counts.all},
+    {id:'export',label:'Экспорт',    dot:'#22c55e', count:null},
+  ];
+
+  return (
+    <div className="app">
+      <header className="topbar">
+        <div className="topbar-left">
+          <span className="logo">Демо<span>протокол</span></span>
+          <span style={{color:'var(--text-3)',fontSize:12}}>|</span>
+          <div className="demo-meta">
+            <input className="meta-input" value={demoName} onChange={e=>setDemoName(e.target.value)} placeholder="Название фичи" style={{minWidth:140}}/>
+            <span className="meta-sep">·</span>
+            <input className="meta-input" type="date" value={demoDate} onChange={e=>setDemoDate(e.target.value)} style={{width:130}}/>
+            <span className="meta-sep">·</span>
+            <input className="meta-input" value={demoAuthor} onChange={e=>setDemoAuthor(e.target.value)} placeholder="PM / ведущий" style={{minWidth:100}}/>
+          </div>
+        </div>
+        <div className="topbar-right">
+          <button className="btn btn-ghost btn-sm" onClick={refresh}><I d={ic.refresh} s={13}/>Обновить</button>
+          {!SUPABASE_URL&&<button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect} title="Сменить подключение"><I d={ic.cog} s={13}/></button>}
+        </div>
+      </header>
+
+      <div className="body">
+        <aside className="sidebar">
+          <div className="sidebar-section">Разделы</div>
+          {navItems.map(n=>(
+            <button key={n.id} className={`nav-item ${view===n.id?'active':''}`} onClick={()=>setView(n.id)}>
+              <span className="nav-item-left">
+                <span className="nav-dot" style={{background:n.dot}}/>
+                {n.label}
+              </span>
+              {n.count!==null&&<span className="count-badge">{n.count}</span>}
+            </button>
+          ))}
+          <div className="sidebar-section" style={{marginTop:8}}>По статусу</div>
+          {Object.entries(STATUS_META).map(([k,v])=>(
+            <button key={k} className={`nav-item ${filterStatus===k&&view==='board'?'active':''}`}
+              onClick={()=>{setFilterStatus(k);setView('board');}}>
+              <span className="nav-item-left"><span className="nav-dot" style={{background:v.dot}}/>{v.label}</span>
+              <span className="count-badge">{counts[k]}</span>
+            </button>
+          ))}
+          {releases.length>0&&<>
+            <div className="sidebar-section" style={{marginTop:8}}>По релизу</div>
+            {releases.map(r=>(
+              <button key={r} className={`nav-item ${filterRelease===r&&view==='board'?'active':''}`}
+                onClick={()=>{setFilterRelease(r);setView('board');}}>
+                <span className="nav-item-left"><span className="nav-dot" style={{background:'var(--purple)'}}/>{r}</span>
+                <span className="count-badge">{items.filter(i=>i.release===r).length}</span>
+              </button>
+            ))}
+          </>}
+        </aside>
+
+        <main className="main">
+          {loading?(
+            <div className="loading"><div className="spinner"/>Загрузка...</div>
+          ):(
+            <>
+              {view==='live'&&(
+                <>
+                  <div className="stats-grid">
+                    <div className="stat-card"><div className="stat-val">{counts.all}</div><div className="stat-label">Всего</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--amber)'}}>{counts.pending}</div><div className="stat-label">Ожидают</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--accent)'}}>{counts.created+counts.inprogress}</div><div className="stat-label">В работе</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{counts.done}</div><div className="stat-label">Готово</div></div>
+                    <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{counts.declined}</div><div className="stat-label">Отклонено</div></div>
+                  </div>
+                  <div className="add-form">
+                    <div className="form-header">
+                      <span className="form-title"><I d={ic.plus} s={14}/>Зафиксировать пожелание</span>
+                    </div>
+                    <div className="form-row-3">
+                      <div className="field"><label>Описание пожелания</label>
+                        <textarea value={fDesc} onChange={e=>setFDesc(e.target.value)}
+                          placeholder="Что хочет участник..."
+                          onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))addItem();}}
+                          style={{height:68}}/>
+                      </div>
+                      <div className="field"><label>Автор</label>
+                        <input value={fAuthor} onChange={e=>setFAuthor(e.target.value)} placeholder="Имя участника"/>
+                      </div>
+                      <div className="field"><label>Приоритет</label>
+                        <select value={fPriority} onChange={e=>setFPriority(e.target.value)}>
+                          <option value="high">Высокий</option>
+                          <option value="med">Средний</option>
+                          <option value="low">Низкий</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="form-row-2" style={{marginTop:10}}>
+                      <div className="field"><label>Ссылка на задачу (необязательно)</label>
+                        <input value={fLink} onChange={e=>setFLink(e.target.value)} placeholder="PROJ-123 или https://jira..."/>
+                      </div>
+                      <div className="field"><label>Релиз (необязательно)</label>
+                        <input value={fRelease} onChange={e=>setFRelease(e.target.value)} placeholder="2.4.1"/>
+                      </div>
+                    </div>
+                    <div className="form-actions">
+                      <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd> для быстрого сохранения</span>
+                      <button className="btn btn-accent" onClick={addItem}><I d={ic.plus} s={13}/>Зафиксировать</button>
+                    </div>
+                  </div>
+                  <div className="section-label">Зафиксировано на демо</div>
+                  <div className="items-list">
+                    {items.length===0
+                      ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div><div className="empty-sub">Добавьте первое пожелание выше</div></div>
+                      :[...items].reverse().map(i=><ItemCard key={i.id} item={i}/>)
+                    }
+                  </div>
+                </>
+              )}
+
+              {view==='board'&&(
+                <>
+                  <div className="filter-bar">
+                    <input value={filterSearch} onChange={e=>setFilterSearch(e.target.value)} placeholder="Поиск по тексту..." style={{width:200}}/>
+                    <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)}>
+                      <option value="">Все статусы</option>
+                      {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+                    </select>
+                    <select value={filterRelease} onChange={e=>setFilterRelease(e.target.value)}>
+                      <option value="">Все релизы</option>
+                      {releases.map(r=><option key={r} value={r}>{r}</option>)}
+                    </select>
+                    {(filterStatus||filterRelease||filterSearch)&&
+                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFilterStatus('');setFilterRelease('');setFilterSearch('');}}>Сбросить</button>}
+                  </div>
+                  <div className="items-list">
+                    {visible.length===0
+                      ?<div className="empty"><div className="empty-icon">🔍</div><div className="empty-title">Ничего не найдено</div><div className="empty-sub">Попробуйте изменить фильтры</div></div>
+                      :visible.map(i=><ItemCard key={i.id} item={i}/>)
+                    }
+                  </div>
+                </>
+              )}
+
+              {view==='export'&&(
+                <>
+                  <div style={{display:'flex',gap:8,justifyContent:'flex-end',marginBottom:16}}>
+                    <button className="btn btn-accent" onClick={copyExport}><I d={ic.copy} s={13}/>Скопировать протокол</button>
+                  </div>
+                  <div className="export-box">
+                    <div className="export-toolbar">
+                      <span className="export-toolbar-title">protocol.txt</span>
+                      <span style={{fontSize:11,color:'var(--text-3)'}}>{items.length} задач</span>
+                    </div>
+                    <pre className="export-content">{buildExport()}</pre>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </main>
+      </div>
+      {toast&&<Toast msg={toast} onDone={()=>setToast('')}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
