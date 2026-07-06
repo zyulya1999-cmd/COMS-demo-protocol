@@ -594,8 +594,8 @@ function App() {
       <tr style="border-bottom:1px solid #f0f0f0">
         <td style="padding:12px 8px;font-size:13px;color:#9898a6;vertical-align:top;white-space:nowrap">${idx+1}</td>
         <td style="padding:12px 8px;font-size:13px;color:#1a1a1e;vertical-align:top;line-height:1.5;min-width:200px">
-          <div style="margin-bottom:4px">${item.description}</div>
-          ${item.comment?`<div style="font-size:12px;color:#5a5a68;background:#f9f9f7;border-left:2px solid #e0e0e0;padding:5px 8px;border-radius:4px;margin-top:4px">${item.comment}</div>`:''}
+          <div style="margin-bottom:4px;white-space:pre-wrap">${item.description.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+          ${item.comment?`<div style="font-size:12px;color:#5a5a68;background:#f9f9f7;border-left:2px solid #e0e0e0;padding:5px 8px;border-radius:4px;margin-top:4px;white-space:pre-wrap">${item.comment.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`:''}
         </td>
         <td style="padding:12px 8px;vertical-align:top">${badge(SM[item.status]?.label||item.status,statusColors[item.status]||'#666',statusBg[item.status]||'#f5f5f5')}</td>
         <td style="padding:12px 8px;vertical-align:top">${badge(PM[item.priority]?.label||item.priority,priorityColors[item.priority]||'#666',priorityBg[item.priority]||'#f5f5f5')}</td>
@@ -619,11 +619,40 @@ function App() {
     table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
     thead tr{background:#f9f9f7}th{padding:10px 8px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9898a6;border-bottom:1px solid #f0f0f0}
     tr:last-child td{border-bottom:none}tr:hover td{background:#fafaf8}
-    .print-btn{position:fixed;top:20px;right:20px;background:#6366f1;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px}
-    .print-btn:hover{background:#4f52d4}@media print{.print-btn{display:none}}
+    .btn-bar{position:fixed;top:20px;right:20px;display:flex;gap:8px}
+    .dl-btn{background:#6366f1;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none}
+    .dl-btn:hover{background:#4f52d4}
+    .cp-btn{background:#fff;color:#1a1a1e;border:1px solid #e0e0e0;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px}
+    .cp-btn:hover{background:#f5f4f0}
+    @media print{.btn-bar{display:none}}
     .footer{margin-top:24px;font-size:12px;color:#9898a6;text-align:right}
     </style></head><body>
-    <button class="print-btn" onclick="window.print()">🖨️ Распечатать / Сохранить PDF</button>
+    <div class="btn-bar">
+      <button class="cp-btn" onclick="copyText()">📋 Скопировать текст</button>
+      <button class="dl-btn" onclick="downloadPDF()">⬇️ Скачать PDF</button>
+    </div>
+    <script>
+    function downloadPDF(){window.print();}
+    function copyText(){
+      const lines=[];
+      const title=document.querySelector('.demo-title');
+      if(title)lines.push(title.textContent,'');
+      document.querySelectorAll('tbody tr').forEach((tr,i)=>{
+        const tds=[...tr.querySelectorAll('td')].map(td=>td.textContent.trim().replace(/\s+/g,' '));
+        lines.push((i+1)+'. '+tds[1]);
+        lines.push('   Статус: '+tds[2]+'  |  Приоритет: '+tds[3]);
+        lines.push('   Автор: '+tds[4]+'  |  Ответственный: '+tds[5]);
+        if(tds[6]&&tds[6]!=='—')lines.push('   Задача: '+tds[6]);
+        if(tds[7]&&tds[7]!=='—')lines.push('   Релиз: '+tds[7]);
+        lines.push('');
+      });
+      navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+        const btn=document.querySelector('.cp-btn');
+        btn.textContent='✓ Скопировано';
+        setTimeout(()=>btn.innerHTML='📋 Скопировать текст',2000);
+      });
+    }
+    <\/script>
     <div class="wrap">
       <div class="hdr">
         <div class="hdr-left">
