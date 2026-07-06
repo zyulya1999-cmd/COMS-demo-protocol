@@ -590,107 +590,72 @@ function App() {
     const priorityColors={blocking:'#dc2626',critical:'#ea580c',medium:'#d97706',low:'#9898a6'};
     const priorityBg={blocking:'#fee2e2',critical:'#ffedd5',medium:'#fef3c7',low:'#f3f4f6'};
     const badge=(label,color,bg)=>`<span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;color:${color};background:${bg};white-space:nowrap">${label}</span>`;
+    const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const rows=its.map((item,idx)=>`
       <tr style="border-bottom:1px solid #f0f0f0">
         <td style="padding:12px 8px;font-size:13px;color:#9898a6;vertical-align:top;white-space:nowrap">${idx+1}</td>
         <td style="padding:12px 8px;font-size:13px;color:#1a1a1e;vertical-align:top;line-height:1.5;min-width:200px">
-          <div style="margin-bottom:4px;white-space:pre-wrap">${item.description.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-          ${item.comment?`<div style="font-size:12px;color:#5a5a68;background:#f9f9f7;border-left:2px solid #e0e0e0;padding:5px 8px;border-radius:4px;margin-top:4px;white-space:pre-wrap">${item.comment.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`:''}
+          <div style="margin-bottom:4px;white-space:pre-wrap">${esc(item.description)}</div>
+          ${item.comment?`<div style="font-size:12px;color:#5a5a68;background:#f9f9f7;border-left:2px solid #e0e0e0;padding:5px 8px;border-radius:4px;margin-top:4px;white-space:pre-wrap">${esc(item.comment)}</div>`:''}
         </td>
         <td style="padding:12px 8px;vertical-align:top">${badge(SM[item.status]?.label||item.status,statusColors[item.status]||'#666',statusBg[item.status]||'#f5f5f5')}</td>
         <td style="padding:12px 8px;vertical-align:top">${badge(PM[item.priority]?.label||item.priority,priorityColors[item.priority]||'#666',priorityBg[item.priority]||'#f5f5f5')}</td>
-        <td style="padding:12px 8px;font-size:12px;color:#5a5a68;vertical-align:top">${item.author||'—'}</td>
-        <td style="padding:12px 8px;font-size:12px;color:#5a5a68;vertical-align:top">${item.assignee||'—'}</td>
-        <td style="padding:12px 8px;font-size:12px;vertical-align:top">${item.link?`<a href="${item.link}" style="color:#6366f1;text-decoration:none">${item.link.replace(/^https?:\/\//,'').slice(0,28)}</a>`:'—'}</td>
-        <td style="padding:12px 8px;font-size:12px;color:#5a5a68;vertical-align:top">${item.release||'—'}</td>
+        <td style="padding:12px 8px;font-size:12px;color:#5a5a68;vertical-align:top">${esc(item.author)||'—'}</td>
+        <td style="padding:12px 8px;font-size:12px;color:#5a5a68;vertical-align:top">${esc(item.assignee)||'—'}</td>
+        <td style="padding:12px 8px;font-size:12px;vertical-align:top">${item.link?`<a href="${esc(item.link)}" style="color:#6366f1;text-decoration:none">${esc(item.link.replace(/^https?:\/\//,'').slice(0,28))}</a>`:'—'}</td>
+        <td style="padding:12px 8px;font-size:12px;color:#5a5a68;vertical-align:top">${esc(item.release)||'—'}</td>
       </tr>`).join('');
-    const html=`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"/><title>Протокол: ${demo?.name||'Демо'}</title>
-    <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',system-ui,sans-serif;background:#f5f4f0;color:#1a1a1e;padding:40px 32px}@media print{body{background:#fff;padding:20px}}
-    .wrap{max-width:960px;margin:0 auto}
-    .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #e8e8e4}
-    .hdr-left{display:flex;align-items:center;gap:12px}
-    .logo-text{font-size:16px;font-weight:600;color:#1a1a1e}.logo-text span{color:#6366f1}
-    .demo-title{font-size:22px;font-weight:700;color:#1a1a1e;margin-bottom:6px}
-    .demo-meta{display:flex;gap:16px;font-size:13px;color:#9898a6}
-    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}
-    .stat{background:#fff;border:1px solid #e8e8e4;border-radius:10px;padding:12px 14px}
-    .stat-n{font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
-    .stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#9898a6}
-    table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-    thead tr{background:#f9f9f7}th{padding:10px 8px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9898a6;border-bottom:1px solid #f0f0f0}
-    tr:last-child td{border-bottom:none}tr:hover td{background:#fafaf8}
-    .btn-bar{position:fixed;top:20px;right:20px;display:flex;gap:8px}
-    .dl-btn{background:#6366f1;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none}
-    .dl-btn:hover{background:#4f52d4}
-    .cp-btn{background:#fff;color:#1a1a1e;border:1px solid #e0e0e0;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px}
-    .cp-btn:hover{background:#f5f4f0}
-    @media print{.btn-bar{display:none}}
-    .footer{margin-top:24px;font-size:12px;color:#9898a6;text-align:right}
-    </style></head><body>
-    <div class="btn-bar">
-      <button class="cp-btn" onclick="copyText()">📋 Скопировать текст</button>
-      <button class="dl-btn" onclick="downloadPDF()">⬇️ Скачать файл</button>
-    </div>
-    <script>
-    function downloadPDF(){
-      const html=document.documentElement.outerHTML;
-      const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;
-      a.download='protocol.html';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-    function copyText(){
-      const lines=[];
-      const title=document.querySelector('.demo-title');
-      if(title)lines.push(title.textContent,'');
-      document.querySelectorAll('tbody tr').forEach((tr,i)=>{
-        const tds=[...tr.querySelectorAll('td')].map(td=>td.textContent.trim().replace(/\s+/g,' '));
-        lines.push((i+1)+'. '+tds[1]);
-        lines.push('   Статус: '+tds[2]+'  |  Приоритет: '+tds[3]);
-        lines.push('   Автор: '+tds[4]+'  |  Ответственный: '+tds[5]);
-        if(tds[6]&&tds[6]!=='—')lines.push('   Задача: '+tds[6]);
-        if(tds[7]&&tds[7]!=='—')lines.push('   Релиз: '+tds[7]);
-        lines.push('');
-      });
-      navigator.clipboard.writeText(lines.join('\n')).then(()=>{
-        const btn=document.querySelector('.cp-btn');
-        btn.textContent='✓ Скопировано';
-        setTimeout(()=>{btn.textContent='📋 Скопировать текст';},2000);
-      });
-    }
-    <\/script>
-    <div class="wrap">
-      <div class="hdr">
-        <div class="hdr-left">
-          <svg width="32" height="32" viewBox="0 0 120 120" fill="none"><rect width="120" height="120" rx="60" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M60 120C93.1371 120 120 93.1371 120 60C120 26.8629 93.1371 0 60 0C26.8629 0 0 26.8629 0 60C0 93.1371 26.8629 120 60 120ZM36.7092 23.1584C38.2594 20.1973 43.8 11.4 53.3375 8.86397C60 7.09242 69.6 7.2 78.1764 11.7325C76.2 12 73.9123 13.1946 72.2667 14.8402L65.7707 21.3362C61.0903 26.0166 58.8669 30.0337 58.6533 33.3861C58.5518 36.8507 60.575 40.6569 64.8349 44.9168C67.0313 47.464 67.9688 48.4015 70.3125 50.7453C71.4615 51.8943 73.125 53.5578 76.3814 56.4633C80.8655 60.9474 84.5603 63.082 87.6892 62.8678C90.9302 62.7657 94.8345 60.2065 99.5149 55.5261L106.187 48.8536C107.553 47.4876 108.541 45.8191 109.046 44.0443C110.546 46.2 114.6 55.5261 110.4 69.6C107.4 78 99.71 83.5808 96.3629 85.5827C93.0158 87.5846 88.9953 88.6904 84.6373 89.0128C80.1678 89.4466 75.358 88.2028 70.0958 85.1694C64.7222 82.2474 59.0083 77.6479 52.7306 71.3702C46.0044 64.644 40.9558 58.2582 37.6969 52.3247C34.5501 46.5033 32.9693 41.1337 33.2904 36.3286C33.6114 31.5234 34.5619 27.2321 36.5625 23.4379C36.6083 23.351 36.6562 23.2596 36.7063 23.1638L36.7092 23.1584Z" fill="url(#lg2)"/><defs><linearGradient id="lg2" x1="96" y1="20.8421" x2="27.7895" y2="101.053" gradientUnits="userSpaceOnUse"><stop stop-color="#2E62FE"/><stop offset="1" stop-color="#5540E5"/></linearGradient></defs></svg>
-          <span class="logo-text">Демо<span>протокол</span></span>
-        </div>
-        <div style="text-align:right">
-          <div class="demo-title">${demo?.name||'—'}</div>
-          <div class="demo-meta">
-            <span>📅 ${demo?.date||'—'}</span>
-            <span>👤 ${demo?.author||'—'}</span>
-            <span>📋 ${its.length} доработок</span>
-          </div>
-        </div>
+    const statsHtml=Object.entries(SM).map(([k,v])=>{
+      const n=its.filter(i=>i.status===k).length;
+      return`<div style="background:#fff;border:1px solid #e8e8e4;border-radius:10px;padding:12px 14px"><div style="font-size:22px;font-weight:700;line-height:1;margin-bottom:3px;color:${statusColors[k]}">${n}</div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#9898a6">${v.label}</div></div>`;
+    }).join('');
+    const logoSvg=`<svg width="32" height="32" viewBox="0 0 120 120" fill="none"><rect width="120" height="120" rx="60" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M60 120C93.1371 120 120 93.1371 120 60C120 26.8629 93.1371 0 60 0C26.8629 0 0 26.8629 0 60C0 93.1371 26.8629 120 60 120ZM36.7092 23.1584C38.2594 20.1973 43.8 11.4 53.3375 8.86397C60 7.09242 69.6 7.2 78.1764 11.7325C76.2 12 73.9123 13.1946 72.2667 14.8402L65.7707 21.3362C61.0903 26.0166 58.8669 30.0337 58.6533 33.3861C58.5518 36.8507 60.575 40.6569 64.8349 44.9168C67.0313 47.464 67.9688 48.4015 70.3125 50.7453C71.4615 51.8943 73.125 53.5578 76.3814 56.4633C80.8655 60.9474 84.5603 63.082 87.6892 62.8678C90.9302 62.7657 94.8345 60.2065 99.5149 55.5261L106.187 48.8536C107.553 47.4876 108.541 45.8191 109.046 44.0443C110.546 46.2 114.6 55.5261 110.4 69.6C107.4 78 99.71 83.5808 96.3629 85.5827C93.0158 87.5846 88.9953 88.6904 84.6373 89.0128C80.1678 89.4466 75.358 88.2028 70.0958 85.1694C64.7222 82.2474 59.0083 77.6479 52.7306 71.3702C46.0044 64.644 40.9558 58.2582 37.6969 52.3247C34.5501 46.5033 32.9693 41.1337 33.2904 36.3286C33.6114 31.5234 34.5619 27.2321 36.5625 23.4379C36.6083 23.351 36.6562 23.2596 36.7063 23.1638L36.7092 23.1584Z" fill="url(#lg2)"/><defs><linearGradient id="lg2" x1="96" y1="20.8421" x2="27.7895" y2="101.053" gradientUnits="userSpaceOnUse"><stop stop-color="#2E62FE"/><stop offset="1" stop-color="#5540E5"/></linearGradient></defs></svg>`;
+    const exportHtml=`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"/><title>Протокол: ${esc(demo?.name||'Демо')}</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',system-ui,sans-serif;background:#f5f4f0;color:#1a1a1e;padding:40px 32px}
+.wrap{max-width:960px;margin:0 auto}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #e8e8e4}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.logo-text{font-size:16px;font-weight:600;color:#1a1a1e}.logo-text span{color:#6366f1}
+.demo-title{font-size:22px;font-weight:700;color:#1a1a1e;margin-bottom:6px}
+.demo-meta{display:flex;gap:16px;font-size:13px;color:#9898a6}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+thead tr{background:#f9f9f7}th{padding:10px 8px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9898a6;border-bottom:1px solid #f0f0f0}
+tr:last-child td{border-bottom:none}
+.footer{margin-top:24px;font-size:12px;color:#9898a6;text-align:right}
+</style></head><body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-left">${logoSvg}<span class="logo-text">Демо<span>протокол</span></span></div>
+    <div style="text-align:right">
+      <div class="demo-title">${esc(demo?.name||'—')}</div>
+      <div class="demo-meta">
+        <span>📅 ${esc(demo?.date||'—')}</span>
+        <span>👤 ${esc(demo?.author||'—')}</span>
+        <span>📋 ${its.length} доработок</span>
       </div>
-      <div class="stats">
-        ${Object.entries(SM).map(([k,v])=>{const n=its.filter(i=>i.status===k).length;return`<div class="stat"><div class="stat-n" style="color:${statusColors[k]}">${n}</div><div class="stat-l">${v.label}</div></div>`;}).join('')}
-      </div>
-      <table>
-        <thead><tr><th>#</th><th>Описание</th><th>Статус</th><th>Приоритет</th><th>Автор</th><th>Ответственный</th><th>Задача</th><th>Релиз</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-      <div class="footer">Сформировано: ${new Date().toLocaleString('ru-RU')}</div>
     </div>
-    </body></html>`;
-    const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  </div>
+  <div class="stats">${statsHtml}</div>
+  <table>
+    <thead><tr><th>#</th><th>Описание</th><th>Статус</th><th>Приоритет</th><th>Автор</th><th>Ответственный</th><th>Задача</th><th>Релиз</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="footer">Сформировано: ${new Date().toLocaleString('ru-RU')}</div>
+</div>
+</body></html>`;
+    // Скачиваем файл напрямую
+    const blob=new Blob([exportHtml],{type:'text/html;charset=utf-8'});
     const url=URL.createObjectURL(blob);
-    window.open(url,'_blank');
-    setToast('Протокол открыт в новой вкладке');
+    const a=document.createElement('a');
+    a.href=url;
+    const safeName=(demo?.name||'protocol').replace(/[^a-zA-Zа-яА-Я0-9\s]/g,'').trim().slice(0,40);
+    a.download=`Протокол_${safeName}_${demo?.date||''}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    setToast('Файл протокола скачан');
   }
 
   // ── ITEM CARD ──
