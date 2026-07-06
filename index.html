@@ -24,11 +24,12 @@
   --orange:#ea580c;--orange-bg:rgba(234,88,12,0.08);
   --purple:#7c3aed;--purple-bg:rgba(124,58,237,0.08);
   --sky:#0284c7;--sky-bg:rgba(2,132,199,0.08);
-  --radius:8px;--radius-lg:12px;
+  --radius:8px;--radius-lg:12px;--radius-xl:16px;
   --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
   --tr:150ms ease;
   --sh:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
   --sh-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
+  --sh-lg:0 8px 24px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.06);
 }
 .dark{
   --bg:#0f0f11;--bg-card:#17171a;--bg-hover:#1e1e22;--bg-input:#1a1a1e;
@@ -41,7 +42,7 @@
   --orange:#fb923c;--orange-bg:rgba(251,146,60,0.1);
   --purple:#a855f7;--purple-bg:rgba(168,85,247,0.1);
   --sky:#38bdf8;--sky-bg:rgba(56,189,248,0.1);
-  --sh:0 1px 3px rgba(0,0,0,0.3);--sh-md:0 4px 24px rgba(0,0,0,0.4);
+  --sh:0 1px 3px rgba(0,0,0,0.3);--sh-md:0 4px 24px rgba(0,0,0,0.4);--sh-lg:0 8px 32px rgba(0,0,0,0.5);
 }
 html,body,#root{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background var(--tr),color var(--tr)}
@@ -52,63 +53,67 @@ input,textarea,select{font-family:var(--font);font-size:13px;background:var(--bg
 input::placeholder,textarea::placeholder{color:var(--text-3)}
 input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.06)}
 select option{background:var(--bg-card)}
-textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5;min-height:68px}
+textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5;min-height:60px}
 button{font-family:var(--font);cursor:pointer;border:none;outline:none;transition:all var(--tr)}
 button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+/* layout */
 .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
-.topbar{border-bottom:1px solid var(--border);background:var(--bg);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;box-shadow:var(--sh)}
+.topbar{border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px;box-shadow:var(--sh)}
 .topbar-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
 .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;white-space:nowrap;flex-shrink:0}
 .logo span{color:var(--accent)}
-.demo-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;flex:1}
-.meta-input{background:transparent;border:none;font-size:13px;color:var(--text-2);padding:0;height:auto;width:auto;min-width:80px}
-.meta-input:focus{color:var(--text);box-shadow:none;border:none}
-.meta-sep{color:var(--text-3);font-size:12px;flex-shrink:0}
+.demo-badge{display:flex;align-items:center;gap:8px;background:var(--accent-bg);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:3px 12px 3px 8px;max-width:340px;overflow:hidden}
+.demo-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.demo-badge-text{font-size:12px;font-weight:500;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
 .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-md)}
 .btn-accent{background:var(--accent);color:#fff;border:1px solid transparent;box-shadow:var(--sh)}
 .btn-accent:hover{background:var(--accent-hover)}
 .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid transparent}
 .btn-danger:hover{background:rgba(220,38,38,0.16)}
-.btn-sm{height:26px;padding:0 10px;font-size:12px}
-.btn-icon{width:30px;padding:0;justify-content:center}
-.body{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 56px)}
+.btn-warn{background:var(--amber-bg);color:var(--amber);border:1px solid transparent}
+.btn-warn:hover{background:rgba(217,119,6,0.16)}
+.btn-green{background:var(--green-bg);color:var(--green);border:1px solid transparent}
+.btn-green:hover{background:rgba(22,163,74,0.16)}
+.btn-sm{height:28px;padding:0 10px;font-size:12px}
+.btn-xs{height:24px;padding:0 8px;font-size:11px}
+.btn-icon{width:32px;padding:0;justify-content:center}
+/* body layout */
+.body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
 @media(max-width:768px){.body{grid-template-columns:1fr}.sidebar{display:none}}
-.sidebar{border-right:1px solid var(--border);background:var(--bg);padding:16px 12px;display:flex;flex-direction:column;gap:3px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
-.sidebar-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:10px 10px 5px}
-.nav-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:all var(--tr)}
+.sidebar{border-right:1px solid var(--border);background:var(--bg);padding:14px 10px;display:flex;flex-direction:column;gap:2px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.sidebar-sec{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);padding:10px 10px 5px}
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:all var(--tr)}
 .nav-item:hover{background:var(--bg-hover);color:var(--text)}
-.nav-item.active{background:var(--accent-bg);color:var(--accent)}
-.nav-item-left{display:flex;align-items:center;gap:7px;min-width:0}
-.nav-item-left span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.nav-item.active{background:var(--accent-bg);color:var(--accent);font-weight:500}
+.nav-left{display:flex;align-items:center;gap:7px;min-width:0}
+.nav-left span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ndot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .cnt{font-size:11px;background:var(--bg-hover);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:500;flex-shrink:0}
 .nav-item.active .cnt{background:rgba(99,102,241,0.15);color:var(--accent)}
+/* main */
 .main{padding:24px;min-width:0}
+/* stats */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px}
 .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 14px;box-shadow:var(--sh)}
 .stat-val{font-size:24px;font-weight:600;letter-spacing:-0.5px;line-height:1;margin-bottom:3px}
-.stat-lbl{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
+.stat-lbl{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em}
+/* form */
 .add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:18px;box-shadow:var(--sh)}
 .form-title{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:7px;margin-bottom:12px}
 .fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:11px;color:var(--text-3);letter-spacing:0.03em}
+.fg label{font-size:11px;color:var(--text-3);letter-spacing:.03em}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
 .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
-@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
 .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;align-items:center}
+/* cards */
 .items-list{display:flex;flex-direction:column;gap:8px}
-.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
-.filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
-/* feature group header */
-.feat-group{margin-bottom:20px}
-.feat-group-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:6px 0}
-.feat-group-title{font-size:12px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:0.04em}
-.feat-group-cnt{font-size:11px;color:var(--text-3);background:var(--bg-hover);padding:1px 7px;border-radius:10px}
-/* item card */
 .item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px;transition:border-color var(--tr),box-shadow var(--tr);position:relative;overflow:hidden;box-shadow:var(--sh)}
 .item-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
 .item-card.s-pending::before{background:var(--amber)}
@@ -118,7 +123,7 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .item-card.s-declined::before{background:var(--red)}
 .item-card:hover{border-color:var(--border-md);box-shadow:var(--sh-md)}
 .item-top{display:flex;align-items:flex-start;gap:10px}
-.item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:28px;padding-top:2px;flex-shrink:0}
+.item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:24px;padding-top:2px;flex-shrink:0}
 .item-body{flex:1;min-width:0}
 .item-desc{font-size:14px;color:var(--text);line-height:1.45;margin-bottom:7px;white-space:pre-wrap;word-break:break-word}
 .item-comment{font-size:12px;color:var(--text-2);background:var(--bg-hover);border-radius:var(--radius);padding:7px 10px;margin-bottom:7px;line-height:1.5;white-space:pre-wrap;word-break:break-word;border-left:2px solid var(--border-md)}
@@ -141,31 +146,62 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .item-card:hover .item-actions{opacity:1}
 /* edit panel */
 .edit-panel{margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
-.edit-row{display:grid;gap:8px;margin-bottom:8px}
-.edit-row-3{grid-template-columns:1fr 1fr 1fr}
-.edit-row-2{grid-template-columns:1fr auto}
-@media(max-width:600px){.edit-row-3{grid-template-columns:1fr}}
-.edit-row select,.edit-row input,.edit-row textarea{height:30px;font-size:12px}
-.edit-row textarea{height:60px}
-/* confirm dialog */
-.confirm-box{background:var(--red-bg);border:1px solid rgba(220,38,38,0.25);border-radius:var(--radius);padding:10px 12px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ep-grid{display:grid;gap:8px;margin-bottom:8px}
+.ep-3{grid-template-columns:1fr 1fr 1fr}
+.ep-2{grid-template-columns:1fr auto}
+@media(max-width:600px){.ep-3{grid-template-columns:1fr 1fr}}
+.ep-grid select,.ep-grid input,.ep-grid textarea{height:30px;font-size:12px}
+.ep-grid textarea{height:56px}
+/* confirm */
+.confirm-box{background:var(--red-bg);border:1px solid rgba(220,38,38,0.2);border-radius:var(--radius);padding:10px 12px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .confirm-box span{font-size:12px;color:var(--red)}
 .confirm-btns{display:flex;gap:6px;flex-shrink:0}
-/* empty */
-.empty{text-align:center;padding:40px 24px;color:var(--text-3)}
-.empty-icon{font-size:28px;margin-bottom:10px;opacity:.4}
-.empty-title{font-size:14px;color:var(--text-2);margin-bottom:5px}
+/* feature group */
+.feat-group{margin-bottom:22px}
+.feat-group-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.feat-group-title{font-size:13px;font-weight:600;color:var(--text)}
+.feat-group-cnt{font-size:11px;color:var(--text-3);background:var(--bg-hover);padding:2px 8px;border-radius:10px}
+/* history */
+.demo-history-list{display:flex;flex-direction:column;gap:10px}
+.demo-hist-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh);transition:box-shadow var(--tr)}
+.demo-hist-card:hover{box-shadow:var(--sh-md)}
+.demo-hist-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;gap:12px}
+.demo-hist-info{flex:1;min-width:0}
+.demo-hist-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.demo-hist-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.demo-hist-body{border-top:1px solid var(--border);padding:14px 16px}
+.demo-hist-actions{display:flex;gap:6px;margin-bottom:14px}
+/* empty / loading */
+.empty{text-align:center;padding:48px 24px;color:var(--text-3)}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.35}
+.empty-title{font-size:15px;color:var(--text-2);margin-bottom:6px;font-weight:500}
+.empty-sub{font-size:13px;margin-bottom:20px}
+.loading-wrap{display:flex;align-items:center;justify-content:center;height:200px;gap:10px;color:var(--text-3);font-size:13px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+.spin-sm{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+/* new demo screen */
+.new-demo-screen{max-width:520px;margin:0 auto;padding-top:40px}
+.new-demo-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 32px;box-shadow:var(--sh-md)}
+.new-demo-title{font-size:18px;font-weight:600;margin-bottom:6px}
+.new-demo-sub{font-size:13px;color:var(--text-3);margin-bottom:24px;line-height:1.6}
+.new-demo-field{margin-bottom:12px}
+.new-demo-field label{display:block;font-size:12px;color:var(--text-3);margin-bottom:4px}
+.history-link{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:20px;font-size:13px;color:var(--text-3);cursor:pointer;padding:10px;border-radius:var(--radius);transition:all var(--tr)}
+.history-link:hover{background:var(--bg-hover);color:var(--text-2)}
 /* export */
 .export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh)}
 .export-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg)}
-.export-bar-title{font-size:12px;color:var(--text-3);font-family:var(--mono)}
 .export-pre{padding:14px;font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;line-height:1.7;max-height:480px;overflow-y:auto}
+/* filter bar */
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
 /* toast */
 .toast{position:fixed;bottom:22px;right:22px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:9px 14px;font-size:13px;color:var(--text);box-shadow:var(--sh-md);z-index:999;animation:slideUp .18s ease;display:flex;align-items:center;gap:7px}
 @keyframes slideUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 /* modal */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(2px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
-.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:26px 30px;width:100%;max-width:500px;box-shadow:var(--sh-md);position:relative}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(3px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:26px 30px;width:100%;max-width:500px;box-shadow:var(--sh-lg);position:relative}
 .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:17px;line-height:1;padding:4px}
 .modal-close:hover{color:var(--text)}
 .modal h2{font-size:15px;font-weight:600;margin-bottom:14px}
@@ -174,7 +210,7 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .help-row{display:flex;gap:8px;margin-bottom:5px;font-size:13px;color:var(--text-2);line-height:1.5}
 /* setup */
 .setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:32px 36px;width:100%;max-width:480px;box-shadow:var(--sh-md)}
+.setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px 36px;width:100%;max-width:480px;box-shadow:var(--sh-md)}
 .setup-logo{font-size:17px;font-weight:600;margin-bottom:7px}
 .setup-logo span{color:var(--accent)}
 .setup-sub{font-size:13px;color:var(--text-3);margin-bottom:24px;line-height:1.7}
@@ -187,14 +223,13 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .setup-step{display:flex;gap:9px;margin-bottom:7px;font-size:12px;color:var(--text-2)}
 .setup-step-n{width:17px;height:17px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .divider{height:1px;background:var(--border);margin:18px 0}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spinner{width:17px;height:17px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
-.spin-sm{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 .sec-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);font-weight:600;margin-bottom:9px}
 .kbd{font-family:var(--mono);font-size:10px;background:var(--bg-hover);color:var(--text-3);padding:2px 5px;border-radius:4px;border:1px solid var(--border-md)}
-/* theme toggle */
 .theme-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-2);font-size:14px}
 .theme-btn:hover{background:var(--bg-hover);color:var(--text)}
+.finish-bar{background:var(--amber-bg);border:1px solid rgba(217,119,6,0.2);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.finish-bar-text{font-size:13px;color:var(--amber);font-weight:500}
+.finish-bar-sub{font-size:12px;color:var(--text-3);margin-top:2px}
 </style>
 </head>
 <body>
@@ -203,10 +238,10 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 const {useState,useEffect,useCallback,useRef} = React;
 const {createClient} = supabase;
 
-// ── КЛЮЧИ SUPABASE ─────────────────────────────────────
+// ── КЛЮЧИ SUPABASE ──────────────────────────────────
 const SUPABASE_URL = 'https://xvbqphbrmjlavlvivpnp.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOj';
-// ──────────────────────────────────────────────────────
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzA3MDYsImV4cCI6MjA5ODkwNjcwNn0.5nlq_JEdrdNrr6O2xzcFmz0ugNVnN6WkLlL3akRhoyY';
+// ────────────────────────────────────────────────────
 
 const SK = 'demo_proto_sb';
 const TK = 'demo_proto_theme';
@@ -219,21 +254,20 @@ const SM = {
   declined:   {label:'Отклонено',      p:'p-red',   dot:'#dc2626'},
 };
 const PM = {
-  blocking: {label:'Блокирующий',p:'p-red'},
-  critical: {label:'Критический',p:'p-orange'},
-  medium:   {label:'Средний',    p:'p-amber'},
-  low:      {label:'Низкий',     p:'p-gray'},
+  blocking:{label:'Блокирующий',p:'p-red'},
+  critical:{label:'Критический',p:'p-orange'},
+  medium:  {label:'Средний',    p:'p-amber'},
+  low:     {label:'Низкий',     p:'p-gray'},
 };
 
-// Автостатус: если ссылка заполнена и статус был pending → created
-function autoStatus(currentStatus, link) {
-  if (link && link.trim() && currentStatus === 'pending') return 'created';
-  return currentStatus;
+function autoStatus(cur, link) {
+  if (link && link.trim() && cur === 'pending') return 'created';
+  return cur;
 }
 
-const Ico = ({d,s=14}) => (
+const Ico = ({d,s=14,style}) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d}/></svg>
+    strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={style}><path d={d}/></svg>
 );
 const ic = {
   plus:    "M12 5v14M5 12h14",
@@ -248,9 +282,12 @@ const ic = {
   branch:  "M6 3v12M18 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM18 9a9 9 0 01-9 9",
   cog:     "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z",
   help:    "M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01",
-  sun:     "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 5a7 7 0 100 14A7 7 0 0012 5z",
-  moon:    "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z",
-  comment: "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z",
+  archive: "M21 8v13H3V8M1 3h22v5H1zM10 12h4",
+  chevD:   "M6 9l6 6 6-9",
+  chevR:   "M9 18l6-6-6-6",
+  flag:    "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7",
+  export2: "M12 3v12M7 14l5 5 5-5M20 21H4",
+  tool:    "M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z",
 };
 
 function Toast({msg,onDone}) {
@@ -265,30 +302,29 @@ function HelpModal({onClose}) {
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2>Как пользоваться</h2>
         <div className="help-sec">
+          <h3>Начало работы</h3>
+          <div className="help-row"><span>🚀</span><span>Перед каждым демо нажмите «Новое демо», введите название фичи, дату и ведущего</span></div>
+          <div className="help-row"><span>📋</span><span>Откроется режим демо — фиксируйте пожелания участников в реальном времени</span></div>
+        </div>
+        <div className="help-sec">
           <h3>Во время демо</h3>
-          <div className="help-row"><span>📋</span><span>Заполните название фичи и имя ведущего в шапке — они подставятся ко всем карточкам сессии</span></div>
-          <div className="help-row"><span>✍️</span><span>Пишите описание пожелания и нажимайте «Зафиксировать» (или Ctrl+Enter)</span></div>
-          <div className="help-row"><span>💬</span><span>Поле «Комментарий» — для доп. заметок, вопросов, замечаний стейкхолдеров</span></div>
+          <div className="help-row"><span>✍️</span><span>Заполните описание пожелания, автора и приоритет — нажмите «Зафиксировать» или Ctrl+Enter</span></div>
+          <div className="help-row"><span>💬</span><span>Поле «Комментарий» — для доп. заметок, вопросов стейкхолдеров, обсуждений</span></div>
+          <div className="help-row"><span>🔗</span><span>Если задача уже есть — вставьте ссылку, статус сменится на «Задача создана» автоматически</span></div>
         </div>
         <div className="help-sec">
-          <h3>После демо (разработка)</h3>
-          <div className="help-row"><span>✏️</span><span>Наведите на карточку → нажмите карандаш → откроется панель редактирования</span></div>
-          <div className="help-row"><span>🔗</span><span>Вставьте ссылку на задачу — статус автоматически сменится на «Задача создана»</span></div>
-          <div className="help-row"><span>🏷️</span><span>Поле «Фича» в редактировании — выберите из списка или введите новую</span></div>
-        </div>
-        <div className="help-sec">
-          <h3>Навигация</h3>
-          <div className="help-row"><span>🔁</span><span>Кнопка «Обновить» — загружает свежие данные от коллег</span></div>
-          <div className="help-row"><span>📊</span><span>«Все задачи» — сгруппированы по фиче, есть фильтры и поиск</span></div>
-          <div className="help-row"><span>📤</span><span>«Экспорт» — скопировать протокол для Slack или письма</span></div>
+          <h3>После демо</h3>
+          <div className="help-row"><span>✏️</span><span>Наведите на карточку → карандаш → редактирование статуса, релиза, ссылки, ответственного</span></div>
+          <div className="help-row"><span>✅</span><span>Когда всё внесено — нажмите «Завершить демо», оно уйдёт в историю</span></div>
+          <div className="help-row"><span>📤</span><span>В истории демо можно экспортировать протокол по каждому демо отдельно</span></div>
         </div>
         <div className="help-sec">
           <h3>Статусы</h3>
-          <div className="help-row"><span>🟡 Ожидает</span><span style={{marginLeft:6}}>— зафиксировано, задача не создана</span></div>
-          <div className="help-row"><span>🔵 Задача создана</span><span style={{marginLeft:6}}>— автоматически при добавлении ссылки</span></div>
-          <div className="help-row"><span>🟣 В работе</span><span style={{marginLeft:6}}>— разработка идёт</span></div>
-          <div className="help-row"><span>🟢 Готово</span><span style={{marginLeft:6}}>— выполнено</span></div>
-          <div className="help-row"><span>🔴 Отклонено</span><span style={{marginLeft:6}}>— решили не делать</span></div>
+          <div className="help-row"><span>🟡</span><span>Ожидает — зафиксировано, задача не поставлена</span></div>
+          <div className="help-row"><span>🔵</span><span>Задача создана — автоматически при добавлении ссылки</span></div>
+          <div className="help-row"><span>🟣</span><span>В работе — разработка идёт</span></div>
+          <div className="help-row"><span>🟢</span><span>Готово — выполнено</span></div>
+          <div className="help-row"><span>🔴</span><span>Отклонено — решили не делать</span></div>
         </div>
       </div>
     </div>
@@ -305,8 +341,8 @@ function SetupScreen({onConnect}) {
     setBusy(true);setErr('');
     try {
       const c=createClient(url.trim(),key.trim());
-      const {error}=await c.from('demo_items').select('id').limit(1);
-      if(error&&error.code!=='PGRST116') throw error;
+      const {error}=await c.from('demos').select('id').limit(1);
+      if(error&&error.code!=='PGRST116')throw error;
       localStorage.setItem(SK,JSON.stringify({url:url.trim(),key:key.trim()}));
       onConnect(c);
     } catch(e){setErr('Ошибка: '+(e.message||'проверьте URL и ключ'));setBusy(false);}
@@ -332,7 +368,7 @@ function SetupScreen({onConnect}) {
             ['2','Создайте проект'],
             ['3','Settings → API Keys → Legacy'],
             ['4','Скопируйте ',<code>Project URL</code>,' и ',<code>anon public</code>],
-            ['5','В ',<code>SQL Editor</code>,' выполните запрос из инструкции'],
+            ['5','В ',<code>SQL Editor</code>,' выполните SQL из инструкции'],
           ].map(([n,...r])=>(
             <div key={n} className="setup-step"><span className="setup-step-n">{n}</span><span>{r}</span></div>
           ))}
@@ -342,137 +378,199 @@ function SetupScreen({onConnect}) {
   );
 }
 
+// ── MAIN APP ──────────────────────────────────────────
 function App() {
   const [sb,setSb]=useState(null);
-  const [items,setItems]=useState([]);
   const [loading,setLoading]=useState(true);
-  const [view,setView]=useState('live');
+  const [view,setView]=useState('live'); // live | all | history | export-demo
   const [toast,setToast]=useState('');
   const [showHelp,setShowHelp]=useState(false);
   const [dark,setDark]=useState(()=>localStorage.getItem(TK)==='dark');
-  const [expandedId,setExpandedId]=useState(null);
-  const [confirmId,setConfirmId]=useState(null);
 
-  const [fStatus,setFStatus]=useState('');
-  const [fRelease,setFRelease]=useState('');
-  const [fSearch,setFSearch]=useState('');
-  const [fFeature,setFFeature]=useState('');
+  // demos
+  const [demos,setDemos]=useState([]); // [{id,name,date,author,finished,created_at}]
+  const [activeDemoId,setActiveDemoId]=useState(null);
+  const [items,setItems]=useState([]); // all items for active demo
+  const [allItems,setAllItems]=useState([]); // all items across all demos for "all tasks" view
 
-  const [demoName,setDemoName]=useState('');
-  const [demoDate,setDemoDate]=useState(new Date().toISOString().slice(0,10));
-  const [demoAuthor,setDemoAuthor]=useState('');
+  // new demo form
+  const [newName,setNewName]=useState('');
+  const [newDate,setNewDate]=useState(new Date().toISOString().slice(0,10));
+  const [newAuthor,setNewAuthor]=useState('');
 
+  // add item form
   const [fDesc,setFDesc]=useState('');
   const [fAuthor,setFAuthor]=useState('');
   const [fPriority,setFPriority]=useState('medium');
   const [fLink,setFLink]=useState('');
   const [fRel,setFRel]=useState('');
   const [fComment,setFComment]=useState('');
+  const [fAssignee,setFAssignee]=useState('');
 
-  // тема
+  // ui state
+  const [expandedId,setExpandedId]=useState(null);
+  const [confirmId,setConfirmId]=useState(null);
+  const [expandedDemoId,setExpandedDemoId]=useState(null);
+  const [fStatus,setFStatus]=useState('');
+  const [fSearch,setFSearch]=useState('');
+  const [fFeature,setFFeature]=useState('');
+  const [exportDemoId,setExportDemoId]=useState(null);
+  const [showFinishConfirm,setShowFinishConfirm]=useState(false);
+
+  // theme
   useEffect(()=>{
     document.documentElement.classList.toggle('dark',dark);
     localStorage.setItem(TK,dark?'dark':'light');
   },[dark]);
 
-  // инициализация
+  // init supabase
   useEffect(()=>{
     if(SUPABASE_URL&&SUPABASE_URL!=='ВСТАВЬТЕ_URL_СЮДА'){setSb(createClient(SUPABASE_URL,SUPABASE_KEY));return;}
     try{const s=localStorage.getItem(SK);if(s){const{url,key}=JSON.parse(s);setSb(createClient(url,key));return;}}catch{}
     setLoading(false);
   },[]);
 
-  const loadItems=useCallback(async(client)=>{
-    const{data,error}=await(client||sb).from('demo_items').select('*').order('id',{ascending:true});
-    if(!error&&data)setItems(data);
+  // load data
+  const loadAll=useCallback(async(client)=>{
+    const c=client||sb;
+    const [{data:dems},{data:itms}]=await Promise.all([
+      c.from('demos').select('*').order('created_at',{ascending:false}),
+      c.from('demo_items').select('*').order('item_order',{ascending:true}),
+    ]);
+    if(dems)setDemos(dems);
+    if(itms)setAllItems(itms);
+    const active=dems?.find(d=>!d.finished);
+    if(active){
+      setActiveDemoId(active.id);
+      setItems(itms?.filter(i=>i.demo_id===active.id)||[]);
+    } else {
+      setActiveDemoId(null);
+      setItems([]);
+    }
     setLoading(false);
   },[sb]);
 
-  useEffect(()=>{if(sb)loadItems(sb);},[sb]);
+  useEffect(()=>{if(sb)loadAll(sb);},[sb]);
 
-  async function addItem(){
-    if(!fDesc.trim())return;
-    const link=fLink.trim();
-    const status=link?'created':'pending';
-    const row={
-      demo_name:demoName,demo_date:demoDate,demo_author:demoAuthor,
-      description:fDesc.trim(),author:fAuthor.trim()||'Не указан',
-      priority:fPriority,status,
-      link,release:fRel.trim(),
-      comment:fComment.trim(),
-    };
-    const{data,error}=await sb.from('demo_items').insert([row]).select();
+  const activeDemo=demos.find(d=>d.id===activeDemoId);
+
+  // create new demo
+  async function createDemo(){
+    if(!newName.trim())return;
+    const {data,error}=await sb.from('demos').insert([{
+      name:newName.trim(),date:newDate,author:newAuthor.trim(),finished:false
+    }]).select();
     if(!error&&data){
-      setItems(prev=>[...prev,data[0]]);
-      setFDesc('');setFLink('');setFRel('');setFComment('');
-      setToast('Пожелание зафиксировано');
+      setDemos(prev=>[data[0],...prev]);
+      setActiveDemoId(data[0].id);
+      setItems([]);
+      setNewName('');setNewDate(new Date().toISOString().slice(0,10));setNewAuthor('');
+      setView('live');
+      setToast('Демо начато!');
     }
   }
 
+  // finish demo
+  async function finishDemo(){
+    if(!activeDemoId)return;
+    await sb.from('demos').update({finished:true}).eq('id',activeDemoId);
+    setDemos(prev=>prev.map(d=>d.id===activeDemoId?{...d,finished:true}:d));
+    setActiveDemoId(null);
+    setItems([]);
+    setShowFinishConfirm(false);
+    setView('history');
+    setToast('Демо завершено и перемещено в историю');
+  }
+
+  // add item
+  async function addItem(){
+    if(!fDesc.trim()||!activeDemoId)return;
+    const link=fLink.trim();
+    const status=link?'created':'pending';
+    const order=items.length+1;
+    const row={
+      demo_id:activeDemoId,
+      description:fDesc.trim(),author:fAuthor.trim()||'Не указан',
+      priority:fPriority,status,link,release:fRel.trim(),
+      comment:fComment.trim(),assignee:fAssignee.trim(),
+      item_order:order,
+    };
+    const {data,error}=await sb.from('demo_items').insert([row]).select();
+    if(!error&&data){
+      setItems(prev=>[...prev,data[0]]);
+      setAllItems(prev=>[...prev,data[0]]);
+      setFDesc('');setFLink('');setFRel('');setFComment('');setFAssignee('');
+      setToast('Зафиксировано');
+    }
+  }
+
+  // update item
   async function updateItem(id,patch){
-    // автостатус при изменении ссылки
     if('link' in patch){
-      const item=items.find(i=>i.id===id);
-      if(item){
-        const newStatus=autoStatus(item.status,patch.link);
-        if(newStatus!==item.status) patch.status=newStatus;
-      }
+      const item=allItems.find(i=>i.id===id);
+      if(item){const ns=autoStatus(item.status,patch.link);if(ns!==item.status)patch.status=ns;}
     }
     await sb.from('demo_items').update(patch).eq('id',id);
     setItems(prev=>prev.map(i=>i.id===id?{...i,...patch}:i));
+    setAllItems(prev=>prev.map(i=>i.id===id?{...i,...patch}:i));
   }
 
+  // delete item
   async function deleteItem(id){
     await sb.from('demo_items').delete().eq('id',id);
     setItems(prev=>prev.filter(i=>i.id!==id));
+    setAllItems(prev=>prev.filter(i=>i.id!==id));
     setExpandedId(null);setConfirmId(null);
-    setToast('Доработка удалена');
+    setToast('Удалено');
   }
 
-  async function refresh(){setLoading(true);await loadItems(sb);setToast('Данные обновлены');}
+  async function refresh(){setLoading(true);await loadAll(sb);setToast('Обновлено');}
   function disconnect(){localStorage.removeItem(SK);window.location.reload();}
 
   if(!sb&&!loading)return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
 
+  // counts for active demo
   const counts={all:items.length,pending:0,created:0,inprogress:0,done:0,declined:0};
   items.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
-  const releases=[...new Set(items.map(i=>i.release).filter(Boolean))];
-  const features=[...new Set(items.map(i=>i.demo_name).filter(Boolean))];
 
-  const visible=items.filter(i=>{
-    if(fFeature&&i.demo_name!==fFeature)return false;
+  // all tasks view
+  const visibleAll=allItems.filter(i=>{
+    if(fFeature&&i.demo_id!==Number(fFeature))return false;
     if(fStatus&&i.status!==fStatus)return false;
-    if(fRelease&&i.release!==fRelease)return false;
     if(fSearch&&!i.description.toLowerCase().includes(fSearch.toLowerCase())
       &&!(i.comment||'').toLowerCase().includes(fSearch.toLowerCase())
       &&!i.author.toLowerCase().includes(fSearch.toLowerCase()))return false;
     return true;
   });
-
-  // группировка по фиче для board
-  const grouped=()=>{
+  const groupedAll=()=>{
     const map={};
-    visible.forEach(i=>{
-      const k=i.demo_name||'Без фичи';
-      if(!map[k])map[k]=[];
-      map[k].push(i);
+    visibleAll.forEach(i=>{
+      const demo=demos.find(d=>d.id===i.demo_id);
+      const k=i.demo_id;
+      if(!map[k])map[k]={demo,items:[]};
+      map[k].items.push(i);
     });
-    return Object.entries(map);
+    // sort by demo created_at desc
+    return Object.values(map).sort((a,b)=>new Date(b.demo?.created_at||0)-new Date(a.demo?.created_at||0));
   };
 
-  function buildExport(){
+  // export
+  function buildExport(demoId){
+    const demo=demos.find(d=>d.id===demoId);
+    const its=allItems.filter(i=>i.demo_id===demoId);
     const line='─'.repeat(44);
     let t=`ПРОТОКОЛ ДЕМО\n${line}\n`;
-    t+=`Фича:    ${demoName||'—'}\nДата:    ${demoDate||'—'}\nВедущий: ${demoAuthor||'—'}\n${line}\n\n`;
+    t+=`Фича:    ${demo?.name||'—'}\nДата:    ${demo?.date||'—'}\nВедущий: ${demo?.author||'—'}\n${line}\n\n`;
     const groups={};
     Object.keys(SM).forEach(k=>groups[k]=[]);
-    items.forEach(i=>groups[i.status]?.push(i));
+    its.forEach(i=>groups[i.status]?.push(i));
     ['inprogress','created','pending','done','declined'].forEach(s=>{
       if(!groups[s].length)return;
       t+=`${SM[s].label.toUpperCase()} (${groups[s].length})\n`;
-      groups[s].forEach(i=>{
-        t+=`  #${i.id} [${PM[i.priority]?.label||i.priority}] ${i.description}\n`;
-        t+=`       Фича: ${i.demo_name||'—'}  |  Автор: ${i.author}`;
+      groups[s].forEach((i,idx)=>{
+        t+=`  ${idx+1}. [${PM[i.priority]?.label||i.priority}] ${i.description}\n`;
+        t+=`       Автор: ${i.author}`;
+        if(i.assignee)t+=`  |  Ответственный: ${i.assignee}`;
         if(i.release)t+=`  |  Релиз: ${i.release}`;
         if(i.link)t+=`  |  Задача: ${i.link}`;
         t+='\n';
@@ -484,37 +582,43 @@ function App() {
     return t;
   }
 
-  async function copyExport(){await navigator.clipboard.writeText(buildExport());setToast('Протокол скопирован');}
+  async function copyExport(demoId){
+    await navigator.clipboard.writeText(buildExport(demoId));
+    setToast('Протокол скопирован');
+  }
 
-  function ItemCard({item}){
+  // ── ITEM CARD ──
+  function ItemCard({item,readOnly}){
     const exp=expandedId===item.id;
     const conf=confirmId===item.id;
     const sm=SM[item.status]||SM.pending;
     const pm=PM[item.priority]||PM.medium;
-    const allFeat=[...new Set(items.map(i=>i.demo_name).filter(Boolean))];
+    const demo=demos.find(d=>d.id===item.demo_id);
+    const demoItems=allItems.filter(i=>i.demo_id===item.demo_id);
+    const localNum=demoItems.filter(i=>i.item_order<=item.item_order).length;
     return(
       <div className={`item-card s-${item.status}`}>
         <div className="item-top">
-          <span className="item-num">#{item.id}</span>
+          <span className="item-num">{localNum}</span>
           <div className="item-body">
             <div className="item-desc">{item.description}</div>
-            {item.comment&&<div className="item-comment"><Ico d={ic.comment} s={11} style={{marginRight:5,opacity:.5}}/>{item.comment}</div>}
+            {item.comment&&<div className="item-comment">{item.comment}</div>}
             <div className="pills">
               <span className={`pill ${sm.p}`}>{sm.label}</span>
               <span className={`pill ${pm.p}`} style={{opacity:.85}}>{pm.label}</span>
-              {item.demo_name&&<span className="pill p-sky">{item.demo_name}</span>}
               {item.release&&<span className="pill p-purple" style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.branch} s={10}/>{item.release}</span>}
             </div>
             <div className="item-meta">
               <span className="mchip"><Ico d={ic.user} s={12}/>{item.author}</span>
+              {item.assignee&&<span className="mchip"><Ico d={ic.tool} s={12}/>{item.assignee}</span>}
               {item.created_at&&<span className="mchip"><Ico d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
               {item.link&&<a className="ilink" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer">
-                <span style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,34)}</span>
+                <span style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,32)}</span>
               </a>}
             </div>
-            {exp&&(
+            {exp&&!readOnly&&(
               <div className="edit-panel">
-                <div className="edit-row edit-row-3" style={{marginBottom:8}}>
+                <div className="ep-grid ep-3" style={{marginBottom:8}}>
                   <div className="fg"><label>Статус</label>
                     <select value={item.status} onChange={e=>updateItem(item.id,{status:e.target.value})}>
                       {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
@@ -523,60 +627,87 @@ function App() {
                   <div className="fg"><label>Релиз</label>
                     <input defaultValue={item.release} placeholder="2.4.1" onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
                   </div>
-                  <div className="fg"><label>Ссылка на задачу (→ авто-статус)</label>
-                    <input defaultValue={item.link} placeholder="PROJ-123 или https://..."
-                      onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
+                  <div className="fg"><label>Ссылка на задачу</label>
+                    <input defaultValue={item.link} placeholder="PROJ-123" onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
                   </div>
                 </div>
-                <div style={{marginBottom:8}}>
-                  <div className="fg"><label>Комментарий</label>
-                    <textarea defaultValue={item.comment||''} placeholder="Доп. заметки, вопросы, обсуждение..."
-                      style={{minHeight:56}}
-                      onBlur={e=>updateItem(item.id,{comment:e.target.value})}/>
+                <div className="ep-grid ep-3" style={{marginBottom:8}}>
+                  <div className="fg"><label>Ответственный (разработка)</label>
+                    <input defaultValue={item.assignee||''} placeholder="Имя разработчика" onBlur={e=>updateItem(item.id,{assignee:e.target.value})}/>
+                  </div>
+                  <div className="fg" style={{gridColumn:'span 2'}}><label>Комментарий</label>
+                    <textarea defaultValue={item.comment||''} placeholder="Доп. заметки, вопросы..." style={{height:52}} onBlur={e=>updateItem(item.id,{comment:e.target.value})}/>
                   </div>
                 </div>
-                <div className="edit-row edit-row-2">
-                  <div className="fg">
-                    <label>Фича / демо</label>
-                    <input list={`feat-${item.id}`} defaultValue={item.demo_name}
-                      placeholder="Выберите или введите новую"
-                      onBlur={e=>updateItem(item.id,{demo_name:e.target.value})}/>
-                    <datalist id={`feat-${item.id}`}>
-                      {allFeat.map(f=><option key={f} value={f}/>)}
-                    </datalist>
-                  </div>
-                  <button className="btn btn-danger btn-sm" style={{height:34,alignSelf:'flex-end'}}
-                    onClick={()=>setConfirmId(conf?null:item.id)}>
+                <div style={{display:'flex',justifyContent:'flex-end'}}>
+                  <button className="btn btn-danger btn-sm" onClick={()=>setConfirmId(conf?null:item.id)}>
                     <Ico d={ic.trash} s={13}/>Удалить
                   </button>
                 </div>
                 {conf&&(
                   <div className="confirm-box">
-                    <span>Удалить доработку #{item.id}? Это действие нельзя отменить.</span>
+                    <span>Удалить доработку №{localNum}? Это нельзя отменить.</span>
                     <div className="confirm-btns">
-                      <button className="btn btn-ghost btn-sm" onClick={()=>setConfirmId(null)}>Отмена</button>
-                      <button className="btn btn-danger btn-sm" onClick={()=>deleteItem(item.id)}>Да, удалить</button>
+                      <button className="btn btn-ghost btn-xs" onClick={()=>setConfirmId(null)}>Отмена</button>
+                      <button className="btn btn-danger btn-xs" onClick={()=>deleteItem(item.id)}>Удалить</button>
                     </div>
                   </div>
                 )}
               </div>
             )}
           </div>
-          <div className="item-actions">
-            <button className="btn btn-ghost btn-sm btn-icon"
-              onClick={()=>{setExpandedId(exp?null:item.id);setConfirmId(null);}} title="Редактировать">
-              <Ico d={ic.edit} s={13}/>
-            </button>
-          </div>
+          {!readOnly&&(
+            <div className="item-actions">
+              <button className="btn btn-ghost btn-sm btn-icon"
+                onClick={()=>{setExpandedId(exp?null:item.id);setConfirmId(null);}} title="Редактировать">
+                <Ico d={ic.edit} s={13}/>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
   }
 
-  const navItems=[
-    {id:'live', label:'Режим демо', dot:'#6366f1',count:counts.all},
-    {id:'board',label:'Все задачи',dot:'#5a5a68',count:counts.all},
-    {id:'export',label:'Экспорт',  dot:'#16a34a',count:null},
+  // ── NO ACTIVE DEMO SCREEN ──
+  function NoActiveDemoScreen(){
+    return(
+      <div className="new-demo-screen">
+        <div className="new-demo-card">
+          <div className="new-demo-title">Начать новое демо</div>
+          <div className="new-demo-sub">Заполните информацию о демонстрации — она будет привязана ко всем доработкам этой сессии</div>
+          <div className="new-demo-field"><label>Название фичи *</label>
+            <input value={newName} onChange={e=>setNewName(e.target.value)} placeholder="Например: Импульс — Плановые работы"/>
+          </div>
+          <div className="g2" style={{marginBottom:12}}>
+            <div className="new-demo-field" style={{marginBottom:0}}><label>Дата</label>
+              <input type="date" value={newDate} onChange={e=>setNewDate(e.target.value)}/>
+            </div>
+            <div className="new-demo-field" style={{marginBottom:0}}><label>Ведущий / PM</label>
+              <input value={newAuthor} onChange={e=>setNewAuthor(e.target.value)} placeholder="Имя"/>
+            </div>
+          </div>
+          <button className="btn btn-accent" style={{width:'100%',height:38,fontSize:14}} onClick={createDemo}>
+            <Ico d={ic.plus} s={14}/>Начать демо
+          </button>
+        </div>
+        {demos.filter(d=>d.finished).length>0&&(
+          <div className="history-link" onClick={()=>setView('history')}>
+            <Ico d={ic.archive} s={16}/> Перейти к истории демонстраций ({demos.filter(d=>d.finished).length})
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // finished demos
+  const finishedDemos=demos.filter(d=>d.finished);
+
+  // sidebar nav
+  const navMain=[
+    {id:'live',label:'Режим демо',dot:'#6366f1',cnt:activeDemoId?counts.all:null},
+    {id:'all', label:'Все задачи',dot:'#5a5a68',cnt:allItems.length},
+    {id:'history',label:'История демо',dot:'#16a34a',cnt:finishedDemos.length},
   ];
 
   return(
@@ -585,14 +716,12 @@ function App() {
       <header className="topbar">
         <div className="topbar-left">
           <span className="logo">Демо<span>протокол</span></span>
-          <span className="meta-sep">|</span>
-          <div className="demo-meta">
-            <input className="meta-input" value={demoName} onChange={e=>setDemoName(e.target.value)} placeholder="Название фичи" style={{minWidth:130}}/>
-            <span className="meta-sep">·</span>
-            <input className="meta-input" type="date" value={demoDate} onChange={e=>setDemoDate(e.target.value)} style={{width:126}}/>
-            <span className="meta-sep">·</span>
-            <input className="meta-input" value={demoAuthor} onChange={e=>setDemoAuthor(e.target.value)} placeholder="PM / ведущий" style={{minWidth:90}}/>
-          </div>
+          {activeDemo&&(
+            <div className="demo-badge">
+              <span className="demo-badge-dot"/>
+              <span className="demo-badge-text">{activeDemo.name}</span>
+            </div>
+          )}
         </div>
         <div className="topbar-right">
           <button className="theme-btn" onClick={()=>setDark(d=>!d)} title={dark?'Светлая тема':'Тёмная тема'}>
@@ -603,44 +732,25 @@ function App() {
           </button>
           <button className="btn btn-ghost btn-sm" onClick={refresh}><Ico d={ic.refresh} s={13}/>Обновить</button>
           {!(SUPABASE_URL&&SUPABASE_URL!=='ВСТАВЬТЕ_URL_СЮДА')&&
-            <button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect} title="Сменить подключение"><Ico d={ic.cog} s={13}/></button>}
+            <button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect}><Ico d={ic.cog} s={13}/></button>}
         </div>
       </header>
 
       <div className="body">
         <aside className="sidebar">
-          <div className="sidebar-section">Разделы</div>
-          {navItems.map(n=>(
+          <div className="sidebar-sec">Разделы</div>
+          {navMain.map(n=>(
             <button key={n.id} className={`nav-item ${view===n.id?'active':''}`} onClick={()=>setView(n.id)}>
-              <span className="nav-item-left"><span className="nav-dot" style={{background:n.dot}}/><span>{n.label}</span></span>
-              {n.count!==null&&<span className="cnt">{n.count}</span>}
+              <span className="nav-left"><span className="ndot" style={{background:n.dot}}/><span>{n.label}</span></span>
+              {n.cnt!==null&&n.cnt!==undefined&&<span className="cnt">{n.cnt}</span>}
             </button>
           ))}
-          <div className="sidebar-section" style={{marginTop:6}}>По статусу</div>
-          {Object.entries(SM).map(([k,v])=>(
-            <button key={k} className={`nav-item ${fStatus===k&&view==='board'?'active':''}`}
-              onClick={()=>{setFStatus(k);setView('board');}}>
-              <span className="nav-item-left"><span className="nav-dot" style={{background:v.dot}}/><span>{v.label}</span></span>
-              <span className="cnt">{counts[k]}</span>
-            </button>
-          ))}
-          {features.length>0&&<>
-            <div className="sidebar-section" style={{marginTop:6}}>По фиче</div>
-            {features.map(f=>(
-              <button key={f} className={`nav-item ${fFeature===f&&view==='board'?'active':''}`}
-                onClick={()=>{setFFeature(f);setView('board');}}>
-                <span className="nav-item-left"><span className="nav-dot" style={{background:'var(--sky)'}}/><span>{f}</span></span>
-                <span className="cnt">{items.filter(i=>i.demo_name===f).length}</span>
-              </button>
-            ))}
-          </>}
-          {releases.length>0&&<>
-            <div className="sidebar-section" style={{marginTop:6}}>По релизу</div>
-            {releases.map(r=>(
-              <button key={r} className={`nav-item ${fRelease===r&&view==='board'?'active':''}`}
-                onClick={()=>{setFRelease(r);setView('board');}}>
-                <span className="nav-item-left"><span className="nav-dot" style={{background:'var(--purple)'}}/><span>{r}</span></span>
-                <span className="cnt">{items.filter(i=>i.release===r).length}</span>
+          {activeDemoId&&<>
+            <div className="sidebar-sec" style={{marginTop:6}}>Текущее демо</div>
+            {Object.entries(SM).map(([k,v])=>(
+              <button key={k} className="nav-item" onClick={()=>{setFStatus(k);setView('live');}}>
+                <span className="nav-left"><span className="ndot" style={{background:v.dot}}/><span>{v.label}</span></span>
+                <span className="cnt">{counts[k]}</span>
               </button>
             ))}
           </>}
@@ -648,72 +758,97 @@ function App() {
 
         <main className="main">
           {loading?(
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:200,gap:10,color:'var(--text-3)',fontSize:13}}>
-              <div className="spinner"/>Загрузка...
-            </div>
+            <div className="loading-wrap"><div className="spinner"/>Загрузка...</div>
           ):(
             <>
+              {/* ── РЕЖИМ ДЕМО ── */}
               {view==='live'&&(
                 <>
-                  <div className="stats-grid">
-                    <div className="stat-card"><div className="stat-val">{counts.all}</div><div className="stat-lbl">Всего</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--amber)'}}>{counts.pending}</div><div className="stat-lbl">Ожидают</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--accent)'}}>{counts.created+counts.inprogress}</div><div className="stat-lbl">В работе</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{counts.done}</div><div className="stat-lbl">Готово</div></div>
-                    <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{counts.declined}</div><div className="stat-lbl">Отклонено</div></div>
-                  </div>
+                  {!activeDemoId?<NoActiveDemoScreen/>:(
+                    <>
+                      {/* finish bar */}
+                      {!showFinishConfirm?(
+                        <div className="finish-bar">
+                          <div>
+                            <div className="finish-bar-text">Демо активно: {activeDemo?.name}</div>
+                            <div className="finish-bar-sub">Когда всё зафиксировано — завершите демо, оно уйдёт в историю</div>
+                          </div>
+                          <button className="btn btn-warn btn-sm" onClick={()=>setShowFinishConfirm(true)}>
+                            <Ico d={ic.flag} s={13}/>Завершить демо
+                          </button>
+                        </div>
+                      ):(
+                        <div className="confirm-box" style={{marginBottom:18}}>
+                          <span>Завершить демо «{activeDemo?.name}»? Оно переместится в историю.</span>
+                          <div className="confirm-btns">
+                            <button className="btn btn-ghost btn-sm" onClick={()=>setShowFinishConfirm(false)}>Отмена</button>
+                            <button className="btn btn-green btn-sm" onClick={finishDemo}>Да, завершить</button>
+                          </div>
+                        </div>
+                      )}
 
-                  <div className="add-form">
-                    <div className="form-title"><Ico d={ic.plus} s={14}/>Зафиксировать пожелание</div>
-                    <div className="g3" style={{marginBottom:10}}>
-                      <div className="fg"><label>Описание пожелания</label>
-                        <textarea value={fDesc} onChange={e=>setFDesc(e.target.value)}
-                          placeholder="Что хочет участник... (Shift+Enter для переноса строки)"
-                          onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))addItem();}}/>
+                      <div className="stats-grid">
+                        <div className="stat-card"><div className="stat-val">{counts.all}</div><div className="stat-lbl">Всего</div></div>
+                        <div className="stat-card"><div className="stat-val" style={{color:'var(--amber)'}}>{counts.pending}</div><div className="stat-lbl">Ожидают</div></div>
+                        <div className="stat-card"><div className="stat-val" style={{color:'var(--accent)'}}>{counts.created+counts.inprogress}</div><div className="stat-lbl">В работе</div></div>
+                        <div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{counts.done}</div><div className="stat-lbl">Готово</div></div>
+                        <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{counts.declined}</div><div className="stat-lbl">Отклонено</div></div>
                       </div>
-                      <div className="fg"><label>Автор</label>
-                        <input value={fAuthor} onChange={e=>setFAuthor(e.target.value)} placeholder="Имя участника"/>
-                      </div>
-                      <div className="fg"><label>Приоритет</label>
-                        <select value={fPriority} onChange={e=>setFPriority(e.target.value)}>
-                          <option value="blocking">Блокирующий</option>
-                          <option value="critical">Критический</option>
-                          <option value="medium">Средний</option>
-                          <option value="low">Низкий</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="fg" style={{marginBottom:10}}>
-                      <label>Комментарий (необязательно)</label>
-                      <textarea value={fComment} onChange={e=>setFComment(e.target.value)}
-                        placeholder="Доп. заметки, вопросы стейкхолдеров... (Shift+Enter для переноса строки)"
-                        style={{minHeight:52}}/>
-                    </div>
-                    <div className="g2" style={{marginBottom:10}}>
-                      <div className="fg"><label>Ссылка на задачу (→ авто-статус «Задача создана»)</label>
-                        <input value={fLink} onChange={e=>setFLink(e.target.value)} placeholder="PROJ-123 или https://jira..."/>
-                      </div>
-                      <div className="fg"><label>Релиз (необязательно)</label>
-                        <input value={fRel} onChange={e=>setFRel(e.target.value)} placeholder="2.4.1"/>
-                      </div>
-                    </div>
-                    <div className="form-actions">
-                      <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd></span>
-                      <button className="btn btn-accent" onClick={addItem}><Ico d={ic.plus} s={13}/>Зафиксировать</button>
-                    </div>
-                  </div>
 
-                  <div className="sec-label">Зафиксировано на демо</div>
-                  <div className="items-list">
-                    {items.length===0
-                      ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div><div style={{fontSize:13,color:'var(--text-3)'}}>Добавьте первое выше</div></div>
-                      :[...items].reverse().map(i=><ItemCard key={i.id} item={i}/>)
-                    }
-                  </div>
+                      <div className="add-form">
+                        <div className="form-title"><Ico d={ic.plus} s={14}/>Зафиксировать пожелание</div>
+                        <div className="g3" style={{marginBottom:10}}>
+                          <div className="fg"><label>Описание пожелания</label>
+                            <textarea value={fDesc} onChange={e=>setFDesc(e.target.value)}
+                              placeholder="Что хочет участник..."
+                              onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))addItem();}}/>
+                          </div>
+                          <div className="fg"><label>Автор</label>
+                            <input value={fAuthor} onChange={e=>setFAuthor(e.target.value)} placeholder="Имя участника"/>
+                          </div>
+                          <div className="fg"><label>Приоритет</label>
+                            <select value={fPriority} onChange={e=>setFPriority(e.target.value)}>
+                              <option value="blocking">Блокирующий</option>
+                              <option value="critical">Критический</option>
+                              <option value="medium">Средний</option>
+                              <option value="low">Низкий</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="fg" style={{marginBottom:10}}><label>Комментарий (необязательно)</label>
+                          <textarea value={fComment} onChange={e=>setFComment(e.target.value)} placeholder="Доп. заметки, вопросы стейкхолдеров..." style={{minHeight:52}}/>
+                        </div>
+                        <div className="g3" style={{marginBottom:10}}>
+                          <div className="fg"><label>Ответственный (разработка, необязательно)</label>
+                            <input value={fAssignee} onChange={e=>setFAssignee(e.target.value)} placeholder="Имя разработчика"/>
+                          </div>
+                          <div className="fg"><label>Ссылка на задачу (→ авто-статус)</label>
+                            <input value={fLink} onChange={e=>setFLink(e.target.value)} placeholder="PROJ-123 или https://..."/>
+                          </div>
+                          <div className="fg"><label>Релиз (необязательно)</label>
+                            <input value={fRel} onChange={e=>setFRel(e.target.value)} placeholder="2.4.1"/>
+                          </div>
+                        </div>
+                        <div className="form-actions">
+                          <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd></span>
+                          <button className="btn btn-accent" onClick={addItem}><Ico d={ic.plus} s={13}/>Зафиксировать</button>
+                        </div>
+                      </div>
+
+                      <div className="sec-label">Зафиксировано на демо</div>
+                      <div className="items-list">
+                        {items.length===0
+                          ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div><div className="empty-sub">Добавьте первое выше</div></div>
+                          :[...items].reverse().map(i=><ItemCard key={i.id} item={i}/>)
+                        }
+                      </div>
+                    </>
+                  )}
                 </>
               )}
 
-              {view==='board'&&(
+              {/* ── ВСЕ ЗАДАЧИ ── */}
+              {view==='all'&&(
                 <>
                   <div className="filter-bar">
                     <input value={fSearch} onChange={e=>setFSearch(e.target.value)} placeholder="Поиск..." style={{width:180}}/>
@@ -722,26 +857,24 @@ function App() {
                       {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
                     </select>
                     <select value={fFeature} onChange={e=>setFFeature(e.target.value)}>
-                      <option value="">Все фичи</option>
-                      {features.map(f=><option key={f} value={f}>{f}</option>)}
+                      <option value="">Все демо</option>
+                      {demos.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}
                     </select>
-                    <select value={fRelease} onChange={e=>setFRelease(e.target.value)}>
-                      <option value="">Все релизы</option>
-                      {releases.map(r=><option key={r} value={r}>{r}</option>)}
-                    </select>
-                    {(fStatus||fRelease||fSearch||fFeature)&&
-                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFStatus('');setFRelease('');setFSearch('');setFFeature('');}}>Сбросить</button>}
+                    {(fStatus||fSearch||fFeature)&&
+                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFStatus('');setFSearch('');setFFeature('');}}>Сбросить</button>}
                   </div>
-                  {visible.length===0
+                  {visibleAll.length===0
                     ?<div className="empty"><div className="empty-icon">🔍</div><div className="empty-title">Ничего не найдено</div></div>
-                    :grouped().map(([feat,fitems])=>(
-                      <div key={feat} className="feat-group">
+                    :groupedAll().map(({demo,items:gitems})=>(
+                      <div key={demo?.id} className="feat-group">
                         <div className="feat-group-hdr">
-                          <span className="feat-group-title">{feat}</span>
-                          <span className="feat-group-cnt">{fitems.length}</span>
+                          <span className="feat-group-title">{demo?.name||'Без демо'}</span>
+                          <span className="feat-group-cnt">{gitems.length} доработок</span>
+                          {demo?.date&&<span style={{fontSize:11,color:'var(--text-3)'}}>{demo.date}</span>}
+                          {demo?.finished&&<span className="pill p-green" style={{fontSize:10}}>Завершено</span>}
                         </div>
                         <div className="items-list">
-                          {fitems.map(i=><ItemCard key={i.id} item={i}/>)}
+                          {gitems.map(i=><ItemCard key={i.id} item={i}/>)}
                         </div>
                       </div>
                     ))
@@ -749,18 +882,59 @@ function App() {
                 </>
               )}
 
-              {view==='export'&&(
+              {/* ── ИСТОРИЯ ДЕМО ── */}
+              {view==='history'&&(
                 <>
-                  <div style={{display:'flex',gap:8,justifyContent:'flex-end',marginBottom:14}}>
-                    <button className="btn btn-accent" onClick={copyExport}><Ico d={ic.copy} s={13}/>Скопировать протокол</button>
-                  </div>
-                  <div className="export-box">
-                    <div className="export-bar">
-                      <span className="export-bar-title">protocol.txt</span>
-                      <span style={{fontSize:11,color:'var(--text-3)'}}>{items.length} задач</span>
-                    </div>
-                    <pre className="export-pre">{buildExport()}</pre>
-                  </div>
+                  {finishedDemos.length===0
+                    ?<div className="empty">
+                        <div className="empty-icon">🗂️</div>
+                        <div className="empty-title">История пуста</div>
+                        <div className="empty-sub">Завершённые демо будут появляться здесь</div>
+                        {!activeDemoId&&<button className="btn btn-accent" onClick={()=>setView('live')}>Начать новое демо</button>}
+                      </div>
+                    :(
+                      <div className="demo-history-list">
+                        {finishedDemos.map(demo=>{
+                          const dItems=allItems.filter(i=>i.demo_id===demo.id);
+                          const isOpen=expandedDemoId===demo.id;
+                          const dc={all:dItems.length,pending:0,created:0,inprogress:0,done:0,declined:0};
+                          dItems.forEach(i=>{if(dc[i.status]!==undefined)dc[i.status]++;});
+                          return(
+                            <div key={demo.id} className="demo-hist-card">
+                              <div className="demo-hist-header" onClick={()=>setExpandedDemoId(isOpen?null:demo.id)}>
+                                <div className="demo-hist-info">
+                                  <div className="demo-hist-name">{demo.name}</div>
+                                  <div className="demo-hist-meta">
+                                    {demo.date&&<span className="mchip"><Ico d={ic.clock} s={11}/>{demo.date}</span>}
+                                    {demo.author&&<span className="mchip"><Ico d={ic.user} s={11}/>{demo.author}</span>}
+                                    <span className="mchip">{dItems.length} доработок</span>
+                                    {dc.pending>0&&<span className="pill p-amber" style={{fontSize:10}}>Ожидает: {dc.pending}</span>}
+                                    {dc.done>0&&<span className="pill p-green" style={{fontSize:10}}>Готово: {dc.done}</span>}
+                                  </div>
+                                </div>
+                                <Ico d={isOpen?ic.chevD:ic.chevR} s={16} style={{color:'var(--text-3)',flexShrink:0}}/>
+                              </div>
+                              {isOpen&&(
+                                <div className="demo-hist-body">
+                                  <div className="demo-hist-actions">
+                                    <button className="btn btn-ghost btn-sm" onClick={()=>copyExport(demo.id)}>
+                                      <Ico d={ic.export2} s={13}/>Экспорт протокола
+                                    </button>
+                                  </div>
+                                  {dItems.length===0
+                                    ?<div style={{textAlign:'center',padding:'20px',color:'var(--text-3)',fontSize:13}}>Нет доработок</div>
+                                    :<div className="items-list">
+                                      {dItems.map(i=><ItemCard key={i.id} item={i} readOnly={false}/>)}
+                                    </div>
+                                  }
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )
+                  }
                 </>
               )}
             </>
