@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Демопротокол </title>
+<title>Демопротокол</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -431,6 +431,24 @@ function App() {
   },[]);
 
   // load data
+  // Читаем хэш при загрузке
+  useEffect(()=>{
+    if(!demos.length) return;
+    const hash=window.location.hash;
+    if(hash&&hash.startsWith('#demo-')){
+      const id=parseInt(hash.replace('#demo-',''));
+      if(!isNaN(id)){
+        setExpandedDemoId(id);
+        setView('history');
+        // прокручиваем к карточке
+        setTimeout(()=>{
+          const el=document.getElementById('demo-card-'+id);
+          if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+        },300);
+      }
+    }
+  },[demos]);
+
   const loadAll=useCallback(async(client)=>{
     const c=client||sb;
     const [{data:dems},{data:itms}]=await Promise.all([
@@ -644,18 +662,29 @@ tr:last-child td{border-bottom:none}
   <div class="footer">Сформировано: ${new Date().toLocaleString('ru-RU')}</div>
 </div>
 </body></html>`;
-    // Скачиваем файл напрямую
-    const blob=new Blob([exportHtml],{type:'text/html;charset=utf-8'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    const safeName=(demo?.name||'protocol').replace(/[^a-zA-Zа-яА-Я0-9\s]/g,'').trim().slice(0,40);
-    a.download=`Протокол_${safeName}_${demo?.date||''}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(url),1000);
-    setToast('Файл протокола скачан');
+    // Открываем в новой вкладке через data URL
+    const encoded = 'data:text/html;charset=utf-8,' + encodeURIComponent(exportHtml);
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(exportHtml);
+      win.document.close();
+      setToast('Протокол открыт в новой вкладке');
+    } else {
+      // если браузер заблокировал всплывающее окно — копируем текст
+      const lines=[];
+      lines.push(demo?.name||'Демо', '');
+      its.forEach((item,idx)=>{
+        lines.push(`${idx+1}. ${item.description}`);
+        lines.push(`   Статус: ${SM[item.status]?.label||item.status}  |  Приоритет: ${PM[item.priority]?.label||item.priority}`);
+        lines.push(`   Автор: ${item.author||'—'}  |  Ответственный: ${item.assignee||'—'}`);
+        if(item.link) lines.push(`   Задача: ${item.link}`);
+        if(item.release) lines.push(`   Релиз: ${item.release}`);
+        if(item.comment) lines.push(`   Комментарий: ${item.comment}`);
+        lines.push('');
+      });
+      navigator.clipboard.writeText(lines.join('\n'));
+      setToast('Протокол скопирован в буфер обмена');
+    }
   }
 
   // ── ITEM CARD ──
@@ -995,8 +1024,13 @@ tr:last-child td{border-bottom:none}
                           const dc={all:dItems.length,pending:0,created:0,inprogress:0,done:0,declined:0};
                           dItems.forEach(i=>{if(dc[i.status]!==undefined)dc[i.status]++;});
                           return(
-                            <div key={demo.id} className="demo-hist-card">
-                              <div className="demo-hist-header" onClick={()=>setExpandedDemoId(isOpen?null:demo.id)}>
+                            <div key={demo.id} id={`demo-card-${demo.id}`} className="demo-hist-card">
+                              <div className="demo-hist-header" onClick={()=>(()=>{
+                          const next=isOpen?null:demo.id;
+                          setExpandedDemoId(next);
+                          if(next) window.location.hash='demo-'+next;
+                          else window.history.pushState(null,null,' ');
+                        })()}>
                                 <div className="demo-hist-info">
                                   <div className="demo-hist-name">{demo.name}</div>
                                   <div className="demo-hist-meta">
