@@ -14,19 +14,22 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:#0f0f11; --bg-card:#17171a; --bg-hover:#1e1e22; --bg-input:#1a1a1e;
-    --border:rgba(255,255,255,0.07); --border-md:rgba(255,255,255,0.12);
-    --border-focus:rgba(99,102,241,0.6);
-    --text:#f0f0f2; --text-2:#9898a6; --text-3:#5c5c6e;
-    --accent:#6366f1; --accent-bg:rgba(99,102,241,0.12); --accent-hover:#818cf8;
-    --green:#22c55e; --green-bg:rgba(34,197,94,0.1);
-    --amber:#f59e0b; --amber-bg:rgba(245,158,11,0.1);
-    --red:#ef4444; --red-bg:rgba(239,68,68,0.1);
-    --purple:#a855f7; --purple-bg:rgba(168,85,247,0.1);
-    --sky:#38bdf8; --sky-bg:rgba(56,189,248,0.1);
+    --bg:#f5f4f0; --bg-card:#ffffff; --bg-hover:#efefea; --bg-input:#fafaf8;
+    --border:rgba(0,0,0,0.08); --border-md:rgba(0,0,0,0.14);
+    --border-focus:rgba(99,102,241,0.5);
+    --text:#1a1a1e; --text-2:#5a5a68; --text-3:#9898a6;
+    --accent:#6366f1; --accent-bg:rgba(99,102,241,0.08); --accent-hover:#4f52d4;
+    --green:#16a34a; --green-bg:rgba(22,163,74,0.08);
+    --amber:#d97706; --amber-bg:rgba(217,119,6,0.08);
+    --red:#dc2626; --red-bg:rgba(220,38,38,0.08);
+    --orange:#ea580c; --orange-bg:rgba(234,88,12,0.08);
+    --purple:#7c3aed; --purple-bg:rgba(124,58,237,0.08);
+    --sky:#0284c7; --sky-bg:rgba(2,132,199,0.08);
     --radius:8px; --radius-lg:12px;
     --font:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
     --transition:150ms ease;
+    --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md:0 4px 12px rgba(0,0,0,0.08),0 2px 4px rgba(0,0,0,0.04);
   }
   html,body,#root{height:100%}
   body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -35,13 +38,13 @@
   ::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
   input,textarea,select{font-family:var(--font);font-size:13px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:0 10px;height:34px;outline:none;transition:border-color var(--transition);width:100%}
   input::placeholder,textarea::placeholder{color:var(--text-3)}
-  input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.08)}
-  select option{background:#1e1e2e}
+  input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.06)}
+  select option{background:#fff}
   textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5}
   button{font-family:var(--font);cursor:pointer;border:none;outline:none;transition:all var(--transition)}
   button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
   .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
-  .topbar{border-bottom:1px solid var(--border);background:rgba(15,15,17,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+  .topbar{border-bottom:1px solid var(--border);background:rgba(245,244,240,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;box-shadow:var(--shadow)}
   .topbar-left{display:flex;align-items:center;gap:16px;min-width:0}
   .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;white-space:nowrap}
   .logo span{color:var(--accent)}
@@ -53,15 +56,15 @@
   .btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
   .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
   .btn-ghost:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-md)}
-  .btn-accent{background:var(--accent);color:#fff;border:1px solid transparent}
+  .btn-accent{background:var(--accent);color:#fff;border:1px solid transparent;box-shadow:var(--shadow)}
   .btn-accent:hover{background:var(--accent-hover)}
   .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid transparent}
-  .btn-danger:hover{background:rgba(239,68,68,0.18)}
+  .btn-danger:hover{background:rgba(220,38,38,0.14)}
   .btn-sm{height:26px;padding:0 10px;font-size:12px}
   .btn-icon{width:30px;padding:0;justify-content:center}
   .body{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px)}
   @media(max-width:768px){.body{grid-template-columns:1fr}.sidebar{display:none}}
-  .sidebar{border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:4px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar{border-right:1px solid var(--border);background:var(--bg);padding:20px 16px;display:flex;flex-direction:column;gap:4px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
   .sidebar-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);padding:12px 10px 6px}
   .nav-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:var(--radius);font-size:13px;color:var(--text-2);cursor:pointer;background:none;border:none;width:100%;text-align:left;transition:all var(--transition)}
   .nav-item:hover{background:var(--bg-hover);color:var(--text)}
@@ -69,13 +72,13 @@
   .nav-item-left{display:flex;align-items:center;gap:8px}
   .nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
   .count-badge{font-size:11px;background:var(--bg-hover);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:500}
-  .nav-item.active .count-badge{background:rgba(99,102,241,0.2);color:var(--accent)}
+  .nav-item.active .count-badge{background:rgba(99,102,241,0.12);color:var(--accent)}
   .main{padding:24px;min-width:0}
   .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px}
-  .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px}
+  .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;box-shadow:var(--shadow)}
   .stat-val{font-size:26px;font-weight:600;letter-spacing:-0.5px;line-height:1;margin-bottom:4px}
   .stat-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
-  .add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px}
+  .add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow)}
   .form-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
   .form-title{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px}
   .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -87,14 +90,14 @@
   .items-list{display:flex;flex-direction:column;gap:8px}
   .filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
   .filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
-  .item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;transition:border-color var(--transition);position:relative;overflow:hidden}
+  .item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;transition:border-color var(--transition),box-shadow var(--transition);position:relative;overflow:hidden;box-shadow:var(--shadow)}
   .item-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
   .item-card.status-pending::before{background:var(--amber)}
   .item-card.status-created::before{background:var(--sky)}
   .item-card.status-inprogress::before{background:var(--accent)}
   .item-card.status-done::before{background:var(--green)}
   .item-card.status-declined::before{background:var(--red)}
-  .item-card:hover{border-color:var(--border-md)}
+  .item-card:hover{border-color:var(--border-md);box-shadow:var(--shadow-md)}
   .item-top{display:flex;align-items:flex-start;gap:12px}
   .item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:32px;padding-top:2px}
   .item-body{flex:1;min-width:0}
@@ -103,11 +106,12 @@
   .pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
   .pill-amber{background:var(--amber-bg);color:var(--amber)}
   .pill-sky{background:var(--sky-bg);color:var(--sky)}
-  .pill-accent{background:var(--accent-bg);color:var(--accent-hover)}
+  .pill-accent{background:var(--accent-bg);color:var(--accent)}
   .pill-green{background:var(--green-bg);color:var(--green)}
   .pill-red{background:var(--red-bg);color:var(--red)}
+  .pill-orange{background:var(--orange-bg);color:var(--orange)}
   .pill-purple{background:var(--purple-bg);color:var(--purple)}
-  .pill-gray{background:rgba(255,255,255,0.06);color:var(--text-3)}
+  .pill-gray{background:rgba(0,0,0,0.05);color:var(--text-3)}
   .item-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
   .meta-chip{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-3)}
   .item-link{font-size:11px;color:var(--accent);text-decoration:none}
@@ -121,25 +125,25 @@
   .empty-icon{font-size:32px;margin-bottom:12px;opacity:0.4}
   .empty-title{font-size:14px;color:var(--text-2);margin-bottom:6px}
   .empty-sub{font-size:13px}
-  .export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-  .export-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+  .export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+  .export-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg)}
   .export-toolbar-title{font-size:12px;color:var(--text-3);font-family:var(--mono)}
   .export-content{padding:16px;font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;line-height:1.7;max-height:480px;overflow-y:auto}
-  .toast{position:fixed;bottom:24px;right:24px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:10px 16px;font-size:13px;color:var(--text);box-shadow:0 4px 24px rgba(0,0,0,0.4);z-index:999;animation:slideUp 0.2s ease;display:flex;align-items:center;gap:8px}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:10px 16px;font-size:13px;color:var(--text);box-shadow:var(--shadow-md);z-index:999;animation:slideUp 0.2s ease;display:flex;align-items:center;gap:8px}
   @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:100%;max-width:520px}
+  .setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:36px 40px;width:100%;max-width:520px;box-shadow:var(--shadow-md)}
   .setup-logo{font-size:18px;font-weight:600;margin-bottom:8px}
   .setup-logo span{color:var(--accent)}
   .setup-sub{font-size:13px;color:var(--text-3);margin-bottom:28px;line-height:1.7}
   .setup-field{margin-bottom:14px}
   .setup-field label{display:block;font-size:12px;color:var(--text-3);margin-bottom:5px}
-  .setup-hint{font-size:12px;color:var(--text-3);margin-top:20px;line-height:1.8;padding:14px;background:rgba(255,255,255,0.03);border-radius:var(--radius);border:1px solid var(--border)}
+  .setup-hint{font-size:12px;color:var(--text-3);margin-top:20px;line-height:1.8;padding:14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border)}
   .setup-hint a{color:var(--accent);text-decoration:none}
   .setup-hint a:hover{text-decoration:underline}
-  .setup-hint code{font-family:var(--mono);font-size:11px;background:rgba(99,102,241,0.15);color:var(--accent-hover);padding:1px 5px;border-radius:4px}
-  .setup-error{background:var(--red-bg);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:14px}
-  .setup-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+  .setup-hint code{font-family:var(--mono);font-size:11px;background:var(--accent-bg);color:var(--accent);padding:1px 5px;border-radius:4px}
+  .setup-error{background:var(--red-bg);border:1px solid rgba(220,38,38,0.2);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:14px}
+  .setup-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
   .setup-step{display:flex;gap:10px;margin-bottom:8px;font-size:12px;color:var(--text-2)}
   .setup-step-num{width:18px;height:18px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
   .divider{height:1px;background:var(--border);margin:20px 0}
@@ -148,6 +152,16 @@
   .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
   .section-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;margin-bottom:10px}
   .kbd{font-family:var(--mono);font-size:10px;background:var(--bg-hover);color:var(--text-3);padding:2px 5px;border-radius:4px;border:1px solid var(--border-md)}
+  /* modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(2px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+  .modal{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;width:100%;max-width:520px;box-shadow:var(--shadow-md);position:relative}
+  .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:18px;line-height:1;padding:4px}
+  .modal-close:hover{color:var(--text)}
+  .modal h2{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text)}
+  .help-section{margin-bottom:16px}
+  .help-section h3{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:8px}
+  .help-row{display:flex;gap:10px;margin-bottom:6px;font-size:13px;color:var(--text-2);line-height:1.5}
+  .help-icon{flex-shrink:0;margin-top:1px}
 </style>
 </head>
 <body>
@@ -157,28 +171,29 @@ const { useState, useEffect, useCallback } = React;
 const { createClient } = supabase;
 
 // ─────────────────────────────────────────────────────────
-// ЗДЕСЬ ВСТАВЬТЕ ВАШИ КЛЮЧИ SUPABASE (шаг 3 инструкции)
+// ВСТАВЬТЕ ВАШИ КЛЮЧИ SUPABASE
 // ─────────────────────────────────────────────────────────
-const SUPABASE_URL = 'https://xvbqphbrmjlavlvivpnp.supabase.co';   // вставьте URL сюда, например: 'https://abcdef.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzA3MDYsImV4cCI6MjA5ODkwNjcwNn0.5nlq_JEdrdNrr6O2xzcFmz0ugNVnN6WkLlL3akRhoyY';   // вставьте anon key сюда
+const SUPABASE_URL = 'https://xvbqphbrmjlavlvivpnp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzA3MDYsImV4cCI6MjA5ODkwNjcwNn0.5nlq_JEdrdNrr6O2xzcFmz0ugNVnN6WkLlL3akRhoyY';
 // ─────────────────────────────────────────────────────────
 
 const STORAGE_KEY = 'demo_proto_sb';
 
 const STATUS_META = {
-  pending:    { label:'Ожидает',        pill:'pill-amber',  dot:'#f59e0b' },
-  created:    { label:'Задача создана', pill:'pill-sky',    dot:'#38bdf8' },
+  pending:    { label:'Ожидает',        pill:'pill-amber',  dot:'#d97706' },
+  created:    { label:'Задача создана', pill:'pill-sky',    dot:'#0284c7' },
   inprogress: { label:'В работе',       pill:'pill-accent', dot:'#6366f1' },
-  done:       { label:'Готово',         pill:'pill-green',  dot:'#22c55e' },
-  declined:   { label:'Отклонено',      pill:'pill-red',    dot:'#ef4444' },
-};
-const PRIORITY_META = {
-  high:{ label:'Высокий', pill:'pill-red' },
-  med: { label:'Средний', pill:'pill-amber' },
-  low: { label:'Низкий',  pill:'pill-gray' },
+  done:       { label:'Готово',         pill:'pill-green',  dot:'#16a34a' },
+  declined:   { label:'Отклонено',      pill:'pill-red',    dot:'#dc2626' },
 };
 
-/* ── иконки ── */
+const PRIORITY_META = {
+  blocking:  { label:'Блокирующий', pill:'pill-red' },
+  critical:  { label:'Критический', pill:'pill-orange' },
+  medium:    { label:'Средний',     pill:'pill-amber' },
+  low:       { label:'Низкий',      pill:'pill-gray' },
+};
+
 const I = ({ d, s=14 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -197,15 +212,57 @@ const ic = {
   link2:   "M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71",
   branch:  "M6 3v12M18 9a3 3 0 100-6 3 3 0 000 6zM6 21a3 3 0 100-6 3 3 0 000 6zM18 9a9 9 0 01-9 9",
   cog:     "M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z",
+  help:    "M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01",
+  x:       "M18 6L6 18M6 6l12 12",
 };
 
-/* ── Toast ── */
 function Toast({ msg, onDone }) {
   useEffect(() => { const t = setTimeout(onDone, 2400); return () => clearTimeout(t); }, []);
   return <div className="toast"><I d={ic.check} s={14}/>{msg}</div>;
 }
 
-/* ── экран настройки (если ключи не вшиты) ── */
+function HelpModal({ onClose }) {
+  return (
+    <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div className="modal">
+        <button className="modal-close" onClick={onClose}>✕</button>
+        <h2>Как пользоваться</h2>
+
+        <div className="help-section">
+          <h3>Во время демо</h3>
+          <div className="help-row"><span className="help-icon">📋</span><span>PM заполняет поле «Описание пожелания» — кратко фиксирует суть каждого запроса участника</span></div>
+          <div className="help-row"><span className="help-icon">👤</span><span>Указывает автора — кто высказал пожелание</span></div>
+          <div className="help-row"><span className="help-icon">🔴</span><span>Выбирает приоритет: Блокирующий / Критический / Средний / Низкий</span></div>
+          <div className="help-row"><span className="help-icon">✅</span><span>Нажимает «Зафиксировать» — данные сохраняются мгновенно для всей команды</span></div>
+        </div>
+
+        <div className="help-section">
+          <h3>После демо (разработка)</h3>
+          <div className="help-row"><span className="help-icon">✏️</span><span>Нажмите иконку карандаша на карточке — откроется редактирование</span></div>
+          <div className="help-row"><span className="help-icon">🔗</span><span>Вставьте ссылку на задачу в Jira/Linear и укажите номер релиза</span></div>
+          <div className="help-row"><span className="help-icon">🔄</span><span>Обновите статус: Ожидает → Задача создана → В работе → Готово</span></div>
+        </div>
+
+        <div className="help-section">
+          <h3>Для всех участников</h3>
+          <div className="help-row"><span className="help-icon">🔁</span><span>Нажмите «Обновить» чтобы увидеть свежие данные от коллег</span></div>
+          <div className="help-row"><span className="help-icon">🔍</span><span>Раздел «Все задачи» — фильтрация по статусу, релизу и поиск</span></div>
+          <div className="help-row"><span className="help-icon">📤</span><span>Раздел «Экспорт» — скопировать протокол для отправки в Slack или письме</span></div>
+        </div>
+
+        <div className="help-section">
+          <h3>Статусы задач</h3>
+          <div className="help-row"><span>🟡 Ожидает</span><span style={{marginLeft:8}}>— зафиксировано, задача ещё не создана</span></div>
+          <div className="help-row"><span>🔵 Задача создана</span><span style={{marginLeft:8}}>— есть в трекере, ждёт разработки</span></div>
+          <div className="help-row"><span>🟣 В работе</span><span style={{marginLeft:8}}>— разработка идёт</span></div>
+          <div className="help-row"><span>🟢 Готово</span><span style={{marginLeft:8}}>— доработка выполнена</span></div>
+          <div className="help-row"><span>🔴 Отклонено</span><span style={{marginLeft:8}}>— решили не делать</span></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SetupScreen({ onConnect }) {
   const [url, setUrl]   = useState('');
   const [key, setKey]   = useState('');
@@ -231,38 +288,30 @@ function SetupScreen({ onConnect }) {
     <div className="setup">
       <div className="setup-card">
         <div className="setup-logo">Демо<span>протокол</span></div>
-        <div className="setup-sub">
-          Приложение использует Supabase как базу данных — бесплатный облачный сервис.
-          Нужно подключить один раз. После этого все участники просто открывают ссылку.
-        </div>
-
+        <div className="setup-sub">Подключите Supabase — бесплатную облачную базу данных. Нужно сделать один раз.</div>
         {err && <div className="setup-error">{err}</div>}
-
         <div className="setup-field">
           <label>Project URL</label>
-          <input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxxxxxxxxxx.supabase.co" />
+          <input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://xxxxxxxxxxxx.supabase.co"/>
         </div>
         <div className="setup-field">
           <label>Anon Public Key</label>
-          <input value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." type="password" />
+          <input value={key} onChange={e=>setKey(e.target.value)} placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." type="password"/>
         </div>
         <button className="btn btn-accent" style={{width:'100%',height:40,marginTop:6,fontSize:14}} onClick={connect} disabled={busy}>
           {busy ? <><span className="setup-spinner"/> Подключение...</> : 'Подключить'}
         </button>
-
         <div className="divider"/>
         <div className="setup-hint">
-          <div style={{fontWeight:500,color:'rgba(255,255,255,0.4)',marginBottom:8,fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em'}}>Где взять ключи</div>
           {[
-            ['1','Откройте ', <a href="https://supabase.com" target="_blank">supabase.com</a>, ' и зарегистрируйтесь через Google'],
-            ['2','Нажмите ', <code>New project</code>, ', придумайте название и пароль'],
-            ['3','Зайдите в ', <code>Settings → API</code>, ' — там будут URL и ключ'],
-            ['4','Скопируйте ', <code>Project URL</code>, ' и ', <code>anon public</code>, ' сюда'],
-            ['5','В разделе ', <code>SQL Editor</code>, ' выполните запрос из README.md'],
+            ['1','Зарегистрируйтесь на ', <a href="https://supabase.com" target="_blank">supabase.com</a>],
+            ['2','Создайте новый проект'],
+            ['3','Зайдите в ', <code>Settings → API Keys → Legacy</code>],
+            ['4','Скопируйте ', <code>Project URL</code>, ' и ', <code>anon public</code>],
+            ['5','В ', <code>SQL Editor</code>, ' выполните запрос из инструкции'],
           ].map(([n,...rest])=>(
             <div key={n} className="setup-step">
-              <span className="setup-step-num">{n}</span>
-              <span>{rest}</span>
+              <span className="setup-step-num">{n}</span><span>{rest}</span>
             </div>
           ))}
         </div>
@@ -271,13 +320,13 @@ function SetupScreen({ onConnect }) {
   );
 }
 
-/* ── главное приложение ── */
 function App() {
   const [sb, setSb]           = useState(null);
   const [items, setItems]     = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView]       = useState('live');
   const [toast, setToast]     = useState('');
+  const [showHelp, setShowHelp] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
 
   const [filterStatus,  setFilterStatus]  = useState('');
@@ -290,31 +339,21 @@ function App() {
 
   const [fDesc,     setFDesc]     = useState('');
   const [fAuthor,   setFAuthor]   = useState('');
-  const [fPriority, setFPriority] = useState('med');
+  const [fPriority, setFPriority] = useState('medium');
   const [fLink,     setFLink]     = useState('');
   const [fRelease,  setFRelease]  = useState('');
 
-  /* инициализация клиента */
   useEffect(() => {
-    // если ключи вшиты прямо в файл — используем их
-    if (SUPABASE_URL && SUPABASE_KEY) {
-      setSb(createClient(SUPABASE_URL, SUPABASE_KEY));
-      return;
-    }
-    // иначе берём из localStorage
+    if (SUPABASE_URL && SUPABASE_KEY) { setSb(createClient(SUPABASE_URL, SUPABASE_KEY)); return; }
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const { url, key } = JSON.parse(saved);
-        setSb(createClient(url, key));
-        return;
-      }
+      if (saved) { const {url,key} = JSON.parse(saved); setSb(createClient(url,key)); return; }
     } catch {}
     setLoading(false);
   }, []);
 
   const loadItems = useCallback(async (client) => {
-    const { data, error } = await (client||sb).from('demo_items').select('*').order('id',{ascending:true});
+    const {data,error} = await (client||sb).from('demo_items').select('*').order('id',{ascending:true});
     if (!error && data) setItems(data);
     setLoading(false);
   }, [sb]);
@@ -325,12 +364,11 @@ function App() {
     if (!fDesc.trim()) return;
     const row = {
       demo_name:demoName, demo_date:demoDate, demo_author:demoAuthor,
-      description:fDesc.trim(),
-      author:fAuthor.trim()||'Не указан',
+      description:fDesc.trim(), author:fAuthor.trim()||'Не указан',
       priority:fPriority, status:'pending',
       link:fLink.trim(), release:fRelease.trim(),
     };
-    const { data, error } = await sb.from('demo_items').insert([row]).select();
+    const {data,error} = await sb.from('demo_items').insert([row]).select();
     if (!error && data) {
       setItems(prev=>[...prev,data[0]]);
       setFDesc(''); setFLink(''); setFRelease('');
@@ -346,20 +384,11 @@ function App() {
   async function deleteItem(id) {
     await sb.from('demo_items').delete().eq('id',id);
     setItems(prev=>prev.filter(i=>i.id!==id));
-    setExpandedId(null);
-    setToast('Удалено');
+    setExpandedId(null); setToast('Удалено');
   }
 
-  async function refresh() {
-    setLoading(true);
-    await loadItems(sb);
-    setToast('Данные обновлены');
-  }
-
-  function disconnect() {
-    localStorage.removeItem(STORAGE_KEY);
-    window.location.reload();
-  }
+  async function refresh() { setLoading(true); await loadItems(sb); setToast('Данные обновлены'); }
+  function disconnect() { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }
 
   if (!sb && !loading) return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
 
@@ -386,7 +415,7 @@ function App() {
       if(!groups[s].length) return;
       t+=`${STATUS_META[s].label.toUpperCase()} (${groups[s].length})\n`;
       groups[s].forEach(i=>{
-        t+=`  #${i.id} [${PRIORITY_META[i.priority]?.label}] ${i.description}\n`;
+        t+=`  #${i.id} [${PRIORITY_META[i.priority]?.label||i.priority}] ${i.description}\n`;
         t+=`       Автор: ${i.author}`;
         if(i.release) t+=`  |  Релиз: ${i.release}`;
         if(i.link)    t+=`  |  Задача: ${i.link}`;
@@ -394,10 +423,7 @@ function App() {
       });
       t+='\n';
     });
-    t+=`${line}\nСформировано: ${new Date().toLocaleString('ru-RU')}\n\n`;
-    t+=`Если задача отсутствует в протоколе — укажите в комментарии.\n`;
-    t+=`Если не согласны с номером релиза — подсветите.\n`;
-    t+=`Окно для возражений: 48 часов после отправки.`;
+    t+=`${line}\nСформировано: ${new Date().toLocaleString('ru-RU')}`;
     return t;
   }
 
@@ -406,12 +432,10 @@ function App() {
     setToast('Протокол скопирован');
   }
 
-  /* карточка задачи */
   function ItemCard({ item }) {
     const exp = expandedId===item.id;
     const sm  = STATUS_META[item.status]||STATUS_META.pending;
-    const pm  = PRIORITY_META[item.priority]||PRIORITY_META.med;
-    const pColor = {high:'pill-red',med:'pill-amber',low:'pill-gray'};
+    const pm  = PRIORITY_META[item.priority]||PRIORITY_META.medium;
     return (
       <div className={`item-card status-${item.status}`}>
         <div className="item-top">
@@ -420,31 +444,28 @@ function App() {
             <div className="item-desc">{item.description}</div>
             <div className="item-pills">
               <span className={`pill ${sm.pill}`}>{sm.label}</span>
-              <span className={`pill ${pColor[item.priority]||'pill-gray'}`} style={{opacity:.75}}>{pm.label}</span>
+              <span className={`pill ${pm.pill}`} style={{opacity:.85}}>{pm.label}</span>
               {item.release&&<span className="pill pill-purple" style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.branch} s={10}/>{item.release}</span>}
             </div>
             <div className="item-meta">
               <span className="meta-chip"><I d={ic.user} s={12}/>{item.author}</span>
               {item.created_at&&<span className="meta-chip"><I d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
-              {item.link&&<a className="item-link" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer"><span style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,36)}</span></a>}
+              {item.link&&<a className="item-link" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer">
+                <span style={{display:'flex',alignItems:'center',gap:3}}><I d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,36)}</span>
+              </a>}
             </div>
             {exp&&(
               <div className="item-edit">
-                <div className="field">
-                  <label>Статус</label>
+                <div className="field"><label>Статус</label>
                   <select value={item.status} onChange={e=>updateItem(item.id,{status:e.target.value})}>
                     {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
                   </select>
                 </div>
-                <div className="field">
-                  <label>Релиз</label>
-                  <input defaultValue={item.release} placeholder="2.4.1"
-                    onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
+                <div className="field"><label>Релиз</label>
+                  <input defaultValue={item.release} placeholder="2.4.1" onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
                 </div>
-                <div className="field">
-                  <label>Ссылка на задачу</label>
-                  <input defaultValue={item.link} placeholder="PROJ-123"
-                    onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
+                <div className="field"><label>Ссылка на задачу</label>
+                  <input defaultValue={item.link} placeholder="PROJ-123" onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
                 </div>
                 <button className="btn btn-danger btn-sm btn-icon" style={{alignSelf:'flex-end'}}
                   onClick={()=>deleteItem(item.id)} title="Удалить"><I d={ic.trash} s={13}/></button>
@@ -452,8 +473,7 @@ function App() {
             )}
           </div>
           <div className="item-actions">
-            <button className="btn btn-ghost btn-sm btn-icon"
-              onClick={()=>setExpandedId(exp?null:item.id)} title="Редактировать">
+            <button className="btn btn-ghost btn-sm btn-icon" onClick={()=>setExpandedId(exp?null:item.id)} title="Редактировать">
               <I d={ic.edit} s={13}/>
             </button>
           </div>
@@ -464,12 +484,13 @@ function App() {
 
   const navItems = [
     {id:'live',  label:'Режим демо', dot:'#6366f1', count:counts.all},
-    {id:'board', label:'Все задачи', dot:'#9898a6', count:counts.all},
-    {id:'export',label:'Экспорт',    dot:'#22c55e', count:null},
+    {id:'board', label:'Все задачи', dot:'#5a5a68', count:counts.all},
+    {id:'export',label:'Экспорт',    dot:'#16a34a', count:null},
   ];
 
   return (
     <div className="app">
+      {showHelp && <HelpModal onClose={()=>setShowHelp(false)}/>}
       <header className="topbar">
         <div className="topbar-left">
           <span className="logo">Демо<span>протокол</span></span>
@@ -483,6 +504,9 @@ function App() {
           </div>
         </div>
         <div className="topbar-right">
+          <button className="btn btn-ghost btn-sm" onClick={()=>setShowHelp(true)} title="Как пользоваться">
+            <I d={ic.help} s={13}/>Как пользоваться
+          </button>
           <button className="btn btn-ghost btn-sm" onClick={refresh}><I d={ic.refresh} s={13}/>Обновить</button>
           {!SUPABASE_URL&&<button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect} title="Сменить подключение"><I d={ic.cog} s={13}/></button>}
         </div>
@@ -493,10 +517,7 @@ function App() {
           <div className="sidebar-section">Разделы</div>
           {navItems.map(n=>(
             <button key={n.id} className={`nav-item ${view===n.id?'active':''}`} onClick={()=>setView(n.id)}>
-              <span className="nav-item-left">
-                <span className="nav-dot" style={{background:n.dot}}/>
-                {n.label}
-              </span>
+              <span className="nav-item-left"><span className="nav-dot" style={{background:n.dot}}/>{n.label}</span>
               {n.count!==null&&<span className="count-badge">{n.count}</span>}
             </button>
           ))}
@@ -550,8 +571,9 @@ function App() {
                       </div>
                       <div className="field"><label>Приоритет</label>
                         <select value={fPriority} onChange={e=>setFPriority(e.target.value)}>
-                          <option value="high">Высокий</option>
-                          <option value="med">Средний</option>
+                          <option value="blocking">Блокирующий</option>
+                          <option value="critical">Критический</option>
+                          <option value="medium">Средний</option>
                           <option value="low">Низкий</option>
                         </select>
                       </div>
