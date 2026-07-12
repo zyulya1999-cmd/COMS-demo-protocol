@@ -46,9 +46,7 @@
 }
 html,body,#root{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background var(--tr),color var(--tr)}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
 input,textarea,select{font-family:var(--font);font-size:13px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:0 10px;height:34px;outline:none;transition:border-color var(--tr);width:100%}
 input::placeholder,textarea::placeholder{color:var(--text-3)}
 input:focus,textarea:focus,select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(99,102,241,0.06)}
@@ -56,18 +54,16 @@ select option{background:var(--bg-card)}
 textarea{height:auto;padding:8px 10px;resize:vertical;line-height:1.5;min-height:60px}
 button{font-family:var(--font);cursor:pointer;border:none;outline:none;transition:all var(--tr)}
 button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
-/* layout */
 .app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
 .topbar{border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px;box-shadow:var(--sh)}
 .topbar-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
 .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;white-space:nowrap;flex-shrink:0}
 .logo span{color:var(--accent)}
-.demo-badge{display:flex;align-items:center;gap:8px;background:var(--accent-bg);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:3px 12px 3px 8px;max-width:340px;overflow:hidden}
+.demo-badge{display:flex;align-items:center;gap:8px;background:var(--accent-bg);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:3px 12px 3px 8px;max-width:320px;overflow:hidden}
 .demo-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .demo-badge-text{font-size:12px;font-weight:500;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-/* buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:var(--radius);font-size:13px;font-weight:500;white-space:nowrap}
 .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-md)}
@@ -82,7 +78,6 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .btn-sm{height:28px;padding:0 10px;font-size:12px}
 .btn-xs{height:24px;padding:0 8px;font-size:11px}
 .btn-icon{width:32px;padding:0;justify-content:center}
-/* body layout */
 .body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
 @media(max-width:768px){.body{grid-template-columns:1fr}.sidebar{display:none}}
 .sidebar{border-right:1px solid var(--border);background:var(--bg);padding:14px 10px;display:flex;flex-direction:column;gap:2px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
@@ -95,25 +90,26 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .ndot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .cnt{font-size:11px;background:var(--bg-hover);color:var(--text-3);padding:1px 6px;border-radius:10px;font-weight:500;flex-shrink:0}
 .nav-item.active .cnt{background:rgba(99,102,241,0.15);color:var(--accent)}
-/* main */
 .main{padding:24px;min-width:0}
-/* stats */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px}
 .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 14px;box-shadow:var(--sh)}
 .stat-val{font-size:24px;font-weight:600;letter-spacing:-0.5px;line-height:1;margin-bottom:3px}
 .stat-lbl{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em}
-/* form */
 .add-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:18px;box-shadow:var(--sh)}
 .form-title{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:7px;margin-bottom:12px}
 .fg{display:flex;flex-direction:column;gap:4px}
 .fg label{font-size:11px;color:var(--text-3);letter-spacing:.03em}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
-.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
-@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr 1fr}}
 .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;align-items:center}
-/* cards */
 .items-list{display:flex;flex-direction:column;gap:8px}
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
+.feat-group{margin-bottom:22px}
+.feat-group-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.feat-group-title{font-size:13px;font-weight:600;color:var(--text)}
+.feat-group-cnt{font-size:11px;color:var(--text-3);background:var(--bg-hover);padding:2px 8px;border-radius:10px}
 .item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px;transition:border-color var(--tr),box-shadow var(--tr);position:relative;overflow:hidden;box-shadow:var(--sh)}
 .item-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
 .item-card.s-pending::before{background:var(--amber)}
@@ -125,8 +121,8 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .item-top{display:flex;align-items:flex-start;gap:10px}
 .item-num{font-size:11px;font-family:var(--mono);color:var(--text-3);min-width:24px;padding-top:2px;flex-shrink:0}
 .item-body{flex:1;min-width:0}
-.item-desc{font-size:14px;color:var(--text);line-height:1.45;margin-bottom:7px;white-space:pre-wrap;word-break:break-word}
-.item-comment{font-size:12px;color:var(--text-2);background:var(--bg-hover);border-radius:var(--radius);padding:7px 10px;margin-bottom:7px;line-height:1.5;white-space:pre-wrap;word-break:break-word;border-left:2px solid var(--border-md)}
+.item-title{font-size:14px;font-weight:500;color:var(--text);line-height:1.45;margin-bottom:4px}
+.item-desc{font-size:13px;color:var(--text-2);line-height:1.5;margin-bottom:7px;white-space:pre-wrap;word-break:break-word}
 .pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
 .pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
 .p-amber{background:var(--amber-bg);color:var(--amber)}
@@ -144,34 +140,24 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .ilink:hover{color:var(--accent-hover);text-decoration:underline}
 .item-actions{display:flex;gap:3px;flex-shrink:0;opacity:0;transition:opacity var(--tr)}
 .item-card:hover .item-actions{opacity:1}
-/* edit panel */
+.late-badge{font-size:10px;background:var(--purple-bg);color:var(--purple);padding:1px 6px;border-radius:10px;cursor:help;font-weight:500}
 .edit-panel{margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
 .ep-grid{display:grid;gap:8px;margin-bottom:8px}
 .ep-3{grid-template-columns:1fr 1fr 1fr}
-.ep-2{grid-template-columns:1fr auto}
 @media(max-width:600px){.ep-3{grid-template-columns:1fr 1fr}}
-.ep-grid select,.ep-grid input,.ep-grid textarea{height:30px;font-size:12px}
+.ep-grid input,.ep-grid select,.ep-grid textarea{height:30px;font-size:12px}
 .ep-grid textarea{height:56px}
-/* confirm */
 .confirm-box{background:var(--red-bg);border:1px solid rgba(220,38,38,0.2);border-radius:var(--radius);padding:10px 12px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .confirm-box span{font-size:12px;color:var(--red)}
 .confirm-btns{display:flex;gap:6px;flex-shrink:0}
-/* feature group */
-.feat-group{margin-bottom:22px}
-.feat-group-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.feat-group-title{font-size:13px;font-weight:600;color:var(--text)}
-.feat-group-cnt{font-size:11px;color:var(--text-3);background:var(--bg-hover);padding:2px 8px;border-radius:10px}
-/* history */
 .demo-history-list{display:flex;flex-direction:column;gap:10px}
-.demo-hist-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh);transition:box-shadow var(--tr)}
-.demo-hist-card:hover{box-shadow:var(--sh-md)}
+.demo-hist-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh)}
 .demo-hist-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;gap:12px}
 .demo-hist-info{flex:1;min-width:0}
 .demo-hist-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .demo-hist-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .demo-hist-body{border-top:1px solid var(--border);padding:14px 16px}
-.demo-hist-actions{display:flex;gap:6px;margin-bottom:14px}
-/* empty / loading */
+.demo-hist-actions{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
 .empty{text-align:center;padding:48px 24px;color:var(--text-3)}
 .empty-icon{font-size:36px;margin-bottom:12px;opacity:.35}
 .empty-title{font-size:15px;color:var(--text-2);margin-bottom:6px;font-weight:500}
@@ -180,7 +166,6 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 .spin-sm{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-/* new demo screen */
 .new-demo-screen{max-width:520px;margin:0 auto;padding-top:40px}
 .new-demo-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 32px;box-shadow:var(--sh-md)}
 .new-demo-title{font-size:18px;font-weight:600;margin-bottom:6px}
@@ -189,17 +174,11 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .new-demo-field label{display:block;font-size:12px;color:var(--text-3);margin-bottom:4px}
 .history-link{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:20px;font-size:13px;color:var(--text-3);cursor:pointer;padding:10px;border-radius:var(--radius);transition:all var(--tr)}
 .history-link:hover{background:var(--bg-hover);color:var(--text-2)}
-/* export */
-.export-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh)}
-.export-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg)}
-.export-pre{padding:14px;font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;line-height:1.7;max-height:480px;overflow-y:auto}
-/* filter bar */
-.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
-.filter-bar input,.filter-bar select{height:30px;font-size:12px;width:auto;flex:1;min-width:100px}
-/* toast */
+.finish-bar{background:var(--amber-bg);border:1px solid rgba(217,119,6,0.2);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.finish-bar-text{font-size:13px;color:var(--amber);font-weight:500}
+.finish-bar-sub{font-size:12px;color:var(--text-3);margin-top:2px}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--radius-lg);padding:9px 14px;font-size:13px;color:var(--text);box-shadow:var(--sh-md);z-index:999;animation:slideUp .18s ease;display:flex;align-items:center;gap:7px}
 @keyframes slideUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-/* modal */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(3px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
 .modal{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:26px 30px;width:100%;max-width:500px;box-shadow:var(--sh-lg);position:relative}
 .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:17px;line-height:1;padding:4px}
@@ -208,7 +187,6 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .help-sec{margin-bottom:14px}
 .help-sec h3{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:7px}
 .help-row{display:flex;gap:8px;margin-bottom:5px;font-size:13px;color:var(--text-2);line-height:1.5}
-/* setup */
 .setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px 36px;width:100%;max-width:480px;box-shadow:var(--sh-md)}
 .setup-logo{font-size:17px;font-weight:600;margin-bottom:7px}
@@ -227,22 +205,20 @@ button:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 .kbd{font-family:var(--mono);font-size:10px;background:var(--bg-hover);color:var(--text-3);padding:2px 5px;border-radius:4px;border:1px solid var(--border-md)}
 .theme-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-2);font-size:14px}
 .theme-btn:hover{background:var(--bg-hover);color:var(--text)}
-.finish-bar{background:var(--amber-bg);border:1px solid rgba(217,119,6,0.2);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.finish-bar-text{font-size:13px;color:var(--amber);font-weight:500}
-.finish-bar-sub{font-size:12px;color:var(--text-3);margin-top:2px}
+.archive-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;box-shadow:var(--sh);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.archive-card-info{flex:1;min-width:0}
+.archive-card-name{font-size:14px;font-weight:500;color:var(--text-2);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.archive-card-meta{font-size:11px;color:var(--text-3)}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useCallback,useRef} = React;
+const {useState,useEffect,useCallback,useRef,useMemo} = React;
 const {createClient} = supabase;
 
-// ── КЛЮЧИ SUPABASE ──────────────────────────────────
 const SUPABASE_URL = 'https://xvbqphbrmjlavlvivpnp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YnFwaGJybWpsYXZsdml2cG5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzA3MDYsImV4cCI6MjA5ODkwNjcwNn0.5nlq_JEdrdNrr6O2xzcFmz0ugNVnN6WkLlL3akRhoyY';
-// ────────────────────────────────────────────────────
-
 const SK = 'demo_proto_sb';
 const TK = 'demo_proto_theme';
 
@@ -260,21 +236,20 @@ const PM = {
   low:     {label:'Низкий',     p:'p-gray'},
 };
 
-function autoStatus(cur, link) {
-  if (link && link.trim() && cur === 'pending') return 'created';
+function autoStatus(cur,link){
+  if(link&&link.trim()&&cur==='pending') return 'created';
   return cur;
 }
 
-const Ico = ({d,s=14,style}) => (
+const Ico=({d,s=14,style})=>(
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={style}><path d={d}/></svg>
 );
-const ic = {
+const ic={
   plus:    "M12 5v14M5 12h14",
   trash:   "M3 6h18M19 6l-1 14H6L5 6M10 11v5M14 11v5M9 6V4h6v2",
   edit:    "M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z",
   refresh: "M4 4v6h6M20 20v-6h-6M4 10a8 8 0 0115.5-2M20 14a8 8 0 01-15.5 2",
-  copy:    "M8 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2M8 4a2 2 0 012-2h4a2 2 0 012 2M8 4h8",
   check:   "M20 6L9 17l-5-5",
   user:    "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 3a4 4 0 110 8 4 4 0 010-8z",
   clock:   "M12 2a10 10 0 110 20A10 10 0 0112 2zM12 6v6l4 2",
@@ -288,66 +263,68 @@ const ic = {
   flag:    "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7",
   export2: "M12 3v12M7 14l5 5 5-5M20 21H4",
   tool:    "M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z",
+  restore: "M1 4v6h6M23 20v-6h-6M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15",
+  late:    "M12 8v4l3 3M12 2a10 10 0 110 20A10 10 0 0112 2z",
 };
 
-function Toast({msg,onDone}) {
+function Toast({msg,onDone}){
   useEffect(()=>{const t=setTimeout(onDone,2500);return()=>clearTimeout(t);},[]);
   return <div className="toast"><Ico d={ic.check} s={13}/>{msg}</div>;
 }
 
-function HelpModal({onClose}) {
-  return (
+function HelpModal({onClose}){
+  return(
     <div className="modal-ov" onClick={e=>e.target===e.currentTarget&&onClose()}>
       <div className="modal">
         <button className="modal-close" onClick={onClose}>✕</button>
         <h2>Как пользоваться</h2>
         <div className="help-sec">
           <h3>Начало работы</h3>
-          <div className="help-row"><span>🚀</span><span>Перед каждым демо нажмите «Новое демо», введите название фичи, дату и ведущего</span></div>
-          <div className="help-row"><span>📋</span><span>Откроется режим демо — фиксируйте пожелания участников в реальном времени</span></div>
-        </div>
-        <div className="help-sec">
-          <h3>Во время демо</h3>
-          <div className="help-row"><span>✍️</span><span>Заполните описание пожелания, автора и приоритет — нажмите «Зафиксировать» или Ctrl+Enter</span></div>
-          <div className="help-row"><span>💬</span><span>Поле «Комментарий» — для доп. заметок, вопросов стейкхолдеров, обсуждений</span></div>
-          <div className="help-row"><span>🔗</span><span>Если задача уже есть — вставьте ссылку, статус сменится на «Задача создана» автоматически</span></div>
+          <div className="help-row"><span>🚀</span><span>Нажмите «Новое демо», введите название фичи, дату и ведущего</span></div>
+          <div className="help-row"><span>📋</span><span>Зафиксируйте пожелания участников — поле «Название» обязательно, «Описание» для деталей</span></div>
+          <div className="help-row"><span>🔗</span><span>Добавьте ссылку на задачу — статус сменится на «Задача создана» автоматически</span></div>
         </div>
         <div className="help-sec">
           <h3>После демо</h3>
-          <div className="help-row"><span>✏️</span><span>Наведите на карточку → карандаш → редактирование статуса, релиза, ссылки, ответственного</span></div>
-          <div className="help-row"><span>✅</span><span>Когда всё внесено — нажмите «Завершить демо», оно уйдёт в историю</span></div>
-          <div className="help-row"><span>📤</span><span>В истории демо можно экспортировать протокол по каждому демо отдельно</span></div>
+          <div className="help-row"><span>✏️</span><span>Наведите на карточку → карандаш → редактирование статуса, релиза, ссылки, ответственного, названия</span></div>
+          <div className="help-row"><span>✅</span><span>Нажмите «Завершить демо» — оно уйдёт в историю</span></div>
+          <div className="help-row"><span>➕</span><span>В завершённое демо можно добавлять новые доработки — они отмечаются значком «добавлено позже»</span></div>
+          <div className="help-row"><span>📤</span><span>В истории нажмите «Экспорт» для получения протокола</span></div>
+        </div>
+        <div className="help-sec">
+          <h3>Архив</h3>
+          <div className="help-row"><span>🗄️</span><span>Удалённые демо попадают в архив — их можно восстановить</span></div>
         </div>
         <div className="help-sec">
           <h3>Статусы</h3>
-          <div className="help-row"><span>🟡</span><span>Ожидает — зафиксировано, задача не поставлена</span></div>
+          <div className="help-row"><span>🟡</span><span>Ожидает — задача не поставлена</span></div>
           <div className="help-row"><span>🔵</span><span>Задача создана — автоматически при добавлении ссылки</span></div>
-          <div className="help-row"><span>🟣</span><span>В работе — разработка идёт</span></div>
-          <div className="help-row"><span>🟢</span><span>Готово — выполнено</span></div>
-          <div className="help-row"><span>🔴</span><span>Отклонено — решили не делать</span></div>
+          <div className="help-row"><span>🟣</span><span>В работе</span></div>
+          <div className="help-row"><span>🟢</span><span>Готово</span></div>
+          <div className="help-row"><span>🔴</span><span>Отклонено</span></div>
         </div>
       </div>
     </div>
   );
 }
 
-function SetupScreen({onConnect}) {
+function SetupScreen({onConnect}){
   const [url,setUrl]=useState('');
   const [key,setKey]=useState('');
   const [err,setErr]=useState('');
   const [busy,setBusy]=useState(false);
-  async function connect() {
+  async function connect(){
     if(!url.trim()||!key.trim()){setErr('Заполните оба поля');return;}
     setBusy(true);setErr('');
-    try {
+    try{
       const c=createClient(url.trim(),key.trim());
       const {error}=await c.from('demos').select('id').limit(1);
-      if(error&&error.code!=='PGRST116')throw error;
+      if(error&&error.code!=='PGRST116') throw error;
       localStorage.setItem(SK,JSON.stringify({url:url.trim(),key:key.trim()}));
       onConnect(c);
-    } catch(e){setErr('Ошибка: '+(e.message||'проверьте URL и ключ'));setBusy(false);}
+    }catch(e){setErr('Ошибка: '+(e.message||'проверьте URL и ключ'));setBusy(false);}
   }
-  return (
+  return(
     <div className="setup">
       <div className="setup-card">
         <div className="setup-logo">Демо<span>протокол</span></div>
@@ -378,60 +355,230 @@ function SetupScreen({onConnect}) {
   );
 }
 
-// ── MAIN APP ──────────────────────────────────────────
-function App() {
+// ── ITEM CARD ── стабильный компонент без перерисовки при каждом символе
+const ItemCard = React.memo(function ItemCard({item,demos,allItems,onUpdate,onDelete,finishedAt}){
+  const [exp,setExp]=useState(false);
+  const [conf,setConf]=useState(false);
+  // локальные состояния для редактирования — не вызывают перерисовку родителя
+  const [editTitle,setEditTitle]=useState(item.description);
+  const [editDesc,setEditDesc]=useState(item.comment||'');
+
+  const sm=SM[item.status]||SM.pending;
+  const pm=PM[item.priority]||PM.medium;
+  const demoItems=allItems.filter(i=>i.demo_id===item.demo_id);
+  const localNum=demoItems.filter(i=>i.item_order<=item.item_order).length||item.item_order||1;
+  const isLate=finishedAt&&item.created_at&&new Date(item.created_at)>new Date(finishedAt);
+
+  function saveTitle(){
+    if(editTitle.trim()&&editTitle.trim()!==item.description)
+      onUpdate(item.id,{description:editTitle.trim()});
+  }
+  function saveDesc(){
+    if(editDesc!==item.comment)
+      onUpdate(item.id,{comment:editDesc});
+  }
+
+  return(
+    <div className={`item-card s-${item.status}`}>
+      <div className="item-top">
+        <span className="item-num">{localNum}</span>
+        <div className="item-body">
+          <div className="item-title">{item.description}</div>
+          {item.comment&&<div className="item-desc">{item.comment}</div>}
+          <div className="pills">
+            <span className={`pill ${sm.p}`}>{sm.label}</span>
+            <span className={`pill ${pm.p}`} style={{opacity:.85}}>{pm.label}</span>
+            {isLate&&<span className="late-badge" title="Добавлено после завершения демо">⏱ позже</span>}
+            {item.release&&<span className="pill p-purple" style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.branch} s={10}/>{item.release}</span>}
+          </div>
+          <div className="item-meta">
+            <span className="mchip"><Ico d={ic.user} s={12}/>{item.author}</span>
+            {item.assignee&&<span className="mchip"><Ico d={ic.tool} s={12}/>{item.assignee}</span>}
+            {item.created_at&&<span className="mchip"><Ico d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
+            {item.link&&<a className="ilink" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer">
+              <span style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,32)}</span>
+            </a>}
+          </div>
+          {exp&&(
+            <div className="edit-panel">
+              <div className="ep-grid" style={{gridTemplateColumns:'1fr',marginBottom:8}}>
+                <div className="fg"><label>Название</label>
+                  <input value={editTitle} onChange={e=>setEditTitle(e.target.value)} onBlur={saveTitle}/>
+                </div>
+              </div>
+              <div className="ep-grid ep-3" style={{marginBottom:8}}>
+                <div className="fg"><label>Статус</label>
+                  <select value={item.status} onChange={e=>onUpdate(item.id,{status:e.target.value})}>
+                    {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+                  </select>
+                </div>
+                <div className="fg"><label>Релиз</label>
+                  <input defaultValue={item.release} placeholder="2.4.1" onBlur={e=>{if(e.target.value!==item.release)onUpdate(item.id,{release:e.target.value});}}/>
+                </div>
+                <div className="fg"><label>Ссылка на задачу</label>
+                  <input defaultValue={item.link} placeholder="PROJ-123" onBlur={e=>{if(e.target.value!==item.link)onUpdate(item.id,{link:e.target.value});}}/>
+                </div>
+              </div>
+              <div className="ep-grid ep-3" style={{marginBottom:8}}>
+                <div className="fg"><label>Ответственный (разработка)</label>
+                  <input defaultValue={item.assignee||''} placeholder="Имя" onBlur={e=>{if(e.target.value!==(item.assignee||''))onUpdate(item.id,{assignee:e.target.value});}}/>
+                </div>
+                <div className="fg" style={{gridColumn:'span 2'}}><label>Описание</label>
+                  <textarea value={editDesc} onChange={e=>setEditDesc(e.target.value)} onBlur={saveDesc} style={{height:52}}/>
+                </div>
+              </div>
+              <div style={{display:'flex',justifyContent:'flex-end'}}>
+                <button className="btn btn-danger btn-sm" onClick={()=>setConf(c=>!c)}>
+                  <Ico d={ic.trash} s={13}/>Удалить
+                </button>
+              </div>
+              {conf&&(
+                <div className="confirm-box">
+                  <span>Удалить доработку #{localNum}? Это нельзя отменить.</span>
+                  <div className="confirm-btns">
+                    <button className="btn btn-ghost btn-xs" onClick={()=>setConf(false)}>Отмена</button>
+                    <button className="btn btn-danger btn-xs" onClick={()=>onDelete(item.id)}>Удалить</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="item-actions">
+          <button className="btn btn-ghost btn-sm btn-icon" onClick={()=>{setExp(e=>!e);setConf(false);}} title="Редактировать">
+            <Ico d={ic.edit} s={13}/>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// ── ФОРМА ДОБАВЛЕНИЯ — отдельный компонент чтобы не вызывать ре-рендер карточек
+function AddItemForm({activeDemoId,demoName,demoDate,demoAuthor,itemsCount,onAdd}){
+  const [desc,setDesc]=useState('');
+  const [comment,setComment]=useState('');
+  const [author,setAuthor]=useState('');
+  const [priority,setPriority]=useState('medium');
+  const [link,setLink]=useState('');
+  const [rel,setRel]=useState('');
+  const [assignee,setAssignee]=useState('');
+
+  async function handleAdd(){
+    if(!desc.trim()) return;
+    await onAdd({
+      description:desc.trim(),comment:comment.trim(),
+      author:author.trim()||'Не указан',
+      priority,link:link.trim(),release:rel.trim(),assignee:assignee.trim(),
+      item_order:itemsCount+1,
+    });
+    setDesc('');setComment('');setLink('');setRel('');setAssignee('');
+  }
+
+  return(
+    <div className="add-form">
+      <div className="form-title"><Ico d={ic.plus} s={14}/>Зафиксировать пожелание</div>
+      <div className="g3" style={{marginBottom:10}}>
+        <div className="fg"><label>Название</label>
+          <textarea value={desc} onChange={e=>setDesc(e.target.value)}
+            placeholder="Кратко — суть пожелания..."
+            onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))handleAdd();}}/>
+        </div>
+        <div className="fg"><label>Автор</label>
+          <input value={author} onChange={e=>setAuthor(e.target.value)} placeholder="Имя участника"/>
+        </div>
+        <div className="fg"><label>Приоритет</label>
+          <select value={priority} onChange={e=>setPriority(e.target.value)}>
+            <option value="blocking">Блокирующий</option>
+            <option value="critical">Критический</option>
+            <option value="medium">Средний</option>
+            <option value="low">Низкий</option>
+          </select>
+        </div>
+      </div>
+      <div className="fg" style={{marginBottom:10}}><label>Описание (необязательно)</label>
+        <textarea value={comment} onChange={e=>setComment(e.target.value)} placeholder="Детали, вопросы стейкхолдеров..." style={{minHeight:52}}/>
+      </div>
+      <div className="g3" style={{marginBottom:10}}>
+        <div className="fg"><label>Ответственный (разработка, необязательно)</label>
+          <input value={assignee} onChange={e=>setAssignee(e.target.value)} placeholder="Имя разработчика"/>
+        </div>
+        <div className="fg"><label>Ссылка на задачу (→ авто-статус)</label>
+          <input value={link} onChange={e=>setLink(e.target.value)} placeholder="PROJ-123 или https://..."/>
+        </div>
+        <div className="fg"><label>Релиз (необязательно)</label>
+          <input value={rel} onChange={e=>setRel(e.target.value)} placeholder="2.4.1"/>
+        </div>
+      </div>
+      <div className="form-actions">
+        <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd></span>
+        <button className="btn btn-accent" onClick={handleAdd}><Ico d={ic.plus} s={13}/>Зафиксировать</button>
+      </div>
+    </div>
+  );
+}
+
+function App(){
   const [sb,setSb]=useState(null);
   const [loading,setLoading]=useState(true);
-  const [view,setView]=useState('live'); // live | all | history | export-demo
+  const [view,setView]=useState('live');
   const [toast,setToast]=useState('');
   const [showHelp,setShowHelp]=useState(false);
   const [dark,setDark]=useState(()=>localStorage.getItem(TK)==='dark');
 
-  // demos
-  const [demos,setDemos]=useState([]); // [{id,name,date,author,finished,created_at}]
+  const [demos,setDemos]=useState([]);
   const [activeDemoId,setActiveDemoId]=useState(null);
-  const [items,setItems]=useState([]); // all items for active demo
-  const [allItems,setAllItems]=useState([]); // all items across all demos for "all tasks" view
+  const [allItems,setAllItems]=useState([]);
 
-  // new demo form
   const [newName,setNewName]=useState('');
   const [newDate,setNewDate]=useState(new Date().toISOString().slice(0,10));
   const [newAuthor,setNewAuthor]=useState('');
 
-  // add item form
-  const [fDesc,setFDesc]=useState('');
-  const [fAuthor,setFAuthor]=useState('');
-  const [fPriority,setFPriority]=useState('medium');
-  const [fLink,setFLink]=useState('');
-  const [fRel,setFRel]=useState('');
-  const [fComment,setFComment]=useState('');
-  const [fAssignee,setFAssignee]=useState('');
-
-  // ui state
-  const [expandedId,setExpandedId]=useState(null);
-  const [confirmId,setConfirmId]=useState(null);
   const [expandedDemoId,setExpandedDemoId]=useState(null);
-  const [fStatus,setFStatus]=useState('');
-  const [fSearch,setFSearch]=useState('');
-  const [fFeature,setFFeature]=useState('');
-  const [exportDemoId,setExportDemoId]=useState(null);
+  const [confirmDemoId,setConfirmDemoId]=useState(null);
   const [showFinishConfirm,setShowFinishConfirm]=useState(false);
 
-  // theme
+  // фильтры для "все задачи"
+  const [fStatus,setFStatus]=useState('');
+  const [fRelease,setFRelease]=useState('');
+  const [fSearch,setFSearch]=useState('');
+  const [fDemo,setFDemo]=useState('');
+  const [fAuthor,setFAuthor]=useState('');
+  const [fReleaseMode,setFReleaseMode]=useState(''); // '' | 'no-release' | конкретный релиз
+
+  // фильтры для истории
+  const [hSearch,setHSearch]=useState('');
+  const [hAuthor,setHAuthor]=useState('');
+  const [hDateFrom,setHDateFrom]=useState('');
+  const [hDateTo,setHDateTo]=useState('');
+
   useEffect(()=>{
     document.documentElement.classList.toggle('dark',dark);
     localStorage.setItem(TK,dark?'dark':'light');
   },[dark]);
 
-  // init supabase
   useEffect(()=>{
     if(SUPABASE_URL&&SUPABASE_URL!=='ВСТАВЬТЕ_URL_СЮДА'){setSb(createClient(SUPABASE_URL,SUPABASE_KEY));return;}
     try{const s=localStorage.getItem(SK);if(s){const{url,key}=JSON.parse(s);setSb(createClient(url,key));return;}}catch{}
     setLoading(false);
   },[]);
 
-  // load data
-  // Читаем хэш при загрузке
+  const loadAll=useCallback(async(client)=>{
+    const c=client||sb;
+    const [{data:dems},{data:itms}]=await Promise.all([
+      c.from('demos').select('*').order('created_at',{ascending:false}),
+      c.from('demo_items').select('*').order('item_order',{ascending:true}),
+    ]);
+    if(dems) setDemos(dems);
+    if(itms) setAllItems(itms);
+    const active=dems?.find(d=>!d.finished&&!d.archived);
+    setActiveDemoId(active?.id||null);
+    setLoading(false);
+  },[sb]);
+
+  useEffect(()=>{if(sb)loadAll(sb);},[sb]);
+
+  // hash navigation
   useEffect(()=>{
     if(!demos.length) return;
     const hash=window.location.hash;
@@ -440,7 +587,6 @@ function App() {
       if(!isNaN(id)){
         setExpandedDemoId(id);
         setView('history');
-        // прокручиваем к карточке
         setTimeout(()=>{
           const el=document.getElementById('demo-card-'+id);
           if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
@@ -449,157 +595,126 @@ function App() {
     }
   },[demos]);
 
-  const loadAll=useCallback(async(client)=>{
-    const c=client||sb;
-    const [{data:dems},{data:itms}]=await Promise.all([
-      c.from('demos').select('*').order('created_at',{ascending:false}),
-      c.from('demo_items').select('*').order('item_order',{ascending:true}),
-    ]);
-    if(dems)setDemos(dems);
-    if(itms)setAllItems(itms);
-    const active=dems?.find(d=>!d.finished);
-    if(active){
-      setActiveDemoId(active.id);
-      setItems(itms?.filter(i=>i.demo_id===active.id)||[]);
-    } else {
-      setActiveDemoId(null);
-      setItems([]);
-    }
-    setLoading(false);
-  },[sb]);
-
-  useEffect(()=>{if(sb)loadAll(sb);},[sb]);
-
   const activeDemo=demos.find(d=>d.id===activeDemoId);
+  const activeItems=allItems.filter(i=>i.demo_id===activeDemoId);
 
-  // create new demo
   async function createDemo(){
-    if(!newName.trim())return;
+    if(!newName.trim()) return;
     const {data,error}=await sb.from('demos').insert([{
-      name:newName.trim(),date:newDate,author:newAuthor.trim(),finished:false
+      name:newName.trim(),date:newDate,author:newAuthor.trim(),finished:false,archived:false
     }]).select();
     if(!error&&data){
       setDemos(prev=>[data[0],...prev]);
       setActiveDemoId(data[0].id);
-      setItems([]);
       setNewName('');setNewDate(new Date().toISOString().slice(0,10));setNewAuthor('');
       setView('live');
       setToast('Демо начато!');
     }
   }
 
-  // finish demo
   async function finishDemo(){
-    if(!activeDemoId)return;
-    await sb.from('demos').update({finished:true}).eq('id',activeDemoId);
-    setDemos(prev=>prev.map(d=>d.id===activeDemoId?{...d,finished:true}:d));
+    if(!activeDemoId) return;
+    const now=new Date().toISOString();
+    await sb.from('demos').update({finished:true,finished_at:now}).eq('id',activeDemoId);
+    setDemos(prev=>prev.map(d=>d.id===activeDemoId?{...d,finished:true,finished_at:now}:d));
     setActiveDemoId(null);
-    setItems([]);
     setShowFinishConfirm(false);
     setView('history');
-    setToast('Демо завершено и перемещено в историю');
+    setToast('Демо завершено');
   }
 
-  // add item
-  async function addItem(){
-    if(!fDesc.trim()||!activeDemoId)return;
-    const link=fLink.trim();
+  async function archiveDemo(id){
+    await sb.from('demos').update({archived:true}).eq('id',id);
+    setDemos(prev=>prev.map(d=>d.id===id?{...d,archived:true}:d));
+    setConfirmDemoId(null);
+    setToast('Демо перемещено в архив');
+  }
+
+  async function restoreDemo(id){
+    await sb.from('demos').update({archived:false}).eq('id',id);
+    setDemos(prev=>prev.map(d=>d.id===id?{...d,archived:false}:d));
+    setToast('Демо восстановлено');
+  }
+
+  async function addItem(demoId,fields){
+    const link=fields.link||'';
     const status=link?'created':'pending';
-    const order=items.length+1;
-    const row={
-      demo_id:activeDemoId,
-      description:fDesc.trim(),author:fAuthor.trim()||'Не указан',
-      priority:fPriority,status,link,release:fRel.trim(),
-      comment:fComment.trim(),assignee:fAssignee.trim(),
-      item_order:order,
-    };
+    const row={demo_id:demoId,status,...fields};
     const {data,error}=await sb.from('demo_items').insert([row]).select();
     if(!error&&data){
-      setItems(prev=>[...prev,data[0]]);
       setAllItems(prev=>[...prev,data[0]]);
-      setFDesc('');setFLink('');setFRel('');setFComment('');setFAssignee('');
       setToast('Зафиксировано');
     }
   }
 
-  // update item
   async function updateItem(id,patch){
     if('link' in patch){
       const item=allItems.find(i=>i.id===id);
       if(item){const ns=autoStatus(item.status,patch.link);if(ns!==item.status)patch.status=ns;}
     }
     await sb.from('demo_items').update(patch).eq('id',id);
-    setItems(prev=>prev.map(i=>i.id===id?{...i,...patch}:i));
     setAllItems(prev=>prev.map(i=>i.id===id?{...i,...patch}:i));
   }
 
-  // delete item
   async function deleteItem(id){
     await sb.from('demo_items').delete().eq('id',id);
-    setItems(prev=>prev.filter(i=>i.id!==id));
     setAllItems(prev=>prev.filter(i=>i.id!==id));
-    setExpandedId(null);setConfirmId(null);
     setToast('Удалено');
   }
 
   async function refresh(){setLoading(true);await loadAll(sb);setToast('Обновлено');}
   function disconnect(){localStorage.removeItem(SK);window.location.reload();}
 
-  if(!sb&&!loading)return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
+  if(!sb&&!loading) return <SetupScreen onConnect={c=>{setSb(c);setLoading(true);}}/>;
 
-  // counts for active demo
-  const counts={all:items.length,pending:0,created:0,inprogress:0,done:0,declined:0};
-  items.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
+  const counts={all:activeItems.length,pending:0,created:0,inprogress:0,done:0,declined:0};
+  activeItems.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
 
-  // all tasks view
+  const finishedDemos=demos.filter(d=>d.finished&&!d.archived);
+  const archivedDemos=demos.filter(d=>d.archived);
+
+  // все релизы
+  const allReleases=[...new Set(allItems.map(i=>i.release).filter(Boolean))].sort();
+  // все авторы
+  const allAuthors=[...new Set(allItems.map(i=>i.author).filter(Boolean))].sort();
+  // все ведущие
+  const allLeads=[...new Set(demos.filter(d=>!d.archived).map(d=>d.author).filter(Boolean))].sort();
+
+  // фильтрация "все задачи"
   const visibleAll=allItems.filter(i=>{
-    if(fFeature&&i.demo_id!==Number(fFeature))return false;
-    if(fStatus&&i.status!==fStatus)return false;
+    const d=demos.find(dd=>dd.id===i.demo_id);
+    if(d?.archived) return false;
+    if(fDemo&&i.demo_id!==Number(fDemo)) return false;
+    if(fStatus&&i.status!==fStatus) return false;
+    if(fAuthor&&i.author!==fAuthor) return false;
+    if(fReleaseMode==='no-release'&&i.release) return false;
+    if(fReleaseMode&&fReleaseMode!=='no-release'&&i.release!==fReleaseMode) return false;
     if(fSearch&&!i.description.toLowerCase().includes(fSearch.toLowerCase())
       &&!(i.comment||'').toLowerCase().includes(fSearch.toLowerCase())
-      &&!i.author.toLowerCase().includes(fSearch.toLowerCase()))return false;
+      &&!i.author.toLowerCase().includes(fSearch.toLowerCase())) return false;
     return true;
   });
+
   const groupedAll=()=>{
     const map={};
     visibleAll.forEach(i=>{
-      const demo=demos.find(d=>d.id===i.demo_id);
-      const k=i.demo_id;
-      if(!map[k])map[k]={demo,items:[]};
+      const k=i.demo_id||0;
+      if(!map[k]) map[k]={demo:demos.find(d=>d.id===i.demo_id),items:[]};
       map[k].items.push(i);
     });
-    // sort by demo created_at desc
     return Object.values(map).sort((a,b)=>new Date(b.demo?.created_at||0)-new Date(a.demo?.created_at||0));
   };
 
-  // export
-  function buildExport(demoId){
-    const demo=demos.find(d=>d.id===demoId);
-    const its=allItems.filter(i=>i.demo_id===demoId);
-    const line='─'.repeat(44);
-    let t=`ПРОТОКОЛ ДЕМО\n${line}\n`;
-    t+=`Фича:    ${demo?.name||'—'}\nДата:    ${demo?.date||'—'}\nВедущий: ${demo?.author||'—'}\n${line}\n\n`;
-    const groups={};
-    Object.keys(SM).forEach(k=>groups[k]=[]);
-    its.forEach(i=>groups[i.status]?.push(i));
-    ['inprogress','created','pending','done','declined'].forEach(s=>{
-      if(!groups[s].length)return;
-      t+=`${SM[s].label.toUpperCase()} (${groups[s].length})\n`;
-      groups[s].forEach((i,idx)=>{
-        t+=`  ${idx+1}. [${PM[i.priority]?.label||i.priority}] ${i.description}\n`;
-        t+=`       Автор: ${i.author}`;
-        if(i.assignee)t+=`  |  Ответственный: ${i.assignee}`;
-        if(i.release)t+=`  |  Релиз: ${i.release}`;
-        if(i.link)t+=`  |  Задача: ${i.link}`;
-        t+='\n';
-        if(i.comment)t+=`       Комментарий: ${i.comment}\n`;
-      });
-      t+='\n';
-    });
-    t+=`${line}\nСформировано: ${new Date().toLocaleString('ru-RU')}`;
-    return t;
-  }
+  // фильтрация истории
+  const filteredHistory=finishedDemos.filter(d=>{
+    if(hSearch&&!d.name.toLowerCase().includes(hSearch.toLowerCase())) return false;
+    if(hAuthor&&d.author!==hAuthor) return false;
+    if(hDateFrom&&d.date<hDateFrom) return false;
+    if(hDateTo&&d.date>hDateTo) return false;
+    return true;
+  });
 
+  // экспорт
   function openExport(demoId){
     const demo=demos.find(d=>d.id===demoId);
     const its=allItems.filter(i=>i.demo_id===demoId);
@@ -607,13 +722,13 @@ function App() {
     const statusBg={pending:'#fef3c7',created:'#e0f2fe',inprogress:'#eef2ff',done:'#dcfce7',declined:'#fee2e2'};
     const priorityColors={blocking:'#dc2626',critical:'#ea580c',medium:'#d97706',low:'#9898a6'};
     const priorityBg={blocking:'#fee2e2',critical:'#ffedd5',medium:'#fef3c7',low:'#f3f4f6'};
-    const badge=(label,color,bg)=>`<span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;color:${color};background:${bg};white-space:nowrap">${label}</span>`;
+    const badge=(label,color,bg)=>`<span style="display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;color:${color};background:${bg}">${label}</span>`;
     const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const rows=its.map((item,idx)=>`
       <tr style="border-bottom:1px solid #f0f0f0">
-        <td style="padding:12px 8px;font-size:13px;color:#9898a6;vertical-align:top;white-space:nowrap">${idx+1}</td>
+        <td style="padding:12px 8px;font-size:13px;color:#9898a6;vertical-align:top">${idx+1}</td>
         <td style="padding:12px 8px;font-size:13px;color:#1a1a1e;vertical-align:top;line-height:1.5;min-width:200px">
-          <div style="margin-bottom:4px;white-space:pre-wrap">${esc(item.description)}</div>
+          <div style="font-weight:500;margin-bottom:4px;white-space:pre-wrap">${esc(item.description)}</div>
           ${item.comment?`<div style="font-size:12px;color:#5a5a68;background:#f9f9f7;border-left:2px solid #e0e0e0;padding:5px 8px;border-radius:4px;margin-top:4px;white-space:pre-wrap">${esc(item.comment)}</div>`:''}
         </td>
         <td style="padding:12px 8px;vertical-align:top">${badge(SM[item.status]?.label||item.status,statusColors[item.status]||'#666',statusBg[item.status]||'#f5f5f5')}</td>
@@ -632,8 +747,7 @@ function App() {
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',system-ui,sans-serif;background:#f5f4f0;color:#1a1a1e;padding:40px 32px}
 .wrap{max-width:960px;margin:0 auto}
 .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #e8e8e4}
-.hdr-left{display:flex;align-items:center;gap:12px}
-.logo-text{font-size:16px;font-weight:600;color:#1a1a1e}.logo-text span{color:#6366f1}
+.hdr-left{display:flex;align-items:center;gap:12px}.logo-text{font-size:16px;font-weight:600;color:#1a1a1e}.logo-text span{color:#6366f1}
 .demo-title{font-size:22px;font-weight:700;color:#1a1a1e;margin-bottom:6px}
 .demo-meta{display:flex;gap:16px;font-size:13px;color:#9898a6}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}
@@ -647,168 +761,50 @@ tr:last-child td{border-bottom:none}
     <div class="hdr-left">${logoSvg}<span class="logo-text">Демо<span>протокол</span></span></div>
     <div style="text-align:right">
       <div class="demo-title">${esc(demo?.name||'—')}</div>
-      <div class="demo-meta">
-        <span>📅 ${esc(demo?.date||'—')}</span>
-        <span>👤 ${esc(demo?.author||'—')}</span>
-        <span>📋 ${its.length} доработок</span>
-      </div>
+      <div class="demo-meta"><span>📅 ${esc(demo?.date||'—')}</span><span>👤 ${esc(demo?.author||'—')}</span><span>📋 ${its.length} доработок</span></div>
     </div>
   </div>
   <div class="stats">${statsHtml}</div>
   <table>
-    <thead><tr><th>#</th><th>Описание</th><th>Статус</th><th>Приоритет</th><th>Автор</th><th>Ответственный</th><th>Задача</th><th>Релиз</th></tr></thead>
+    <thead><tr><th>#</th><th>Название / Описание</th><th>Статус</th><th>Приоритет</th><th>Автор</th><th>Ответственный</th><th>Задача</th><th>Релиз</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>
   <div class="footer">Сформировано: ${new Date().toLocaleString('ru-RU')}</div>
-</div>
-</body></html>`;
-    // Открываем в новой вкладке через data URL
-    const encoded = 'data:text/html;charset=utf-8,' + encodeURIComponent(exportHtml);
-    const win = window.open('', '_blank');
-    if (win) {
-      win.document.write(exportHtml);
-      win.document.close();
-      setToast('Протокол открыт в новой вкладке');
-    } else {
-      // если браузер заблокировал всплывающее окно — копируем текст
+</div></body></html>`;
+    const win=window.open('','_blank');
+    if(win){win.document.write(exportHtml);win.document.close();setToast('Протокол открыт в новой вкладке');}
+    else{
       const lines=[];
-      lines.push(demo?.name||'Демо', '');
+      lines.push(demo?.name||'Демо','');
       its.forEach((item,idx)=>{
         lines.push(`${idx+1}. ${item.description}`);
-        lines.push(`   Статус: ${SM[item.status]?.label||item.status}  |  Приоритет: ${PM[item.priority]?.label||item.priority}`);
+        lines.push(`   Статус: ${SM[item.status]?.label}  |  Приоритет: ${PM[item.priority]?.label}`);
         lines.push(`   Автор: ${item.author||'—'}  |  Ответственный: ${item.assignee||'—'}`);
         if(item.link) lines.push(`   Задача: ${item.link}`);
         if(item.release) lines.push(`   Релиз: ${item.release}`);
-        if(item.comment) lines.push(`   Комментарий: ${item.comment}`);
+        if(item.comment) lines.push(`   Описание: ${item.comment}`);
         lines.push('');
       });
       navigator.clipboard.writeText(lines.join('\n'));
-      setToast('Протокол скопирован в буфер обмена');
+      setToast('Протокол скопирован');
     }
   }
 
-  // ── ITEM CARD ──
-  function ItemCard({item,readOnly}){
-    const exp=expandedId===item.id;
-    const conf=confirmId===item.id;
-    const sm=SM[item.status]||SM.pending;
-    const pm=PM[item.priority]||PM.medium;
-    const demo=demos.find(d=>d.id===item.demo_id);
-    const demoItems=allItems.filter(i=>i.demo_id===item.demo_id);
-    const localNum=demoItems.filter(i=>i.item_order<=item.item_order).length;
-    return(
-      <div className={`item-card s-${item.status}`}>
-        <div className="item-top">
-          <span className="item-num">{localNum}</span>
-          <div className="item-body">
-            <div className="item-desc">{item.description}</div>
-            {item.comment&&<div className="item-comment">{item.comment}</div>}
-            <div className="pills">
-              <span className={`pill ${sm.p}`}>{sm.label}</span>
-              <span className={`pill ${pm.p}`} style={{opacity:.85}}>{pm.label}</span>
-              {item.release&&<span className="pill p-purple" style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.branch} s={10}/>{item.release}</span>}
-            </div>
-            <div className="item-meta">
-              <span className="mchip"><Ico d={ic.user} s={12}/>{item.author}</span>
-              {item.assignee&&<span className="mchip"><Ico d={ic.tool} s={12}/>{item.assignee}</span>}
-              {item.created_at&&<span className="mchip"><Ico d={ic.clock} s={12}/>{new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>}
-              {item.link&&<a className="ilink" href={item.link.startsWith('http')?item.link:'#'} target="_blank" rel="noreferrer">
-                <span style={{display:'flex',alignItems:'center',gap:3}}><Ico d={ic.link2} s={11}/>{item.link.replace(/^https?:\/\//,'').slice(0,32)}</span>
-              </a>}
-            </div>
-            {exp&&!readOnly&&(
-              <div className="edit-panel">
-                <div className="ep-grid ep-3" style={{marginBottom:8}}>
-                  <div className="fg"><label>Статус</label>
-                    <select value={item.status} onChange={e=>updateItem(item.id,{status:e.target.value})}>
-                      {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
-                    </select>
-                  </div>
-                  <div className="fg"><label>Релиз</label>
-                    <input defaultValue={item.release} placeholder="2.4.1" onBlur={e=>updateItem(item.id,{release:e.target.value})}/>
-                  </div>
-                  <div className="fg"><label>Ссылка на задачу</label>
-                    <input defaultValue={item.link} placeholder="PROJ-123" onBlur={e=>updateItem(item.id,{link:e.target.value})}/>
-                  </div>
-                </div>
-                <div className="ep-grid ep-3" style={{marginBottom:8}}>
-                  <div className="fg"><label>Ответственный (разработка)</label>
-                    <input defaultValue={item.assignee||''} placeholder="Имя разработчика" onBlur={e=>updateItem(item.id,{assignee:e.target.value})}/>
-                  </div>
-                  <div className="fg" style={{gridColumn:'span 2'}}><label>Комментарий</label>
-                    <textarea defaultValue={item.comment||''} placeholder="Доп. заметки, вопросы..." style={{height:52}} onBlur={e=>updateItem(item.id,{comment:e.target.value})}/>
-                  </div>
-                </div>
-                <div style={{display:'flex',justifyContent:'flex-end'}}>
-                  <button className="btn btn-danger btn-sm" onClick={()=>setConfirmId(conf?null:item.id)}>
-                    <Ico d={ic.trash} s={13}/>Удалить
-                  </button>
-                </div>
-                {conf&&(
-                  <div className="confirm-box">
-                    <span>Удалить доработку №{localNum}? Это нельзя отменить.</span>
-                    <div className="confirm-btns">
-                      <button className="btn btn-ghost btn-xs" onClick={()=>setConfirmId(null)}>Отмена</button>
-                      <button className="btn btn-danger btn-xs" onClick={()=>deleteItem(item.id)}>Удалить</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          {!readOnly&&(
-            <div className="item-actions">
-              <button className="btn btn-ghost btn-sm btn-icon"
-                onClick={()=>{setExpandedId(exp?null:item.id);setConfirmId(null);}} title="Редактировать">
-                <Ico d={ic.edit} s={13}/>
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // ── NO ACTIVE DEMO SCREEN ──
-  function NoActiveDemoScreen(){
-    return(
-      <div className="new-demo-screen">
-        <div className="new-demo-card">
-          <div className="new-demo-title">Начать новое демо</div>
-          <div className="new-demo-sub">Заполните информацию о демонстрации — она будет привязана ко всем доработкам этой сессии</div>
-          <div className="new-demo-field"><label>Название фичи *</label>
-            <input value={newName} onChange={e=>setNewName(e.target.value)} placeholder="Например: Импульс — Плановые работы"/>
-          </div>
-          <div className="g2" style={{marginBottom:12}}>
-            <div className="new-demo-field" style={{marginBottom:0}}><label>Дата</label>
-              <input type="date" value={newDate} onChange={e=>setNewDate(e.target.value)}/>
-            </div>
-            <div className="new-demo-field" style={{marginBottom:0}}><label>Ведущий / PM</label>
-              <input value={newAuthor} onChange={e=>setNewAuthor(e.target.value)} placeholder="Имя"/>
-            </div>
-          </div>
-          <button className="btn btn-accent" style={{width:'100%',height:38,fontSize:14}} onClick={createDemo}>
-            <Ico d={ic.plus} s={14}/>Начать демо
-          </button>
-        </div>
-        {demos.filter(d=>d.finished).length>0&&(
-          <div className="history-link" onClick={()=>setView('history')}>
-            <Ico d={ic.archive} s={16}/> Перейти к истории демонстраций ({demos.filter(d=>d.finished).length})
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // finished demos
-  const finishedDemos=demos.filter(d=>d.finished);
-
-  // sidebar nav
   const navMain=[
-    {id:'live',label:'Режим демо',dot:'#6366f1',cnt:activeDemoId?counts.all:null},
-    {id:'all', label:'Все задачи',dot:'#5a5a68',cnt:allItems.length},
-    {id:'history',label:'История демо',dot:'#16a34a',cnt:finishedDemos.length},
+    {id:'live',   label:'Режим демо',  dot:'#6366f1', cnt:activeDemoId?counts.all:null},
+    {id:'all',    label:'Все задачи',  dot:'#5a5a68', cnt:allItems.filter(i=>!demos.find(d=>d.id===i.demo_id)?.archived).length},
+    {id:'history',label:'История демо',dot:'#16a34a', cnt:finishedDemos.length},
+    {id:'archive',label:'Архив',       dot:'#9898a6', cnt:archivedDemos.length||null},
   ];
+
+  // итого по всем задачам (не архивным)
+  const totalByStatus={};
+  Object.keys(SM).forEach(k=>{
+    totalByStatus[k]=allItems.filter(i=>{
+      const d=demos.find(dd=>dd.id===i.demo_id);
+      return !d?.archived&&i.status===k;
+    }).length;
+  });
 
   return(
     <div className="app">
@@ -816,7 +812,7 @@ tr:last-child td{border-bottom:none}
       <header className="topbar">
         <div className="topbar-left">
           <div style={{display:'flex',alignItems:'center',gap:10,flexShrink:0}}>
-            <svg width="28" height="28" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style={{borderRadius:'50%'}}>
+            <svg width="28" height="28" viewBox="0 0 120 120" fill="none" style={{borderRadius:'50%'}}>
               <rect width="120" height="120" rx="60" fill="white"/>
               <path fillRule="evenodd" clipRule="evenodd" d="M60 120C93.1371 120 120 93.1371 120 60C120 26.8629 93.1371 0 60 0C26.8629 0 0 26.8629 0 60C0 93.1371 26.8629 120 60 120ZM36.7092 23.1584C38.2594 20.1973 43.8 11.4 53.3375 8.86397C60 7.09242 69.6 7.2 78.1764 11.7325C76.2 12 73.9123 13.1946 72.2667 14.8402L65.7707 21.3362C61.0903 26.0166 58.8669 30.0337 58.6533 33.3861C58.5518 36.8507 60.575 40.6569 64.8349 44.9168C67.0313 47.464 67.9688 48.4015 70.3125 50.7453C71.4615 51.8943 73.125 53.5578 76.3814 56.4633C80.8655 60.9474 84.5603 63.082 87.6892 62.8678C90.9302 62.7657 94.8345 60.2065 99.5149 55.5261L106.187 48.8536C107.553 47.4876 108.541 45.8191 109.046 44.0443C110.546 46.2 114.6 55.5261 110.4 69.6C107.4 78 99.71 83.5808 96.3629 85.5827C93.0158 87.5846 88.9953 88.6904 84.6373 89.0128C80.1678 89.4466 75.358 88.2028 70.0958 85.1694C64.7222 82.2474 59.0083 77.6479 52.7306 71.3702C46.0044 64.644 40.9558 58.2582 37.6969 52.3247C34.5501 46.5033 32.9693 41.1337 33.2904 36.3286C33.6114 31.5234 34.5619 27.2321 36.5625 23.4379C36.6083 23.351 36.6562 23.2596 36.7063 23.1638L36.7092 23.1584Z" fill="url(#lg1)"/>
               <defs><linearGradient id="lg1" x1="96" y1="20.8421" x2="27.7895" y2="101.053" gradientUnits="userSpaceOnUse"><stop stopColor="#2E62FE"/><stop offset="1" stopColor="#5540E5"/></linearGradient></defs>
@@ -831,12 +827,8 @@ tr:last-child td{border-bottom:none}
           )}
         </div>
         <div className="topbar-right">
-          <button className="theme-btn" onClick={()=>setDark(d=>!d)} title={dark?'Светлая тема':'Тёмная тема'}>
-            {dark?'☀️':'🌙'}
-          </button>
-          <button className="btn btn-ghost btn-sm" onClick={()=>setShowHelp(true)}>
-            <Ico d={ic.help} s={13}/>Как пользоваться
-          </button>
+          <button className="theme-btn" onClick={()=>setDark(d=>!d)}>{dark?'☀️':'🌙'}</button>
+          <button className="btn btn-ghost btn-sm" onClick={()=>setShowHelp(true)}><Ico d={ic.help} s={13}/>Как пользоваться</button>
           <button className="btn btn-ghost btn-sm" onClick={refresh}><Ico d={ic.refresh} s={13}/>Обновить</button>
           {!(SUPABASE_URL&&SUPABASE_URL!=='ВСТАВЬТЕ_URL_СЮДА')&&
             <button className="btn btn-ghost btn-sm btn-icon" onClick={disconnect}><Ico d={ic.cog} s={13}/></button>}
@@ -849,13 +841,13 @@ tr:last-child td{border-bottom:none}
           {navMain.map(n=>(
             <button key={n.id} className={`nav-item ${view===n.id?'active':''}`} onClick={()=>setView(n.id)}>
               <span className="nav-left"><span className="ndot" style={{background:n.dot}}/><span>{n.label}</span></span>
-              {n.cnt!==null&&n.cnt!==undefined&&<span className="cnt">{n.cnt}</span>}
+              {n.cnt!=null&&<span className="cnt">{n.cnt}</span>}
             </button>
           ))}
           {activeDemoId&&<>
             <div className="sidebar-sec" style={{marginTop:6}}>Текущее демо</div>
             {Object.entries(SM).map(([k,v])=>(
-              <button key={k} className="nav-item" onClick={()=>{setFStatus(k);setView('live');}}>
+              <button key={k} className="nav-item" onClick={()=>{setFStatus(k);setView('all');}}>
                 <span className="nav-left"><span className="ndot" style={{background:v.dot}}/><span>{v.label}</span></span>
                 <span className="cnt">{counts[k]}</span>
               </button>
@@ -865,8 +857,8 @@ tr:last-child td{border-bottom:none}
           <div style={{borderTop:'1px solid var(--border)',paddingTop:12,marginTop:4}}>
             <div className="sidebar-sec" style={{paddingTop:0}}>Итого по всем демо</div>
             {Object.entries(SM).map(([k,v])=>{
-              const total=allItems.filter(i=>i.status===k).length;
-              if(!total)return null;
+              const total=totalByStatus[k];
+              if(!total) return null;
               return(
                 <div key={k} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'4px 10px'}}>
                   <span style={{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'var(--text-2)'}}>
@@ -888,14 +880,39 @@ tr:last-child td{border-bottom:none}
               {/* ── РЕЖИМ ДЕМО ── */}
               {view==='live'&&(
                 <>
-                  {!activeDemoId?<NoActiveDemoScreen/>:(
+                  {!activeDemoId?(
+                    <div className="new-demo-screen">
+                      <div className="new-demo-card">
+                        <div className="new-demo-title">Начать новое демо</div>
+                        <div className="new-demo-sub">Заполните информацию — она привяжется ко всем доработкам этой сессии</div>
+                        <div className="new-demo-field"><label>Название фичи *</label>
+                          <input value={newName} onChange={e=>setNewName(e.target.value)} placeholder="Например: Импульс — Плановые работы"/>
+                        </div>
+                        <div className="g2" style={{marginBottom:12}}>
+                          <div className="new-demo-field" style={{marginBottom:0}}><label>Дата</label>
+                            <input type="date" value={newDate} onChange={e=>setNewDate(e.target.value)}/>
+                          </div>
+                          <div className="new-demo-field" style={{marginBottom:0}}><label>Ведущий / PM</label>
+                            <input value={newAuthor} onChange={e=>setNewAuthor(e.target.value)} placeholder="Имя"/>
+                          </div>
+                        </div>
+                        <button className="btn btn-accent" style={{width:'100%',height:38,fontSize:14}} onClick={createDemo}>
+                          <Ico d={ic.plus} s={14}/>Начать демо
+                        </button>
+                      </div>
+                      {(finishedDemos.length>0||archivedDemos.length>0)&&(
+                        <div className="history-link" onClick={()=>setView('history')}>
+                          <Ico d={ic.archive} s={16}/>Перейти к истории демонстраций ({finishedDemos.length})
+                        </div>
+                      )}
+                    </div>
+                  ):(
                     <>
-                      {/* finish bar */}
                       {!showFinishConfirm?(
                         <div className="finish-bar">
                           <div>
-                            <div className="finish-bar-text">Демо активно: {activeDemo?.name}</div>
-                            <div className="finish-bar-sub">Когда всё зафиксировано — завершите демо, оно уйдёт в историю</div>
+                            <div className="finish-bar-text">Активное демо: {activeDemo?.name}</div>
+                            <div className="finish-bar-sub">Когда всё зафиксировано — завершите демо</div>
                           </div>
                           <button className="btn btn-warn btn-sm" onClick={()=>setShowFinishConfirm(true)}>
                             <Ico d={ic.flag} s={13}/>Завершить демо
@@ -903,14 +920,13 @@ tr:last-child td{border-bottom:none}
                         </div>
                       ):(
                         <div className="confirm-box" style={{marginBottom:18}}>
-                          <span>Завершить демо «{activeDemo?.name}»? Оно переместится в историю.</span>
+                          <span>Завершить «{activeDemo?.name}»? Переместится в историю.</span>
                           <div className="confirm-btns">
                             <button className="btn btn-ghost btn-sm" onClick={()=>setShowFinishConfirm(false)}>Отмена</button>
                             <button className="btn btn-green btn-sm" onClick={finishDemo}>Да, завершить</button>
                           </div>
                         </div>
                       )}
-
                       <div className="stats-grid">
                         <div className="stat-card"><div className="stat-val">{counts.all}</div><div className="stat-lbl">Всего</div></div>
                         <div className="stat-card"><div className="stat-val" style={{color:'var(--amber)'}}>{counts.pending}</div><div className="stat-lbl">Ожидают</div></div>
@@ -918,52 +934,19 @@ tr:last-child td{border-bottom:none}
                         <div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{counts.done}</div><div className="stat-lbl">Готово</div></div>
                         <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{counts.declined}</div><div className="stat-lbl">Отклонено</div></div>
                       </div>
-
-                      <div className="add-form">
-                        <div className="form-title"><Ico d={ic.plus} s={14}/>Зафиксировать пожелание</div>
-                        <div className="g3" style={{marginBottom:10}}>
-                          <div className="fg"><label>Описание пожелания</label>
-                            <textarea value={fDesc} onChange={e=>setFDesc(e.target.value)}
-                              placeholder="Что хочет участник..."
-                              onKeyDown={e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))addItem();}}/>
-                          </div>
-                          <div className="fg"><label>Автор</label>
-                            <input value={fAuthor} onChange={e=>setFAuthor(e.target.value)} placeholder="Имя участника"/>
-                          </div>
-                          <div className="fg"><label>Приоритет</label>
-                            <select value={fPriority} onChange={e=>setFPriority(e.target.value)}>
-                              <option value="blocking">Блокирующий</option>
-                              <option value="critical">Критический</option>
-                              <option value="medium">Средний</option>
-                              <option value="low">Низкий</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="fg" style={{marginBottom:10}}><label>Комментарий (необязательно)</label>
-                          <textarea value={fComment} onChange={e=>setFComment(e.target.value)} placeholder="Доп. заметки, вопросы стейкхолдеров..." style={{minHeight:52}}/>
-                        </div>
-                        <div className="g3" style={{marginBottom:10}}>
-                          <div className="fg"><label>Ответственный (разработка, необязательно)</label>
-                            <input value={fAssignee} onChange={e=>setFAssignee(e.target.value)} placeholder="Имя разработчика"/>
-                          </div>
-                          <div className="fg"><label>Ссылка на задачу (→ авто-статус)</label>
-                            <input value={fLink} onChange={e=>setFLink(e.target.value)} placeholder="PROJ-123 или https://..."/>
-                          </div>
-                          <div className="fg"><label>Релиз (необязательно)</label>
-                            <input value={fRel} onChange={e=>setFRel(e.target.value)} placeholder="2.4.1"/>
-                          </div>
-                        </div>
-                        <div className="form-actions">
-                          <span style={{fontSize:11,color:'var(--text-3)'}}><kbd className="kbd">Ctrl+Enter</kbd></span>
-                          <button className="btn btn-accent" onClick={addItem}><Ico d={ic.plus} s={13}/>Зафиксировать</button>
-                        </div>
-                      </div>
-
+                      <AddItemForm
+                        activeDemoId={activeDemoId}
+                        itemsCount={activeItems.length}
+                        onAdd={fields=>addItem(activeDemoId,fields)}
+                      />
                       <div className="sec-label">Зафиксировано на демо</div>
                       <div className="items-list">
-                        {items.length===0
-                          ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div><div className="empty-sub">Добавьте первое выше</div></div>
-                          :[...items].reverse().map(i=><ItemCard key={i.id} item={i}/>)
+                        {activeItems.length===0
+                          ?<div className="empty"><div className="empty-icon">📋</div><div className="empty-title">Пожеланий пока нет</div></div>
+                          :[...activeItems].reverse().map(i=>(
+                            <ItemCard key={i.id} item={i} demos={demos} allItems={allItems}
+                              onUpdate={updateItem} onDelete={deleteItem}/>
+                          ))
                         }
                       </div>
                     </>
@@ -975,22 +958,31 @@ tr:last-child td{border-bottom:none}
               {view==='all'&&(
                 <>
                   <div className="filter-bar">
-                    <input value={fSearch} onChange={e=>setFSearch(e.target.value)} placeholder="Поиск..." style={{width:180}}/>
+                    <input value={fSearch} onChange={e=>setFSearch(e.target.value)} placeholder="Поиск..." style={{width:160}}/>
                     <select value={fStatus} onChange={e=>setFStatus(e.target.value)}>
                       <option value="">Все статусы</option>
                       {Object.entries(SM).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
                     </select>
-                    <select value={fFeature} onChange={e=>setFFeature(e.target.value)}>
-                      <option value="">Все демо</option>
-                      {demos.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}
+                    <select value={fAuthor} onChange={e=>setFAuthor(e.target.value)}>
+                      <option value="">Все авторы</option>
+                      {allAuthors.map(a=><option key={a} value={a}>{a}</option>)}
                     </select>
-                    {(fStatus||fSearch||fFeature)&&
-                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFStatus('');setFSearch('');setFFeature('');}}>Сбросить</button>}
+                    <select value={fReleaseMode} onChange={e=>setFReleaseMode(e.target.value)}>
+                      <option value="">Все релизы</option>
+                      <option value="no-release">Без релиза</option>
+                      {allReleases.map(r=><option key={r} value={r}>{r}</option>)}
+                    </select>
+                    <select value={fDemo} onChange={e=>setFDemo(e.target.value)}>
+                      <option value="">Все демо</option>
+                      {demos.filter(d=>!d.archived).map(d=><option key={d.id} value={d.id}>{d.name}</option>)}
+                    </select>
+                    {(fStatus||fSearch||fDemo||fAuthor||fReleaseMode)&&
+                      <button className="btn btn-ghost btn-sm" onClick={()=>{setFStatus('');setFSearch('');setFDemo('');setFAuthor('');setFReleaseMode('');}}>Сбросить</button>}
                   </div>
                   {visibleAll.length===0
                     ?<div className="empty"><div className="empty-icon">🔍</div><div className="empty-title">Ничего не найдено</div></div>
                     :groupedAll().map(({demo,items:gitems})=>(
-                      <div key={demo?.id} className="feat-group">
+                      <div key={demo?.id||0} className="feat-group">
                         <div className="feat-group-hdr">
                           <span className="feat-group-title">{demo?.name||'Без демо'}</span>
                           <span className="feat-group-cnt">{gitems.length} доработок</span>
@@ -998,7 +990,11 @@ tr:last-child td{border-bottom:none}
                           {demo?.finished&&<span className="pill p-green" style={{fontSize:10}}>Завершено</span>}
                         </div>
                         <div className="items-list">
-                          {gitems.map(i=><ItemCard key={i.id} item={i}/>)}
+                          {gitems.map(i=>(
+                            <ItemCard key={i.id} item={i} demos={demos} allItems={allItems}
+                              onUpdate={updateItem} onDelete={deleteItem}
+                              finishedAt={demo?.finished_at}/>
+                          ))}
                         </div>
                       </div>
                     ))
@@ -1009,61 +1005,127 @@ tr:last-child td{border-bottom:none}
               {/* ── ИСТОРИЯ ДЕМО ── */}
               {view==='history'&&(
                 <>
-                  {finishedDemos.length===0
-                    ?<div className="empty">
-                        <div className="empty-icon">🗂️</div>
-                        <div className="empty-title">История пуста</div>
-                        <div className="empty-sub">Завершённые демо будут появляться здесь</div>
-                        {!activeDemoId&&<button className="btn btn-accent" onClick={()=>setView('live')}>Начать новое демо</button>}
-                      </div>
-                    :(
-                      <div className="demo-history-list">
-                        {finishedDemos.map(demo=>{
-                          const dItems=allItems.filter(i=>i.demo_id===demo.id);
-                          const isOpen=expandedDemoId===demo.id;
-                          const dc={all:dItems.length,pending:0,created:0,inprogress:0,done:0,declined:0};
-                          dItems.forEach(i=>{if(dc[i.status]!==undefined)dc[i.status]++;});
-                          return(
-                            <div key={demo.id} id={`demo-card-${demo.id}`} className="demo-hist-card">
-                              <div className="demo-hist-header" onClick={()=>(()=>{
-                          const next=isOpen?null:demo.id;
-                          setExpandedDemoId(next);
-                          if(next) window.location.hash='demo-'+next;
-                          else window.history.pushState(null,null,' ');
-                        })()}>
-                                <div className="demo-hist-info">
-                                  <div className="demo-hist-name">{demo.name}</div>
-                                  <div className="demo-hist-meta">
-                                    {demo.date&&<span className="mchip"><Ico d={ic.clock} s={11}/>{demo.date}</span>}
-                                    {demo.author&&<span className="mchip"><Ico d={ic.user} s={11}/>{demo.author}</span>}
-                                    <span className="mchip">{dItems.length} доработок</span>
-                                    {dc.pending>0&&<span className="pill p-amber" style={{fontSize:10}}>Ожидает: {dc.pending}</span>}
-                                    {dc.done>0&&<span className="pill p-green" style={{fontSize:10}}>Готово: {dc.done}</span>}
-                                  </div>
+                  <div className="filter-bar" style={{marginBottom:16}}>
+                    <input value={hSearch} onChange={e=>setHSearch(e.target.value)} placeholder="Поиск по названию..." style={{width:200}}/>
+                    <select value={hAuthor} onChange={e=>setHAuthor(e.target.value)}>
+                      <option value="">Все ведущие</option>
+                      {allLeads.map(a=><option key={a} value={a}>{a}</option>)}
+                    </select>
+                    <input type="date" value={hDateFrom} onChange={e=>setHDateFrom(e.target.value)} title="Дата от" style={{width:140}}/>
+                    <input type="date" value={hDateTo} onChange={e=>setHDateTo(e.target.value)} title="Дата до" style={{width:140}}/>
+                    {(hSearch||hAuthor||hDateFrom||hDateTo)&&
+                      <button className="btn btn-ghost btn-sm" onClick={()=>{setHSearch('');setHAuthor('');setHDateFrom('');setHDateTo('');}}>Сбросить</button>}
+                  </div>
+                  {filteredHistory.length===0?(
+                    <div className="empty">
+                      <div className="empty-icon">🗂️</div>
+                      <div className="empty-title">{finishedDemos.length===0?'История пуста':'Ничего не найдено'}</div>
+                      <div className="empty-sub">{finishedDemos.length===0?'Завершённые демо появятся здесь':''}</div>
+                      {!activeDemoId&&finishedDemos.length===0&&<button className="btn btn-accent" onClick={()=>setView('live')}>Начать новое демо</button>}
+                    </div>
+                  ):(
+                    <div className="demo-history-list">
+                      {filteredHistory.map(demo=>{
+                        const dItems=allItems.filter(i=>i.demo_id===demo.id);
+                        const isOpen=expandedDemoId===demo.id;
+                        const dc={pending:0,created:0,inprogress:0,done:0,declined:0};
+                        dItems.forEach(i=>{if(dc[i.status]!==undefined)dc[i.status]++;});
+                        return(
+                          <div key={demo.id} id={`demo-card-${demo.id}`} className="demo-hist-card">
+                            <div className="demo-hist-header" onClick={()=>{
+                              const next=isOpen?null:demo.id;
+                              setExpandedDemoId(next);
+                              if(next) window.location.hash='demo-'+next;
+                              else window.history.pushState(null,null,' ');
+                            }}>
+                              <div className="demo-hist-info">
+                                <div className="demo-hist-name">{demo.name}</div>
+                                <div className="demo-hist-meta">
+                                  {demo.date&&<span className="mchip"><Ico d={ic.clock} s={11}/>{demo.date}</span>}
+                                  {demo.author&&<span className="mchip"><Ico d={ic.user} s={11}/>{demo.author}</span>}
+                                  <span className="mchip">{dItems.length} доработок</span>
+                                  {dc.pending>0&&<span className="pill p-amber" style={{fontSize:10}}>Ожидает: {dc.pending}</span>}
+                                  {dc.done>0&&<span className="pill p-green" style={{fontSize:10}}>Готово: {dc.done}</span>}
                                 </div>
-                                <Ico d={isOpen?ic.chevD:ic.chevR} s={16} style={{color:'var(--text-3)',flexShrink:0}}/>
                               </div>
-                              {isOpen&&(
-                                <div className="demo-hist-body">
-                                  <div className="demo-hist-actions">
-                                    <button className="btn btn-ghost btn-sm" onClick={()=>openExport(demo.id)}>
-                                      <Ico d={ic.export2} s={13}/>Экспорт протокола
-                                    </button>
-                                  </div>
-                                  {dItems.length===0
-                                    ?<div style={{textAlign:'center',padding:'20px',color:'var(--text-3)',fontSize:13}}>Нет доработок</div>
-                                    :<div className="items-list">
-                                      {dItems.map(i=><ItemCard key={i.id} item={i} readOnly={false}/>)}
-                                    </div>
-                                  }
-                                </div>
-                              )}
+                              <Ico d={isOpen?ic.chevD:ic.chevR} s={16} style={{color:'var(--text-3)',flexShrink:0}}/>
                             </div>
-                          );
-                        })}
-                      </div>
-                    )
-                  }
+                            {isOpen&&(
+                              <div className="demo-hist-body">
+                                <div className="demo-hist-actions">
+                                  <button className="btn btn-ghost btn-sm" onClick={()=>openExport(demo.id)}>
+                                    <Ico d={ic.export2} s={13}/>Экспорт протокола
+                                  </button>
+                                  <button className="btn btn-danger btn-sm" onClick={()=>setConfirmDemoId(demo.id)}>
+                                    <Ico d={ic.trash} s={13}/>Удалить демо
+                                  </button>
+                                </div>
+                                {confirmDemoId===demo.id&&(
+                                  <div className="confirm-box" style={{marginBottom:14}}>
+                                    <span>Удалить демо «{demo.name}»? Оно и все доработки уйдут в архив.</span>
+                                    <div className="confirm-btns">
+                                      <button className="btn btn-ghost btn-xs" onClick={()=>setConfirmDemoId(null)}>Отмена</button>
+                                      <button className="btn btn-danger btn-xs" onClick={()=>archiveDemo(demo.id)}>В архив</button>
+                                    </div>
+                                  </div>
+                                )}
+                                {/* форма добавления в завершённое демо */}
+                                <AddItemForm
+                                  activeDemoId={demo.id}
+                                  itemsCount={dItems.length}
+                                  onAdd={fields=>addItem(demo.id,fields)}
+                                />
+                                {dItems.length===0
+                                  ?<div style={{textAlign:'center',padding:'20px',color:'var(--text-3)',fontSize:13}}>Нет доработок</div>
+                                  :<div className="items-list">
+                                    {dItems.map(i=>(
+                                      <ItemCard key={i.id} item={i} demos={demos} allItems={allItems}
+                                        onUpdate={updateItem} onDelete={deleteItem}
+                                        finishedAt={demo.finished_at}/>
+                                    ))}
+                                  </div>
+                                }
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* ── АРХИВ ── */}
+              {view==='archive'&&(
+                <>
+                  {archivedDemos.length===0?(
+                    <div className="empty">
+                      <div className="empty-icon">🗄️</div>
+                      <div className="empty-title">Архив пуст</div>
+                      <div className="empty-sub">Удалённые демо появятся здесь — их можно восстановить</div>
+                    </div>
+                  ):(
+                    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                      {archivedDemos.map(demo=>{
+                        const dItems=allItems.filter(i=>i.demo_id===demo.id);
+                        return(
+                          <div key={demo.id} className="archive-card">
+                            <div className="archive-card-info">
+                              <div className="archive-card-name">{demo.name}</div>
+                              <div className="archive-card-meta">
+                                {demo.date&&<span>{demo.date}</span>}
+                                {demo.author&&<span> · {demo.author}</span>}
+                                <span> · {dItems.length} доработок</span>
+                              </div>
+                            </div>
+                            <button className="btn btn-green btn-sm" onClick={()=>restoreDemo(demo.id)}>
+                              <Ico d={ic.restore} s={13}/>Восстановить
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </>
               )}
             </>
