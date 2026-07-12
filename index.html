@@ -518,6 +518,97 @@ function AddItemForm({activeDemoId,demoName,demoDate,demoAuthor,itemsCount,onAdd
   );
 }
 
+// ── Тело карточки демо в истории ──
+function DemoHistBody({demo,dItems,demos,allItems,confirmDemoId,setConfirmDemoId,archiveDemo,addItem,updateItem,deleteItem,updateDemo,openExport}){
+  const [showAddForm,setShowAddForm]=useState(false);
+  const [editingDemo,setEditingDemo]=useState(false);
+  const [editName,setEditName]=useState(demo.name||'');
+  const [editDate,setEditDate]=useState(demo.date||'');
+  const [editAuthor,setEditAuthor]=useState(demo.author||'');
+
+  function saveDemo(){
+    if(editName.trim()){
+      updateDemo(demo.id,{name:editName.trim(),date:editDate,author:editAuthor.trim()});
+      setEditingDemo(false);
+    }
+  }
+
+  return(
+    <>
+      {/* панель редактирования демо */}
+      {editingDemo&&(
+        <div style={{background:'var(--bg-hover)',borderRadius:'var(--radius)',padding:'12px 14px',marginBottom:14,border:'1px solid var(--border)'}}>
+          <div style={{fontSize:12,fontWeight:500,color:'var(--text-2)',marginBottom:10}}>Редактирование демо</div>
+          <div className="g3" style={{marginBottom:10}}>
+            <div className="fg"><label>Название фичи</label>
+              <input value={editName} onChange={e=>setEditName(e.target.value)} placeholder="Название"/>
+            </div>
+            <div className="fg"><label>Дата</label>
+              <input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)}/>
+            </div>
+            <div className="fg"><label>Ведущий / PM</label>
+              <input value={editAuthor} onChange={e=>setEditAuthor(e.target.value)} placeholder="Имя"/>
+            </div>
+          </div>
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
+            <button className="btn btn-ghost btn-sm" onClick={()=>setEditingDemo(false)}>Отмена</button>
+            <button className="btn btn-accent btn-sm" onClick={saveDemo}>Сохранить</button>
+          </div>
+        </div>
+      )}
+
+      {/* действия */}
+      <div className="demo-hist-actions">
+        <button className="btn btn-ghost btn-sm" onClick={()=>openExport(demo.id)}>
+          <Ico d={ic.export2} s={13}/>Экспорт протокола
+        </button>
+        <button className="btn btn-ghost btn-sm" onClick={()=>{setEditingDemo(e=>!e);setShowAddForm(false);}}>
+          <Ico d={ic.edit} s={13}/>Редактировать демо
+        </button>
+        <button className="btn btn-ghost btn-sm" onClick={()=>{setShowAddForm(f=>!f);setEditingDemo(false);}}>
+          <Ico d={ic.plus} s={13}/>Добавить доработку
+        </button>
+        <button className="btn btn-danger btn-sm" onClick={()=>setConfirmDemoId(demo.id)}>
+          <Ico d={ic.trash} s={13}/>Удалить демо
+        </button>
+      </div>
+
+      {confirmDemoId===demo.id&&(
+        <div className="confirm-box" style={{marginBottom:14}}>
+          <span>Удалить демо «{demo.name}»? Оно и все доработки уйдут в архив.</span>
+          <div className="confirm-btns">
+            <button className="btn btn-ghost btn-xs" onClick={()=>setConfirmDemoId(null)}>Отмена</button>
+            <button className="btn btn-danger btn-xs" onClick={()=>archiveDemo(demo.id)}>В архив</button>
+          </div>
+        </div>
+      )}
+
+      {/* форма добавления — только если нажали кнопку */}
+      {showAddForm&&(
+        <div style={{marginBottom:16}}>
+          <AddItemForm
+            activeDemoId={demo.id}
+            itemsCount={dItems.length}
+            onAdd={async fields=>{await addItem(demo.id,fields);setShowAddForm(false);}}
+          />
+        </div>
+      )}
+
+      {/* список доработок */}
+      {dItems.length===0
+        ?<div style={{textAlign:'center',padding:'20px',color:'var(--text-3)',fontSize:13}}>Нет доработок — нажмите «Добавить доработку»</div>
+        :<div className="items-list">
+          {dItems.map(i=>(
+            <ItemCard key={i.id} item={i} demos={demos} allItems={allItems}
+              onUpdate={updateItem} onDelete={deleteItem}
+              finishedAt={demo.finished_at}/>
+          ))}
+        </div>
+      }
+    </>
+  );
+}
+
 function App(){
   const [sb,setSb]=useState(null);
   const [loading,setLoading]=useState(true);
@@ -628,6 +719,12 @@ function App(){
     setDemos(prev=>prev.map(d=>d.id===id?{...d,archived:true}:d));
     setConfirmDemoId(null);
     setToast('Демо перемещено в архив');
+  }
+
+  async function updateDemo(id,patch){
+    await sb.from('demos').update(patch).eq('id',id);
+    setDemos(prev=>prev.map(d=>d.id===id?{...d,...patch}:d));
+    setToast('Демо обновлено');
   }
 
   async function restoreDemo(id){
@@ -794,7 +891,6 @@ tr:last-child td{border-bottom:none}
     {id:'live',   label:'Режим демо',  dot:'#6366f1', cnt:activeDemoId?counts.all:null},
     {id:'all',    label:'Все задачи',  dot:'#5a5a68', cnt:allItems.filter(i=>!demos.find(d=>d.id===i.demo_id)?.archived).length},
     {id:'history',label:'История демо',dot:'#16a34a', cnt:finishedDemos.length},
-    {id:'archive',label:'Архив',       dot:'#9898a6', cnt:archivedDemos.length||null},
   ];
 
   // итого по всем задачам (не архивным)
@@ -870,6 +966,17 @@ tr:last-child td{border-bottom:none}
               );
             })}
           </div>
+          {archivedDemos.length>0&&(
+            <button className={`nav-item ${view==='archive'?'active':''}`}
+              onClick={()=>setView('archive')}
+              style={{opacity:0.55,marginTop:4}}>
+              <span className="nav-left">
+                <span className="ndot" style={{background:'var(--text-3)'}}/>
+                <span style={{fontSize:12}}>Архив</span>
+              </span>
+              <span className="cnt">{archivedDemos.length}</span>
+            </button>
+          )}
         </aside>
 
         <main className="main">
@@ -1052,39 +1159,20 @@ tr:last-child td{border-bottom:none}
                             </div>
                             {isOpen&&(
                               <div className="demo-hist-body">
-                                <div className="demo-hist-actions">
-                                  <button className="btn btn-ghost btn-sm" onClick={()=>openExport(demo.id)}>
-                                    <Ico d={ic.export2} s={13}/>Экспорт протокола
-                                  </button>
-                                  <button className="btn btn-danger btn-sm" onClick={()=>setConfirmDemoId(demo.id)}>
-                                    <Ico d={ic.trash} s={13}/>Удалить демо
-                                  </button>
-                                </div>
-                                {confirmDemoId===demo.id&&(
-                                  <div className="confirm-box" style={{marginBottom:14}}>
-                                    <span>Удалить демо «{demo.name}»? Оно и все доработки уйдут в архив.</span>
-                                    <div className="confirm-btns">
-                                      <button className="btn btn-ghost btn-xs" onClick={()=>setConfirmDemoId(null)}>Отмена</button>
-                                      <button className="btn btn-danger btn-xs" onClick={()=>archiveDemo(demo.id)}>В архив</button>
-                                    </div>
-                                  </div>
-                                )}
-                                {/* форма добавления в завершённое демо */}
-                                <AddItemForm
-                                  activeDemoId={demo.id}
-                                  itemsCount={dItems.length}
-                                  onAdd={fields=>addItem(demo.id,fields)}
+                                <DemoHistBody
+                                  demo={demo}
+                                  dItems={dItems}
+                                  demos={demos}
+                                  allItems={allItems}
+                                  confirmDemoId={confirmDemoId}
+                                  setConfirmDemoId={setConfirmDemoId}
+                                  archiveDemo={archiveDemo}
+                                  addItem={addItem}
+                                  updateItem={updateItem}
+                                  deleteItem={deleteItem}
+                                  updateDemo={updateDemo}
+                                  openExport={openExport}
                                 />
-                                {dItems.length===0
-                                  ?<div style={{textAlign:'center',padding:'20px',color:'var(--text-3)',fontSize:13}}>Нет доработок</div>
-                                  :<div className="items-list">
-                                    {dItems.map(i=>(
-                                      <ItemCard key={i.id} item={i} demos={demos} allItems={allItems}
-                                        onUpdate={updateItem} onDelete={deleteItem}
-                                        finishedAt={demo.finished_at}/>
-                                    ))}
-                                  </div>
-                                }
                               </div>
                             )}
                           </div>
